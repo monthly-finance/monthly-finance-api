@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  postgres:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - "5432:5432"
+    volumes:
+      - monthly_finance_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: monthly_finance
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+
+volumes:
+  monthly_finance_data:
