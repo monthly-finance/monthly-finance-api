@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ExpensesModule } from './expenses/expenses.module';
 import { IncomeModule } from './income/income.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -11,11 +12,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       type: 'postgres',
       host: 'localhost',
       port: 5432,
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE,
-      entities: [],
-      synchronize: true,
+      username: 'admin',
+      password: 'password',
+      database: 'postgres',
+      autoLoadEntities: true,
+      synchronize: false,
+      migrations: [join(__dirname, 'migrations', '*.{ts,js}')], // Path to your migrations folder
     }),
     IncomeModule,
     ExpensesModule,

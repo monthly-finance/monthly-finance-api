@@ -1,6 +1,5 @@
 import { BaseMFEntity } from 'src/shared/base-mf-entity.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
-import { IncomeReport } from '../income-report.entity';
 import { EmployeeBenefit } from './employee-benefit.entity';
 
 @Entity()

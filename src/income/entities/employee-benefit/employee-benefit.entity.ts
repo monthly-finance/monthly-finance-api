@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany, OneToOne, ManyToOne } from 'typeorm';
+import { Entity, Column, OneToMany, ManyToOne } from 'typeorm';
 import { IncomeReport } from '../income-report.entity';
 import { EmployeeBenefitType } from './employee-benefit-type.entity';
 import { BaseMFEntity } from 'src/shared/base-mf-entity.entity';
