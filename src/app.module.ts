@@ -2,25 +2,20 @@ import { Module } from '@nestjs/common';
 import { ExpensesModule } from './expenses/expenses.module';
 import { IncomeModule } from './income/income.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { join } from 'path';
+import { dataSourceOptions } from '../db/data-source';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
     ExpensesModule,
     IncomeModule,
     TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'admin',
-      password: 'password',
-      database: 'postgres',
+      ...dataSourceOptions,
       autoLoadEntities: true,
-      synchronize: false,
-      migrations: [join(__dirname, 'migrations', '*.{ts,js}')], // Path to your migrations folder
     }),
     IncomeModule,
     ExpensesModule,
+    UserModule,
   ],
 })
 export class AppModule {}

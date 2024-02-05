@@ -8,7 +8,7 @@ export class Utility extends BaseMFEntity {
   @Column()
   amount: number;
 
-  @Column()
+  @ManyToOne(() => UtilityType, (type) => type.utility)
   type: UtilityType;
 
   @ManyToOne(() => ExpenseReport, (expenseReport) => expenseReport.utilities)
