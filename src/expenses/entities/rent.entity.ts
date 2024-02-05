@@ -1,5 +1,5 @@
 import { Entity, Column, OneToOne } from 'typeorm';
-import { ExpenseReport } from './expenses.entity';
+import { ExpenseReport } from './expense-report.entity';
 import { BaseMFEntity } from 'src/shared/base-mf-entity.entity';
 
 @Entity()
