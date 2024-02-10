@@ -12,3 +12,9 @@ export enum Month {
   NOVEMBER = 'NOVEMBER',
   DECEMBER = 'DECEMBER',
 }
+
+export enum BankingAccountType {
+  CREDIT = 'CREDIT',
+  CHECKING = 'CHECKING',
+  SAVINGS = 'SAVINGS',
+}

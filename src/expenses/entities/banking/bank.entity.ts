@@ -1,6 +1,7 @@
 import { BaseMFEntity } from 'src/shared/base-mf-entity.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
 import { BankEndOfMonthStatement } from './bank-statement.entity';
+import { BankingAccountType } from 'src/shared/types/types';
 
 @Entity()
 export class Bank extends BaseMFEntity {
@@ -18,10 +19,4 @@ export class Bank extends BaseMFEntity {
     (bankEndOfMonthStatement) => bankEndOfMonthStatement.bank,
   )
   bankEndOfMonthStatement: BankEndOfMonthStatement[];
-}
-
-export enum BankingAccountType {
-  CREDIT = 'CREDIT',
-  CHECKING = 'CHECKING',
-  SAVINGS = 'SAVINGS',
 }

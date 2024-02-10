@@ -1,5 +1,5 @@
-import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
-import { ExpenseReport } from '../expense-report.entity';
+import { Entity, Column, OneToMany } from 'typeorm';
+
 import { BaseMFEntity } from 'src/shared/base-mf-entity.entity';
 import { Utility } from './utility.entity';
 
@@ -10,9 +10,6 @@ export class UtilityType extends BaseMFEntity {
 
   @OneToMany(() => Utility, (utility) => utility.type)
   utility: Utility;
-
-  @ManyToOne(() => ExpenseReport, (expenseReport) => expenseReport.utilities)
-  expenseReport: ExpenseReport;
 }
 
 // export enum UtilityType {
