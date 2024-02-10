@@ -4,7 +4,7 @@ import { Bank } from './bank.entity';
 import { ExpenseReport } from '../expense-report.entity';
 
 @Entity()
-export class BankEndOfMonthStatement extends BaseMFEntity {
+export class CardEndOfMonthStatement extends BaseMFEntity {
   @ManyToOne(() => Bank, (bank) => bank.bankEndOfMonthStatement)
   bank: Bank;
 

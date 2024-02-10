@@ -1,15 +1,18 @@
+import { User } from 'src/user/entities/user.entity';
 import {
-  Entity,
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  ManyToOne,
 } from 'typeorm';
 
-@Entity()
 export class BaseMFEntity {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @ManyToOne(() => User, (user) => user.id)
+  user: User;
 
   @CreateDateColumn()
   createdAt: Date;
