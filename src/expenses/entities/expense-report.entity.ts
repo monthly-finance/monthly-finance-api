@@ -1,8 +1,15 @@
-import { Entity, Column, OneToMany, OneToOne, Unique } from 'typeorm';
+import {
+  Entity,
+  Column,
+  OneToMany,
+  OneToOne,
+  Unique,
+  CreateDateColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 import { Utility } from './utilities.entity.ts/utility.entity';
-import { Rent } from './rent.entity';
 import { BaseMFEntity } from 'src/shared/base-mf-entity.entity';
-import { BankEndOfMonthStatement } from './banking/card-statement.entity';
+import { CardEndOfMonthStatement } from './banking/card-statement.entity';
 import { Month } from 'src/shared/types/types';
 
 @Entity()
@@ -14,15 +21,27 @@ export class ExpenseReport extends BaseMFEntity {
   @Column()
   forYear: string;
 
-  @OneToMany(() => Utility, (utilites) => utilites.expenseReport)
+  @OneToMany(() => Utility, (utilites) => utilites.expenseReport, {
+    cascade: ['insert', 'update', 'soft-remove'],
+  })
   utilities: Utility[];
 
-  @OneToOne(() => Rent, (rent) => rent.expenseReport)
-  rent: Rent;
+  @Column()
+  rentAmount: number;
+
+  @Column()
+  rentor: string;
 
   @OneToMany(
-    () => BankEndOfMonthStatement,
-    (bankEndOfMonthStatement) => bankEndOfMonthStatement.expenseReport,
+    () => CardEndOfMonthStatement,
+    (CardEndOfMonthStatement) => CardEndOfMonthStatement.expenseReport,
+    { cascade: ['insert', 'update', 'soft-remove'] },
   )
-  bankEndOfMonthStatement: BankEndOfMonthStatement[];
+  cardEndOfMonthStatement: CardEndOfMonthStatement[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

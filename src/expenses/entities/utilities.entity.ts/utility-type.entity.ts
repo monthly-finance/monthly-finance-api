@@ -6,16 +6,8 @@ import { Utility } from './utility.entity';
 @Entity()
 export class UtilityType extends BaseMFEntity {
   @Column()
-  name: number;
+  name: string;
 
   @OneToMany(() => Utility, (utility) => utility.type)
-  utility: Utility;
+  utility: Utility[];
 }
-
-// export enum UtilityType {
-//   GAS = 'GAS',
-//   ELECTRIC = 'ELECTRIC',
-//   INTERNET = 'INTERNET',
-//   WATER = 'WATER',
-//   OTHER = 'OTHER',
-// }

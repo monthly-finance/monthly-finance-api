@@ -2,10 +2,13 @@ import { Injectable, NotImplementedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExpenseReport } from './entities/expense-report.entity';
 import { Repository } from 'typeorm';
-import { CreateExpenseReportInput } from './dto/expense.input.dto';
-import { ExpenseReportOutput } from './dto/expense.output.dto';
+import { CreateExpenseReportInput } from './dtos/expense.input.dto';
+import { ExpenseReportOutput } from './dtos/expense.output.dto';
 import { UserService } from 'src/user/user.service';
-import exp from 'constants';
+import { Bank } from './entities/banking/bank.entity';
+import { UtilityType } from './entities/utilities.entity.ts/utility-type.entity';
+import { Utility } from './entities/utilities.entity.ts/utility.entity';
+import { CardEndOfMonthStatement } from './entities/banking/card-statement.entity';
 
 @Injectable()
 export class ExpensesService {
@@ -21,8 +24,6 @@ export class ExpensesService {
   ): Promise<void> {
     const user = await this.userService.findOne(userId);
 
-    const;
-
     const entity = this.expenseReportRepo.create({
       ...createExpenseReport,
       user,
@@ -33,7 +34,17 @@ export class ExpensesService {
 
   async findAll(userId: string): Promise<ExpenseReport[]> {
     const user = await this.userService.findOne(userId);
-    return await this.expenseReportRepo.findBy({ user });
+    return await this.expenseReportRepo.find({
+      where: {
+        user,
+        cardEndOfMonthStatement: { deletedAt: null },
+        utilities: { deletedAt: null },
+      },
+      relations: {
+        cardEndOfMonthStatement: { bank: true },
+        utilities: { type: true },
+      },
+    });
   }
 
   async findOne(id: number) {

@@ -6,6 +6,7 @@ import { EmployeeBenefitType } from './entities/employee-benefit/employee-benefi
 import { EmployeeBenefit } from './entities/employee-benefit/employee-benefit.entity';
 import { IncomeReport } from './entities/income-report.entity';
 import { OtherIncome } from './entities/other-income.entity';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
   providers: [IncomeService],
@@ -17,6 +18,7 @@ import { OtherIncome } from './entities/other-income.entity';
       IncomeReport,
       OtherIncome,
     ]),
+    UserModule,
   ],
 })
 export class IncomeModule {}

@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany, OneToOne } from 'typeorm';
+import { Entity, Column, ManyToOne } from 'typeorm';
 import { IncomeReport } from './income-report.entity';
 import { BaseMFEntity } from 'src/shared/base-mf-entity.entity';
 
@@ -10,6 +10,6 @@ export class Wage extends BaseMFEntity {
   @Column()
   amount: number;
 
-  @OneToOne(() => IncomeReport, (incomeReport) => incomeReport.wage)
-  incomeReport: Wage;
+  @ManyToOne(() => IncomeReport, (incomeReport) => incomeReport.wage)
+  incomeReport: IncomeReport;
 }

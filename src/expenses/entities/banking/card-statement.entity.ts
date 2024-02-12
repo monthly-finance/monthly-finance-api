@@ -5,18 +5,20 @@ import { ExpenseReport } from '../expense-report.entity';
 
 @Entity()
 export class CardEndOfMonthStatement extends BaseMFEntity {
-  @ManyToOne(() => Bank, (bank) => bank.bankEndOfMonthStatement)
+  @ManyToOne(() => Bank, (bank) => bank.cardEndOfMonthStatement, {
+    cascade: ['insert', 'update', 'soft-remove'],
+  })
   bank: Bank;
 
   @Column()
   amount: number;
 
-  @ManyToOne(
-    () => ExpenseReport,
-    (expenseReport) => expenseReport.bankEndOfMonthStatement,
-  )
-  expenseReport: ExpenseReport;
-
   @Column()
   isPayed: boolean;
+
+  @ManyToOne(
+    () => ExpenseReport,
+    (expenseReport) => expenseReport.cardEndOfMonthStatement,
+  )
+  expenseReport: ExpenseReport;
 }

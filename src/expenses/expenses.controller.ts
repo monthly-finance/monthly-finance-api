@@ -1,8 +1,9 @@
-import { Controller, Post, Body, Headers } from '@nestjs/common';
+import { Controller, Post, Body, Headers, Get } from '@nestjs/common';
 import { ExpensesService } from './expenses.service';
-import { CreateExpenseReportInput } from './dto/expense.input.dto';
+import { CreateExpenseReportInput } from './dtos/expense.input.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MFHeader } from 'src/shared/dto/common.dto';
+import { ExpenseReport } from './entities/expense-report.entity';
 
 @Controller('expenses')
 @ApiTags('Expense Report')
@@ -16,5 +17,14 @@ export class ExpensesController {
     @Body() createExpenseReportInput: CreateExpenseReportInput,
   ): Promise<void> {
     return await this.service.create(headers.userid, createExpenseReportInput);
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'Find All Expense Reports' })
+  async findAllExpenseReport(
+    @Headers() headers: MFHeader,
+  ): Promise<ExpenseReport[]> {
+    const res = await this.service.findAll(headers.userid);
+    return res;
   }
 }

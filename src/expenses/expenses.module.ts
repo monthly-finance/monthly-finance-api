@@ -2,26 +2,27 @@ import { Module } from '@nestjs/common';
 import { ExpensesService } from './expenses.service';
 import { ExpensesController } from './expenses.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { BankEndOfMonthStatement } from './entities/banking/card-statement.entity';
+import { CardEndOfMonthStatement } from './entities/banking/card-statement.entity';
 import { Bank } from './entities/banking/bank.entity';
 import { UtilityType } from './entities/utilities.entity.ts/utility-type.entity';
 import { Utility } from './entities/utilities.entity.ts/utility.entity';
 import { ExpenseReport } from './entities/expense-report.entity';
-import { Rent } from './entities/rent.entity';
-import { UserService } from 'src/user/user.service';
+import { User } from 'src/user/entities/user.entity';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
-  providers: [ExpensesService, UserService],
+  providers: [ExpensesService],
   controllers: [ExpensesController],
   imports: [
     TypeOrmModule.forFeature([
-      BankEndOfMonthStatement,
+      CardEndOfMonthStatement,
       Bank,
       UtilityType,
       Utility,
       ExpenseReport,
-      Rent,
+      User,
     ]),
+    UserModule,
   ],
 })
 export class ExpensesModule {}

@@ -1,18 +1,15 @@
 import { BankingAccountType, Month } from 'src/shared/types/types';
-import { BankEndOfMonthStatement } from '../entities/banking/card-statement.entity';
-import { Rent } from '../entities/rent.entity';
-import { Utility } from '../entities/utilities.entity.ts/utility.entity';
-import { UtilityType } from '../entities/utilities.entity.ts/utility-type.entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 // TODO: need CRUD
 export class UtilityTypeDto {
-  name: number;
+  @ApiProperty({ example: 'water' })
+  name: string;
 }
 
 export class UtilityDto {
   @ApiProperty({ example: 20 })
-  amount: string;
+  amount: number;
 
   @ApiProperty({ type: UtilityTypeDto })
   type: UtilityTypeDto;
@@ -20,7 +17,7 @@ export class UtilityDto {
 
 export class RentDto {
   @ApiProperty({ example: 2000 })
-  amount: string;
+  amount: number;
 
   @ApiProperty({ example: 'MAA' })
   rentor: string;
@@ -31,19 +28,19 @@ export class BankDto {
   @ApiProperty({ example: 'Truist' })
   bankName: string;
 
-  @ApiProperty({ example: BankingAccountType.CHECKING })
+  @ApiProperty({ enum: BankingAccountType })
   accountType: BankingAccountType;
 
   @ApiProperty({ example: true })
   isActive: boolean;
 }
 
-export class BankEndOfMonthStatementDto {
+export class CardEndOfMonthStatementDto {
   @ApiProperty({ type: BankDto })
   bank: BankDto;
 
-  @ApiProperty({ example: '1500' })
-  amount: string;
+  @ApiProperty({ example: 1500 })
+  amount: number;
 
   @ApiProperty({ example: true })
   isPayed: boolean;
@@ -51,7 +48,7 @@ export class BankEndOfMonthStatementDto {
 
 // TODO: need CRUD
 export class ExpenseReportDto {
-  @ApiProperty({ example: 'March' })
+  @ApiProperty({ enum: Month })
   forMonth: Month;
 
   @ApiProperty({ example: '1000' })
@@ -60,9 +57,12 @@ export class ExpenseReportDto {
   @ApiProperty({ type: [UtilityDto] })
   utilities: UtilityDto[];
 
-  @ApiProperty({ type: RentDto })
-  rent: RentDto;
+  @ApiProperty({ example: 2000 })
+  rentAmount: number;
 
-  @ApiProperty({ type: [BankEndOfMonthStatementDto] })
-  bankEndOfMonthStatement: BankEndOfMonthStatementDto[];
+  @ApiProperty({ example: 'MAA' })
+  rentor: string;
+
+  @ApiProperty({ type: [CardEndOfMonthStatementDto] })
+  cardEndOfMonthStatement: CardEndOfMonthStatementDto[];
 }

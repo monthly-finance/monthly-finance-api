@@ -5,10 +5,18 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const options = new DocumentBuilder()
-    .setTitle('Your API Title')
-    .setDescription('API Description')
+    .setTitle('Monthly Finance')
+    .setDescription('Keep track of your monthy finances.')
     .setVersion('1.0')
-    .addTag('your-tag')
+    // .addTag('your-tag')
+    .addApiKey(
+      {
+        type: 'apiKey',
+        name: 'userId',
+        in: 'header',
+      },
+      'userId',
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, options);
