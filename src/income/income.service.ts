@@ -1,10 +1,14 @@
-import { Injectable, NotImplementedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
 import { IncomeReport } from './entities/income-report.entity';
 import { UserService } from 'src/user/user.service';
-import { CreateIncomeReportInput } from './dtos/income.input.dto';
-import { IncomeReportDto } from './dtos/income.common.dto';
+import {
+  CreateIncomeReportInput,
+  DeleteIncomeReportInput,
+  FindOneIncomeReportInput,
+  UpdateIncomeReportInput,
+} from './dtos/income.input.dto';
 
 @Injectable()
 export class IncomeService {
@@ -28,7 +32,7 @@ export class IncomeService {
     await this.incomeReportRepo.save(entity);
   }
 
-  async findAll(userId: string): Promise<any[]> {
+  async findAll(userId: string): Promise<IncomeReport[]> {
     const user = await this.userService.findOne(userId);
     return await this.incomeReportRepo.find({
       where: {
@@ -45,21 +49,45 @@ export class IncomeService {
     });
   }
 
-  async findOne(userId: string, m) {
-    throw new NotImplementedException();
+  async findOne(
+    userId: string,
+    findOneIncomeReportInput: FindOneIncomeReportInput,
+  ): Promise<IncomeReport> {
+    const { forMonth, forYear } = findOneIncomeReportInput;
+
+    const user = await this.userService.findOne(userId);
+
+    return await this.incomeReportRepo.findOneOrFail({
+      where: {
+        user,
+        forMonth,
+        forYear,
+        deletedAt: IsNull(),
+        wage: { deletedAt: IsNull() },
+        otherIncome: { deletedAt: IsNull() },
+        employeeBenefit: { deletedAt: IsNull() },
+      },
+      relations: {
+        wage: true,
+        otherIncome: true,
+        employeeBenefit: { employeeBenefitType: true },
+      },
+    });
   }
 
-  async upsert(id: number) {
-    throw new NotImplementedException();
-
-    return `This action updates a #${id} user`;
+  async update(updateIncomeReportInput: UpdateIncomeReportInput) {
+    const { reportId: id, ...report } = updateIncomeReportInput;
+    await this.incomeReportRepo.update({ id }, report);
   }
 
-  async delete(id: number) {
+  async delete(deleteIncomeReportInput: DeleteIncomeReportInput) {
+    const { reportId: id } = deleteIncomeReportInput;
+
     const report = await this.incomeReportRepo.findOneByOrFail({
       id,
       deletedAt: IsNull(),
     });
-    this.incomeReportRepo.softDelete(report);
+
+    await this.incomeReportRepo.softDelete(report);
   }
 }

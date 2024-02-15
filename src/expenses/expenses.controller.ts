@@ -1,6 +1,19 @@
-import { Controller, Post, Body, Headers, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Headers,
+  Get,
+  Put,
+  Delete,
+} from '@nestjs/common';
 import { ExpensesService } from './expenses.service';
-import { CreateExpenseReportInput } from './dtos/expense.input.dto';
+import {
+  CreateExpenseReportInput,
+  DeleteExpenseReportInput,
+  FindOneExpenseReportInput,
+  UpdateExpenseReportInput,
+} from './dtos/expense.input.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MFHeader } from 'src/shared/dto/common.dto';
 import { ExpenseReport } from './entities/expense-report.entity';
@@ -9,6 +22,15 @@ import { ExpenseReport } from './entities/expense-report.entity';
 @ApiTags('Expense Report')
 export class ExpensesController {
   constructor(private service: ExpensesService) {}
+
+  @Get()
+  @ApiOperation({ summary: 'Find All Expense Reports' })
+  async findAllExpenseReport(
+    @Headers() headers: MFHeader,
+  ): Promise<ExpenseReport[]> {
+    const res = await this.service.findAll(headers.userid);
+    return res;
+  }
 
   @Post()
   @ApiOperation({ summary: 'Create Expense Report' })
@@ -19,12 +41,31 @@ export class ExpensesController {
     return await this.service.create(headers.userid, createExpenseReportInput);
   }
 
-  @Get()
-  @ApiOperation({ summary: 'Find All Expense Reports' })
-  async findAllExpenseReport(
+  @Post('findOne')
+  @ApiOperation({ summary: 'FindOne Expense Report' })
+  async findOneExpenseReport(
     @Headers() headers: MFHeader,
-  ): Promise<ExpenseReport[]> {
-    const res = await this.service.findAll(headers.userid);
-    return res;
+    @Body() findOneExpenseReportInput: FindOneExpenseReportInput,
+  ): Promise<ExpenseReport> {
+    return await this.service.findOne(
+      headers.userid,
+      findOneExpenseReportInput,
+    );
+  }
+
+  @Put()
+  @ApiOperation({ summary: 'Update Expense Report' })
+  async updateExpenseReport(
+    @Body() updateExpenseReportInput: UpdateExpenseReportInput,
+  ): Promise<void> {
+    return await this.service.update(updateExpenseReportInput);
+  }
+
+  @Delete()
+  @ApiOperation({ summary: 'Delete Expense Report' })
+  async deleteExpenseReport(
+    @Body() deleteExpenseReportInput: DeleteExpenseReportInput,
+  ): Promise<void> {
+    return await this.service.delete(deleteExpenseReportInput);
   }
 }
