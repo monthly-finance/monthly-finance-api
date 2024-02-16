@@ -23,6 +23,7 @@ export class ExpenseReport extends BaseMFEntity {
 
   @OneToMany(() => Utility, (utilites) => utilites.expenseReport, {
     cascade: ['insert', 'update', 'soft-remove'],
+    orphanedRowAction: 'soft-delete',
   })
   utilities: Utility[];
 
@@ -35,7 +36,10 @@ export class ExpenseReport extends BaseMFEntity {
   @OneToMany(
     () => CardEndOfMonthStatement,
     (CardEndOfMonthStatement) => CardEndOfMonthStatement.expenseReport,
-    { cascade: ['insert', 'update', 'soft-remove'] },
+    {
+      cascade: ['insert', 'update', 'soft-remove'],
+      orphanedRowAction: 'soft-delete',
+    },
   )
   cardEndOfMonthStatement: CardEndOfMonthStatement[];
 

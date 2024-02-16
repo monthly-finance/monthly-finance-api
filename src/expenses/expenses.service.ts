@@ -73,7 +73,12 @@ export class ExpensesService {
 
   async update(updateExpenseReportInput: UpdateExpenseReportInput) {
     const { reportId: id, ...report } = updateExpenseReportInput;
-    await this.expenseReportRepo.update({ id }, report);
+    const entity = await this.expenseReportRepo.findOneOrFail({
+      where: { id },
+    });
+
+    Object.assign(entity, report);
+    await this.expenseReportRepo.save(entity);
   }
 
   async delete(deleteExpenseReportInput: DeleteExpenseReportInput) {

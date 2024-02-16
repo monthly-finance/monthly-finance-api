@@ -13,6 +13,8 @@ export class Utility extends BaseMFEntity {
   })
   type: UtilityType;
 
-  @ManyToOne(() => ExpenseReport, (expenseReport) => expenseReport.utilities)
+  @ManyToOne(() => ExpenseReport, (expenseReport) => expenseReport.utilities, {
+    onUpdate: 'CASCADE',
+  })
   expenseReport: ExpenseReport;
 }
