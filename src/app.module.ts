@@ -4,6 +4,7 @@ import { IncomeModule } from './income/income.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from '../db/data-source';
 import { UserModule } from './user/user.module';
+import { UtilityService } from './src/expenses/services/utility/utility.service';
 
 @Module({
   imports: [
@@ -17,5 +18,6 @@ import { UserModule } from './user/user.module';
     ExpensesModule,
     UserModule,
   ],
+  providers: [UtilityService],
 })
 export class AppModule {}

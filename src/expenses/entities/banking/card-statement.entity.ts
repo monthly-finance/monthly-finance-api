@@ -6,8 +6,8 @@ import { ExpenseReport } from '../expense-report.entity';
 @Entity()
 export class CardEndOfMonthStatement extends BaseMFEntity {
   @ManyToOne(() => Bank, (bank) => bank.cardEndOfMonthStatement, {
-    cascade: ['insert', 'update', 'soft-remove'],
-    orphanedRowAction: 'soft-delete',
+    // cascade: ['insert', 'update', 'soft-remove'],
+    // orphanedRowAction: 'soft-delete',
   })
   bank: Bank;
 

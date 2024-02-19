@@ -7,7 +7,7 @@ import {
   Put,
   Delete,
 } from '@nestjs/common';
-import { ExpensesService } from './expenses.service';
+import { ExpenseReportService } from './services/expense-report.service';
 import {
   CreateExpenseReportInput,
   DeleteExpenseReportInput,
@@ -21,7 +21,7 @@ import { ExpenseReport } from './entities/expense-report.entity';
 @Controller('expenses')
 @ApiTags('Expense Report')
 export class ExpensesController {
-  constructor(private service: ExpensesService) {}
+  constructor(private service: ExpenseReportService) {}
 
   @Get()
   @ApiOperation({ summary: 'Find All Expense Reports' })

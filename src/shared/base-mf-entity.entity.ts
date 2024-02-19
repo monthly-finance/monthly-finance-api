@@ -6,7 +6,7 @@ export class BaseMFEntity {
   id: number;
 
   @ManyToOne(() => User, (user) => user.id)
-  user: User;
+  userId: string;
 
   @DeleteDateColumn({ select: false })
   deletedAt?: Date;
