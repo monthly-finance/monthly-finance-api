@@ -1,15 +1,15 @@
-import { BaseEntity, Column, Entity, JoinColumn, OneToOne } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 import { ExpenseReport } from './expense-report.entity';
+import { BaseMFEntity } from 'src/shared/base-mf-entity.entity';
 
-Entity();
-export class Rent extends BaseEntity {
+@Entity()
+export class Rent extends BaseMFEntity {
   @Column()
   rentAmount: number;
 
   @Column()
   rentor: string;
 
-  @OneToOne(() => ExpenseReport)
-  @JoinColumn()
-  expenseReport: ExpenseReport;
+  @ManyToOne(() => ExpenseReport, (u) => u.rent)
+  expenseReport?: ExpenseReport;
 }

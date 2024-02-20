@@ -1,14 +1,13 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExpenseReport } from '../entities/expense-report.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import {
   CreateExpenseReportInput,
   DeleteExpenseReportInput,
   FindOneExpenseReportInput,
   UpdateExpenseReportInput,
 } from '../dtos/expense.input.dto';
-import { Utility } from '../entities/utilities.entity.ts/utility.entity';
 
 @Injectable()
 export class ExpenseReportService {
@@ -17,16 +16,16 @@ export class ExpenseReportService {
     private expenseReportRepo: Repository<ExpenseReport>,
   ) {}
 
-  async createExpenseReport(
+  async create(
     userId: string,
     createExpenseReport: CreateExpenseReportInput,
   ): Promise<void> {
     const { forMonth, forYear } = createExpenseReport;
 
-    const existingReport = await this.expenseReportRepo.findOneByOrFail({
+    const existingReport = await this.expenseReportRepo.findOneBy({
       forMonth,
       forYear,
-      userId,
+      user: { id: userId },
     });
 
     if (existingReport) {
@@ -37,10 +36,26 @@ export class ExpenseReportService {
 
     const entity = this.expenseReportRepo.create({
       ...createExpenseReport,
-      userId,
+      user: { id: userId },
     });
 
     await this.expenseReportRepo.save(entity);
+  }
+
+  async findAll(userId: string) {
+    return await this.expenseReportRepo.find({
+      where: {
+        user: { id: userId },
+        cardEndOfMonthStatement: { deletedAt: IsNull() },
+        utilities: { deletedAt: IsNull() },
+        rent: { deletedAt: IsNull() },
+      },
+      relations: {
+        cardEndOfMonthStatement: { bank: true },
+        utilities: { type: true },
+        rent: true,
+      },
+    });
   }
 
   async findByMonthAndYear(
@@ -51,33 +66,29 @@ export class ExpenseReportService {
 
     return await this.expenseReportRepo.findOneOrFail({
       where: {
-        userId,
+        user: { id: userId },
         forMonth,
         forYear,
-        cardEndOfMonthStatement: { deletedAt: null },
-        utilities: { deletedAt: null },
+        cardEndOfMonthStatement: { deletedAt: IsNull() },
+        utilities: { deletedAt: IsNull() },
+        rent: { deletedAt: IsNull() },
       },
       relations: {
         cardEndOfMonthStatement: { bank: true },
         utilities: { type: true },
+        rent: true,
       },
     });
   }
 
-  async updateExpenseReport(
-    userId: string,
-    updateExpenseReport: UpdateExpenseReportInput,
-  ) {
+  async update(updateExpenseReport: UpdateExpenseReportInput) {
     const { reportId: id, ...report } = updateExpenseReport;
 
-    await this.expenseReportRepo.update({ id, userId }, report);
+    await this.expenseReportRepo.update({ id }, report);
   }
 
-  async deleteExpenseReport(
-    userId: string,
-    deleteExpenseReport: DeleteExpenseReportInput,
-  ) {
+  async delete(deleteExpenseReport: DeleteExpenseReportInput) {
     const { reportId: id } = deleteExpenseReport;
-    this.expenseReportRepo.delete({ id, userId });
+    this.expenseReportRepo.delete({ id });
   }
 }

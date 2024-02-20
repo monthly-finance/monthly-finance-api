@@ -7,7 +7,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { Utility } from './utilities.entity.ts/utility.entity';
+import { Utility } from './utility/utility.entity';
 import { BaseMFEntity } from 'src/shared/base-mf-entity.entity';
 import { CardEndOfMonthStatement } from './banking/card-statement.entity';
 import { Month } from 'src/shared/types/types';
@@ -28,7 +28,7 @@ export class ExpenseReport extends BaseMFEntity {
   })
   utilities: Utility[];
 
-  @OneToOne(() => Rent)
+  @OneToMany(() => Rent, (u) => u.expenseReport)
   rent: Rent;
 
   @OneToMany(

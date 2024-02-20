@@ -20,19 +20,19 @@ export class IncomeReport extends BaseMFEntity {
   forYear: string;
 
   @OneToMany(() => Wage, (wage) => wage.incomeReport, {
-    cascade: ['insert', 'update', 'soft-remove'],
+    // cascade: ['insert', 'update', 'soft-remove'],
   })
   wage: Wage[];
 
   @OneToMany(() => OtherIncome, (oi) => oi.incomeReport, {
-    cascade: ['insert', 'update', 'soft-remove'],
+    // cascade: ['insert', 'update', 'soft-remove'],
   })
   otherIncome: OtherIncome[];
 
   @OneToMany(
     () => EmployeeBenefit,
     (employeeBenefit) => employeeBenefit.incomeReport,
-    { cascade: ['insert', 'update', 'soft-remove'] },
+    // { cascade: ['insert', 'update', 'soft-remove'] },
   )
   employeeBenefit: EmployeeBenefit[];
 

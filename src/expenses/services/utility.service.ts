@@ -7,7 +7,8 @@ import {
   DeleteUtilityInput,
   UpdateUtilityInput,
 } from '../dtos/expense.input.dto';
-import { Utility } from '../entities/utilities.entity.ts/utility.entity';
+import { Utility } from '../entities/utility/utility.entity';
+import { EntityNotFoundException } from 'src/shared/types/types';
 
 @Injectable()
 export class UtilityService {
@@ -23,7 +24,7 @@ export class UtilityService {
     const report = await this.expenseReportRepo.findOneBy({ id: reportId });
 
     if (!report) {
-      throw new ConflictException(`Report with ${reportId} Does Not Exist`);
+      throw new EntityNotFoundException(ExpenseReport.name, reportId);
     }
 
     const entity = await this.utilityRepo.create({

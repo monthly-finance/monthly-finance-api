@@ -1,3 +1,5 @@
+import { HttpException, HttpStatus } from '@nestjs/common';
+
 export enum Month {
   JANUARY = 'JANUARY',
   FEBRUARY = 'FEBRUARY',
@@ -31,4 +33,11 @@ export enum OtherIncomeType {
   VENMO = 'VENMO',
   BANK_TRANSFER = 'BANK TRANSFER',
   OTHER = 'OTHER INCOME',
+}
+
+export class EntityNotFoundException extends HttpException {
+  constructor(entity: string, id: number) {
+    super(`${entity} with ID ${id} not found`, HttpStatus.NOT_FOUND);
+    this.name = 'EntityNotFoundException';
+  }
 }
