@@ -9,12 +9,12 @@ export class Utility extends BaseMFEntity {
   amount: number;
 
   @ManyToOne(() => UtilityType, (type) => type.utility, {
-    cascade: ['insert', 'update', 'soft-remove'],
+    cascade: true,
   })
   type: UtilityType;
 
   @ManyToOne(() => ExpenseReport, (expenseReport) => expenseReport.utilities, {
-    onUpdate: 'CASCADE',
+    // onUpdate: 'CASCADE',
   })
   expenseReport: ExpenseReport;
 }

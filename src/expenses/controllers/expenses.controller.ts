@@ -7,21 +7,21 @@ import {
   Put,
   Delete,
 } from '@nestjs/common';
-import { ExpensesService } from './expenses.service';
+import { ExpenseReportService } from '../services/expense-report.service';
 import {
   CreateExpenseReportInput,
   DeleteExpenseReportInput,
   FindOneExpenseReportInput,
   UpdateExpenseReportInput,
-} from './dtos/expense.input.dto';
+} from '../dtos/expense.input.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MFHeader } from 'src/shared/dto/common.dto';
-import { ExpenseReport } from './entities/expense-report.entity';
+import { ExpenseReport } from '../entities/expense-report.entity';
 
 @Controller('expenses')
 @ApiTags('Expense Report')
 export class ExpensesController {
-  constructor(private service: ExpensesService) {}
+  constructor(private service: ExpenseReportService) {}
 
   @Get()
   @ApiOperation({ summary: 'Find All Expense Reports' })
@@ -47,10 +47,11 @@ export class ExpensesController {
     @Headers() headers: MFHeader,
     @Body() findOneExpenseReportInput: FindOneExpenseReportInput,
   ): Promise<ExpenseReport> {
-    return await this.service.findOne(
+    const res = await this.service.findByMonthAndYear(
       headers.userid,
       findOneExpenseReportInput,
     );
+    return res;
   }
 
   @Put()

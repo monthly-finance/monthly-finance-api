@@ -5,7 +5,7 @@ export class BaseMFEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(() => User, (user) => user.id)
+  @ManyToOne(() => User)
   user: User;
 
   @DeleteDateColumn({ select: false })
