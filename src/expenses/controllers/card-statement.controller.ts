@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Post, Put, Headers } from '@nestjs/common';
+import { Body, Controller, Delete, Post, Put } from '@nestjs/common';
 import { CardStatementService } from '../services/card-statement.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
@@ -7,7 +7,7 @@ import {
   DeleteCardEndOfMonthStatementInput,
 } from '../dtos/expense.input.dto';
 
-@Controller('card-statement')
+@Controller('expense/card-statement')
 @ApiTags('Card Statement')
 export class CardStatementController {
   constructor(private service: CardStatementService) {}
@@ -23,7 +23,7 @@ export class CardStatementController {
 
   @Put()
   @ApiOperation({ summary: 'Update Card Statement Report' })
-  async updateExpenseReport(
+  async update(
     @Body()
     updateCardEndOfMonthStatementInput: UpdateCardEndOfMonthStatementInput,
   ): Promise<void> {
@@ -34,7 +34,7 @@ export class CardStatementController {
 
   @Delete()
   @ApiOperation({ summary: 'Delete Card Statement Report' })
-  async deleteExpenseReport(
+  async deleteCard(
     @Body()
     deleteCardEndOfMonthStatementInput: DeleteCardEndOfMonthStatementInput,
   ): Promise<void> {

@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { EmployeeBenefit } from './employee-benefit/employee-benefit.entity';
-import { Wage } from './wage.entity';
+import { Paycheck } from './paycheck.entity';
 import { OtherIncome } from './other-income.entity';
 
 @Entity()
@@ -19,10 +19,10 @@ export class IncomeReport extends BaseMFEntity {
   @Column()
   forYear: string;
 
-  @OneToMany(() => Wage, (wage) => wage.incomeReport, {
+  @OneToMany(() => Paycheck, (paycheck) => paycheck.incomeReport, {
     // cascade: ['insert', 'update', 'soft-remove'],
   })
-  wage: Wage[];
+  paycheck: Paycheck[];
 
   @OneToMany(() => OtherIncome, (oi) => oi.incomeReport, {
     // cascade: ['insert', 'update', 'soft-remove'],

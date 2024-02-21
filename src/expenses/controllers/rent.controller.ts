@@ -7,7 +7,7 @@ import {
   UpdateRentInput,
 } from '../dtos/expense.input.dto';
 
-@Controller('rent')
+@Controller('expense/rent')
 @ApiTags('Rent')
 export class RentController {
   constructor(private service: RentService) {}
@@ -31,7 +31,7 @@ export class RentController {
   }
 
   @Delete()
-  @ApiOperation({ summary: 'Delete Card Statement Report' })
+  @ApiOperation({ summary: 'Delete Rent Payment' })
   async deleteExpenseReport(
     @Body()
     deleteRentInput: DeleteRentInput,

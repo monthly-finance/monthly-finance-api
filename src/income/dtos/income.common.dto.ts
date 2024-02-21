@@ -28,7 +28,7 @@ export class OtherIncomeDto {
   amount: number;
 }
 
-export class WageDto {
+export class PaycheckDto {
   @ApiProperty({ example: '2024-02-10T10:07:58.767Z' })
   datePayed: Date;
 
@@ -43,12 +43,12 @@ export class IncomeReportDto {
   @ApiProperty({ example: '1000' })
   forYear: string;
 
-  @ApiProperty({ type: [WageDto] })
-  wage: WageDto[];
+  // @ApiProperty({ type: [PaycheckDto] })
+  // paycheck: PaycheckDto[];
 
-  @ApiProperty({ type: [OtherIncomeDto] })
-  otherIncome: OtherIncomeDto[];
+  // @ApiProperty({ type: [OtherIncomeDto] })
+  // otherIncome: OtherIncomeDto[];
 
-  @ApiProperty({ type: [EmployeeBenefitDto] })
-  employeeBenefit: EmployeeBenefitDto[];
+  // @ApiProperty({ type: [EmployeeBenefitDto] })
+  // employeeBenefit: EmployeeBenefitDto[];
 }
