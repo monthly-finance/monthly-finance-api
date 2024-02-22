@@ -14,7 +14,7 @@ import { Month } from 'src/shared/types/types';
 import { Rent } from './rent.entity';
 
 @Entity()
-@Unique('MonthAndYear', ['forMonth', 'forYear'])
+@Unique('ExpenseReport_MonthAndYear', ['forMonth', 'forYear'])
 export class ExpenseReport extends BaseMFEntity {
   @Column()
   forMonth: Month;

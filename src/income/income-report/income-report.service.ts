@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
 import { IncomeReport } from '../entities/income-report.entity';
-import { UserService } from 'src/user/user.service';
 import {
   CreateIncomeReportInput,
   DeleteIncomeReportInput,
@@ -17,37 +16,39 @@ export class IncomeReportService {
   constructor(
     @InjectRepository(IncomeReport)
     private incomeReportRepo: Repository<IncomeReport>,
-    private userService: UserService,
+    @InjectRepository(User)
+    private userRepo: Repository<User>,
   ) {}
 
   async create(
     userId: string,
     createIncomeReport: CreateIncomeReportInput,
   ): Promise<void> {
-    const user = await this.userService.findOne(userId);
+    const { forMonth, forYear } = createIncomeReport;
+    const user = await this.userRepo.findOneBy({ id: userId });
 
     if (!user) {
       throw new EntityNotFoundException(User.name, userId);
     }
 
     const entity = this.incomeReportRepo.create({
-      ...createIncomeReport,
       user,
+      forMonth,
+      forYear,
     });
 
     await this.incomeReportRepo.save(entity);
   }
 
   async findAll(userId: string): Promise<IncomeReport[]> {
-    const user = await this.userService.findOne(userId);
-
+    const user = await this.userRepo.findOneBy({ id: userId });
     if (!user) {
       throw new EntityNotFoundException(User.name, userId);
     }
 
     return await this.incomeReportRepo.find({
       where: {
-        user,
+        user: { id: userId },
         paycheck: { deletedAt: IsNull() },
         otherIncome: { deletedAt: IsNull() },
         employeeBenefit: { deletedAt: IsNull() },
@@ -66,7 +67,7 @@ export class IncomeReportService {
   ): Promise<IncomeReport> {
     const { forMonth, forYear } = findOneIncomeReportInput;
 
-    const user = await this.userService.findOne(userId);
+    const user = await this.userRepo.findOneBy({ id: userId });
 
     if (!user) {
       throw new EntityNotFoundException(User.name, userId);

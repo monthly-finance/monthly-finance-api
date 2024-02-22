@@ -6,12 +6,14 @@ import {
   OneToMany,
   CreateDateColumn,
   UpdateDateColumn,
+  Unique,
 } from 'typeorm';
 import { EmployeeBenefit } from './employee-benefit/employee-benefit.entity';
 import { Paycheck } from './paycheck.entity';
 import { OtherIncome } from './other-income.entity';
 
 @Entity()
+@Unique('IncomeReport_MonthAndYear', ['forMonth', 'forYear'])
 export class IncomeReport extends BaseMFEntity {
   @Column()
   forMonth: Month;
