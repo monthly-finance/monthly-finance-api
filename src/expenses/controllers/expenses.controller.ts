@@ -18,7 +18,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MFHeader } from 'src/shared/dto/common.dto';
 import { ExpenseReport } from '../entities/expense-report.entity';
 
-@Controller('expenses')
+@Controller('expense/expense-report')
 @ApiTags('Expense Report')
 export class ExpensesController {
   constructor(private service: ExpenseReportService) {}

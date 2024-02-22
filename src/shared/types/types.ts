@@ -36,7 +36,7 @@ export enum OtherIncomeType {
 }
 
 export class EntityNotFoundException extends HttpException {
-  constructor(entity: string, id: number) {
+  constructor(entity: string, id: any) {
     super(`${entity} with ID ${id} not found`, HttpStatus.NOT_FOUND);
     this.name = 'EntityNotFoundException';
   }

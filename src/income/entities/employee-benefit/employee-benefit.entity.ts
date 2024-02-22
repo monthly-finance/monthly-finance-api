@@ -14,7 +14,7 @@ export class EmployeeBenefit extends BaseMFEntity {
   @ManyToOne(
     () => EmployeeBenefitType,
     (employeeBenefitType) => employeeBenefitType.employeeBenefitype,
-    { cascade: ['insert', 'update', 'soft-remove'] },
+    { cascade: true },
   )
   employeeBenefitType: EmployeeBenefitType;
 

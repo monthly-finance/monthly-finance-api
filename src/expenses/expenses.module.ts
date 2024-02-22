@@ -18,8 +18,19 @@ import { RentController } from './controllers/rent.controller';
 import { RentService } from './services/rent.service';
 
 @Module({
-  providers: [ExpenseReportService, UtilityService, CardStatementService, RentService],
-  controllers: [ExpensesController, CardStatementController, UtilityController, RentController],
+  providers: [
+    ExpenseReportService,
+    UtilityService,
+    CardStatementService,
+    RentService,
+  ],
+  controllers: [
+    ExpensesController,
+    CardStatementController,
+    UtilityController,
+    RentController,
+  ],
+
   imports: [
     TypeOrmModule.forFeature([
       CardEndOfMonthStatement,

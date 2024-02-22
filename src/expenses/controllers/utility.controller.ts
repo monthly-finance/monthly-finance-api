@@ -7,13 +7,13 @@ import {
 } from '../dtos/expense.input.dto';
 import { UtilityService } from '../services/utility.service';
 
-@Controller('utility')
+@Controller('expense/utility')
 @ApiTags('Utility')
 export class UtilityController {
   constructor(private service: UtilityService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Add Card Statement Report' })
+  @ApiOperation({ summary: 'Add Utility' })
   async create(
     @Body()
     createUtilityInput: CreateUtilityInput,
@@ -22,7 +22,7 @@ export class UtilityController {
   }
 
   @Put()
-  @ApiOperation({ summary: 'Update Card Statement Report' })
+  @ApiOperation({ summary: 'Update Utility' })
   async updateExpenseReport(
     @Body()
     updateUtilityInput: UpdateUtilityInput,
@@ -31,7 +31,7 @@ export class UtilityController {
   }
 
   @Delete()
-  @ApiOperation({ summary: 'Delete Card Statement Report' })
+  @ApiOperation({ summary: 'Delete Utility' })
   async deleteExpenseReport(
     @Body()
     deleteUtilityInput: DeleteUtilityInput,
