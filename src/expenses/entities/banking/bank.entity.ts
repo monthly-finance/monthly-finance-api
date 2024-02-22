@@ -1,6 +1,6 @@
 import { BaseMFEntity } from 'src/shared/base-mf-entity.entity';
 import { Entity, Column, OneToMany } from 'typeorm';
-import { BankEndOfMonthStatement } from './bank-statement.entity';
+import { CardEndOfMonthStatement } from './card-statement.entity';
 import { BankingAccountType } from 'src/shared/types/types';
 
 @Entity()
@@ -15,8 +15,8 @@ export class Bank extends BaseMFEntity {
   isActive: boolean;
 
   @OneToMany(
-    () => BankEndOfMonthStatement,
-    (bankEndOfMonthStatement) => bankEndOfMonthStatement.bank,
+    () => CardEndOfMonthStatement,
+    (CardEndOfMonthStatement) => CardEndOfMonthStatement.bank,
   )
-  bankEndOfMonthStatement: BankEndOfMonthStatement[];
+  cardEndOfMonthStatement: CardEndOfMonthStatement[];
 }

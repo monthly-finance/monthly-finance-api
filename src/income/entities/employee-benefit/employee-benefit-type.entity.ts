@@ -11,5 +11,5 @@ export class EmployeeBenefitType extends BaseMFEntity {
     () => EmployeeBenefit,
     (employeeBenefit) => employeeBenefit.employeeBenefitType,
   )
-  employeeBenefitype: EmployeeBenefit;
+  employeeBenefitype: EmployeeBenefit[];
 }

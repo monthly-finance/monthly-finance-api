@@ -1,4 +1,4 @@
-import { Entity, Column, OneToMany, ManyToOne } from 'typeorm';
+import { Entity, Column, ManyToOne } from 'typeorm';
 import { IncomeReport } from '../income-report.entity';
 import { EmployeeBenefitType } from './employee-benefit-type.entity';
 import { BaseMFEntity } from 'src/shared/base-mf-entity.entity';
@@ -14,9 +14,10 @@ export class EmployeeBenefit extends BaseMFEntity {
   @ManyToOne(
     () => EmployeeBenefitType,
     (employeeBenefitType) => employeeBenefitType.employeeBenefitype,
+    { cascade: true },
   )
   employeeBenefitType: EmployeeBenefitType;
 
-  @OneToMany(() => IncomeReport, (incomeReport) => incomeReport.employeeBenefit)
+  @ManyToOne(() => IncomeReport, (incomeReport) => incomeReport.employeeBenefit)
   incomeReport: IncomeReport;
 }

@@ -13,7 +13,6 @@ import { UserModule } from './user/user.module';
       ...dataSourceOptions,
       autoLoadEntities: true,
     }),
-    IncomeModule,
     ExpensesModule,
     UserModule,
   ],
