@@ -4,6 +4,8 @@ import { IncomeModule } from './income/income.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from '../db/data-source';
 import { UserModule } from './user/user.module';
+import { APP_FILTER } from '@nestjs/core';
+import { GlobalExceptionFilter } from './exceptions/global-exception.filter';
 
 @Module({
   imports: [
@@ -15,6 +17,12 @@ import { UserModule } from './user/user.module';
     }),
     ExpensesModule,
     UserModule,
+  ],
+  providers: [
+    {
+      provide: APP_FILTER,
+      useClass: GlobalExceptionFilter,
+    },
   ],
 })
 export class AppModule {}

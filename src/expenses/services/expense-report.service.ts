@@ -8,6 +8,7 @@ import {
   FindOneExpenseReportInput,
   UpdateExpenseReportInput,
 } from '../dtos/expense.input.dto';
+import { EntityNotFoundException } from 'src/shared/types/types';
 
 @Injectable()
 export class ExpenseReportService {
@@ -29,9 +30,7 @@ export class ExpenseReportService {
     });
 
     if (existingReport) {
-      throw new ConflictException(
-        `expense Report for month: ${forMonth} and year ${forYear}`,
-      );
+      throw new EntityNotFoundException(ExpenseReport.name, userId);
     }
 
     const entity = this.expenseReportRepo.create({

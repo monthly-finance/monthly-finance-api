@@ -14,6 +14,7 @@ import { OtherIncomeService } from './other-income/other-income.service';
 import { OtherIncomeController } from './other-income/other-income.controller';
 import { IncomeReportController } from './income-report/income-report.controller';
 import { Paycheck } from './entities/paycheck.entity';
+import { User } from 'src/user/entities/user.entity';
 
 @Module({
   providers: [
@@ -35,6 +36,7 @@ import { Paycheck } from './entities/paycheck.entity';
       IncomeReport,
       OtherIncome,
       Paycheck,
+      User,
     ]),
     UserModule,
   ],
