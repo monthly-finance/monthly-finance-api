@@ -36,3 +36,13 @@ lerna-debug.log*
 
 # Environment files
 .env
+
+
+monthly-finance-415201-1cb71e5d8320.json
+
+# TODO: replace ${PROJECT_ID} with your value below.
+
+gcloud iam workload-identity-pools create "github" \
+  --project="monthly-finance-415201" \
+  --location="global" \
+  --display-name="GitHub Actions Pool"
