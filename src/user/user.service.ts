@@ -13,6 +13,7 @@ import {
   FindOneUserOutputDto,
   UpdateUserOutputDto,
 } from './dto/output.user.dto';
+import { Public } from 'src/shared/types/types';
 
 @Injectable()
 export class UserService {

@@ -48,12 +48,13 @@ export class EntityNotFoundException extends HttpException {
 }
 
 import { SetMetadata } from '@nestjs/common';
+import { RequestContextEnum } from 'src/auth/types/auth.type';
 
 export const IS_PUBLIC_KEY = 'isPublic';
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
 
 export const MFContext = createParamDecorator(
-  (arg: string, ctx: ExecutionContext) => {
+  (arg: RequestContextEnum, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
     const requestContext = request.context;
 

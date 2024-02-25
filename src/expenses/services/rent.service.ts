@@ -1,7 +1,7 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityNotFoundException } from 'src/shared/types/types';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import {
   CreateRentInput,
   DeleteRentInput,
@@ -9,6 +9,8 @@ import {
 } from '../dtos/expense.input.dto';
 import { ExpenseReport } from '../entities/expense-report.entity';
 import { Rent } from '../entities/rent.entity';
+import { UserService } from 'src/user/user.service';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class RentService {
@@ -17,42 +19,58 @@ export class RentService {
     private rentRepo: Repository<Rent>,
     @InjectRepository(ExpenseReport)
     private expenseReportRepo: Repository<ExpenseReport>,
+    private userService: UserService,
   ) {}
 
-  async addRent(createRent: CreateRentInput): Promise<void> {
+  async addRent(createRent: CreateRentInput, userId: string): Promise<void> {
     const { reportId, ...rent } = createRent;
-    const report = await this.expenseReportRepo.findOneBy({ id: reportId });
+    const report = await this.expenseReportRepo.findOneBy({
+      id: reportId,
+      deletedAt: IsNull(),
+      user: { id: userId },
+    });
 
     if (!report) {
       throw new EntityNotFoundException(ExpenseReport.name, reportId);
+    }
+
+    const user = await this.userService.findOne(userId);
+
+    if (!user) {
+      throw new EntityNotFoundException(User.name, userId);
     }
 
     const entity = await this.rentRepo.create({
       expenseReport: report,
       rentAmount: rent.amount,
       rentor: rent.rentor,
+      user,
     });
 
     await this.rentRepo.save(entity);
   }
 
-  async updateRent(updateRent: UpdateRentInput) {
+  async updateRent(updateRent: UpdateRentInput, userId: string) {
     const { rentId, ...rent } = updateRent;
-    const current_rent = await this.rentRepo.findOneBy({ id: rentId });
+    const current_rent = await this.rentRepo.findOneBy({
+      id: rentId,
+      user: { id: userId },
+      deletedAt: IsNull(),
+    });
 
     if (!current_rent) {
-      throw new ConflictException(`Rent with ${rentId} does not exists`);
+      throw new EntityNotFoundException(Rent.name, rentId);
     }
 
     await this.rentRepo.update(
-      { id: rentId },
+      { id: rentId, user: { id: userId } },
       { rentAmount: rent.amount, rentor: rent.rentor },
     );
   }
 
-  async deleteRent(deleteRent: DeleteRentInput) {
+  async deleteRent(deleteRent: DeleteRentInput, userId: string) {
     const { rentId } = deleteRent;
 
-    await this.rentRepo.softDelete({ id: rentId });
+    await this.rentRepo.softDelete({ id: rentId, user: { id: userId } });
   }
 }

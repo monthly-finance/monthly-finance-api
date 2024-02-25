@@ -6,6 +6,8 @@ import {
   DeleteUtilityInput,
 } from '../dtos/expense.input.dto';
 import { UtilityService } from '../services/utility.service';
+import { RequestContext } from 'src/auth/types/auth.type';
+import { MFContext } from 'src/shared/types/types';
 
 @Controller('expense/utility')
 @ApiTags('Utility')
@@ -17,8 +19,9 @@ export class UtilityController {
   async create(
     @Body()
     createUtilityInput: CreateUtilityInput,
+    @MFContext() context: RequestContext,
   ): Promise<void> {
-    return await this.service.addUtility(createUtilityInput);
+    return await this.service.addUtility(createUtilityInput, context.userId);
   }
 
   @Put()
@@ -26,8 +29,9 @@ export class UtilityController {
   async updateExpenseReport(
     @Body()
     updateUtilityInput: UpdateUtilityInput,
+    @MFContext() context: RequestContext,
   ): Promise<void> {
-    return await this.service.updateUtility(updateUtilityInput);
+    return await this.service.updateUtility(updateUtilityInput, context.userId);
   }
 
   @Delete()
@@ -35,7 +39,8 @@ export class UtilityController {
   async deleteExpenseReport(
     @Body()
     deleteUtilityInput: DeleteUtilityInput,
+    @MFContext() context: RequestContext,
   ): Promise<void> {
-    return await this.service.deleteUtility(deleteUtilityInput);
+    return await this.service.deleteUtility(deleteUtilityInput, context.userId);
   }
 }

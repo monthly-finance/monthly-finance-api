@@ -13,7 +13,7 @@ import { Paycheck } from './paycheck.entity';
 import { OtherIncome } from './other-income.entity';
 
 @Entity()
-@Unique('IncomeReport_MonthAndYear', ['forMonth', 'forYear'])
+@Unique('IncomeReport_MonthAndYear', ['forMonth', 'forYear', 'user'])
 export class IncomeReport extends BaseMFEntity {
   @Column()
   forMonth: Month;

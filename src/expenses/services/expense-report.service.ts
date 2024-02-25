@@ -27,6 +27,7 @@ export class ExpenseReportService {
       forMonth,
       forYear,
       user: { id: userId },
+      deletedAt: IsNull(),
     });
 
     if (existingReport) {
@@ -80,14 +81,23 @@ export class ExpenseReportService {
     });
   }
 
-  async update(updateExpenseReport: UpdateExpenseReportInput) {
+  async update(updateExpenseReport: UpdateExpenseReportInput, userId: string) {
     const { reportId: id, ...report } = updateExpenseReport;
+    const current_report = await this.expenseReportRepo.findOneBy({
+      id,
+      user: { id: userId },
+      deletedAt: IsNull(),
+    });
 
-    await this.expenseReportRepo.update({ id }, report);
+    if (!current_report) {
+      throw new EntityNotFoundException(ExpenseReport.name, id);
+    }
+
+    await this.expenseReportRepo.update({ id, deletedAt: IsNull() }, report);
   }
 
-  async delete(deleteExpenseReport: DeleteExpenseReportInput) {
+  async delete(deleteExpenseReport: DeleteExpenseReportInput, userId: string) {
     const { reportId: id } = deleteExpenseReport;
-    this.expenseReportRepo.delete({ id });
+    this.expenseReportRepo.delete({ id, user: { id: userId } });
   }
 }
