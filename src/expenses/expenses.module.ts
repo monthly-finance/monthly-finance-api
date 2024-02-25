@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ExpenseReportService } from './services/expense-report.service';
-import { ExpensesController } from './controllers/expenses.controller';
+import { ExpensesController } from './controllers/expense-report.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CardEndOfMonthStatement } from './entities/banking/card-statement.entity';
 import { Bank } from './entities/banking/bank.entity';

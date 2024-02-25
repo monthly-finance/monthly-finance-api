@@ -5,6 +5,7 @@ import { LoginAuthInputDto } from './dto/auth.input.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
+import { RequestContext } from './types/auth.type';
 
 @Injectable()
 export class AuthService {
@@ -25,11 +26,11 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const payload = {
+    const payload: RequestContext = {
       sub: retrievedUser.id,
       username: retrievedUser.username,
       userId: retrievedUser.id,
-      // role: retrievedUser.role,
+      // roles: retrievedUser.role,
     };
 
     return {

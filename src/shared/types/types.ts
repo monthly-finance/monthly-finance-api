@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus } from '@nestjs/common';
+import {
+  ExecutionContext,
+  HttpException,
+  HttpStatus,
+  createParamDecorator,
+} from '@nestjs/common';
 
 export enum Month {
   JANUARY = 'JANUARY',
@@ -46,3 +51,12 @@ import { SetMetadata } from '@nestjs/common';
 
 export const IS_PUBLIC_KEY = 'isPublic';
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
+
+export const MFContext = createParamDecorator(
+  (arg: string, ctx: ExecutionContext) => {
+    const request = ctx.switchToHttp().getRequest();
+    const requestContext = request.context;
+
+    return arg ? requestContext?.[arg] : requestContext;
+  },
+);
