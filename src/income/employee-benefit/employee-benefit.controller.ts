@@ -1,41 +1,46 @@
 import { Body, Controller, Delete, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
-  CreatePaycheckInput,
-  UpdatePaycheckInput,
-  DeletePaycheckInput,
+  CreateEmployeeBenefitInput,
+  UpdateEmployeeBenefitInput,
+  DeleteEmployeeBenefitInput,
 } from '../dtos/income.input.dto';
-import { PaycheckService } from '../paycheck/paycheck.service';
+
+import { MFContext } from 'src/shared/types/types';
+import { EmployeeBenefitService } from './employee-benefit.service';
 
 @Controller('income/employee-benefit')
 @ApiTags('Employee Benefit')
 export class EmployeeBenefitController {
-  constructor(private service: PaycheckService) {}
+  constructor(private service: EmployeeBenefitService) {}
 
   @Post()
   @ApiOperation({ summary: 'Add Employee Benefit' })
   async create(
     @Body()
-    createPaycheckInput: CreatePaycheckInput,
+    createInput: CreateEmployeeBenefitInput,
+    @MFContext('userId') userId: string,
   ): Promise<void> {
-    return await this.service.addPaycheck(createPaycheckInput);
+    return await this.service.addEmployeeBenefit(createInput, userId);
   }
 
   @Put()
   @ApiOperation({ summary: 'Update Employee Benefit' })
   async update(
     @Body()
-    updatePaycheckInput: UpdatePaycheckInput,
+    updateInput: UpdateEmployeeBenefitInput,
+    @MFContext('userId') userId: string,
   ): Promise<void> {
-    return await this.service.updatePaycheck(updatePaycheckInput);
+    return await this.service.updateEmployeeBenefit(updateInput, userId);
   }
 
   @Delete()
   @ApiOperation({ summary: 'Delete Employee Benefit' })
   async delete(
     @Body()
-    deletePaycheckInput: DeletePaycheckInput,
+    deleteInput: DeleteEmployeeBenefitInput,
+    @MFContext('userId') userId: string,
   ): Promise<void> {
-    return await this.service.deletePaycheck(deletePaycheckInput);
+    return await this.service.deleteEmployeeBenefit(deleteInput, userId);
   }
 }

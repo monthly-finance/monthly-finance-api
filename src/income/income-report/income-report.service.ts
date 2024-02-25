@@ -91,16 +91,33 @@ export class IncomeReportService {
     });
   }
 
-  async update(updateIncomeReportInput: UpdateIncomeReportInput) {
+  async update(
+    userId: string,
+    updateIncomeReportInput: UpdateIncomeReportInput,
+  ) {
     const { reportId: id, ...report } = updateIncomeReportInput;
-    await this.incomeReportRepo.update({ id }, report);
+    const current_report = await this.incomeReportRepo.findOneBy({
+      id,
+      user: { id: userId },
+      deletedAt: IsNull(),
+    });
+
+    if (!current_report) {
+      throw new EntityNotFoundException(IncomeReport.name, id);
+    }
+
+    await this.incomeReportRepo.update({ id, user: { id: userId } }, report);
   }
 
-  async delete(deleteIncomeReportInput: DeleteIncomeReportInput) {
+  async delete(
+    userId: string,
+    deleteIncomeReportInput: DeleteIncomeReportInput,
+  ) {
     const { reportId: id } = deleteIncomeReportInput;
 
     const report = await this.incomeReportRepo.findOneByOrFail({
       id,
+      user: { id: userId },
       deletedAt: IsNull(),
     });
 

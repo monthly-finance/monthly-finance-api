@@ -10,6 +10,7 @@ export const dataSourceOptions: DataSourceOptions = {
   entities: ['dist/**/*.entity.js'],
   synchronize: false,
   migrations: ['dist/db/migrations/*.js'], // Path to your migrations folder
+  logging: true,
 };
 
 const dataSource = new DataSource(dataSourceOptions);

@@ -24,20 +24,21 @@ export class RentService {
 
   async addRent(createRent: CreateRentInput, userId: string): Promise<void> {
     const { reportId, ...rent } = createRent;
-    const report = await this.expenseReportRepo.findOneBy({
-      id: reportId,
-      deletedAt: IsNull(),
-      user: { id: userId },
-    });
-
-    if (!report) {
-      throw new EntityNotFoundException(ExpenseReport.name, reportId);
-    }
 
     const user = await this.userService.findOne(userId);
 
     if (!user) {
       throw new EntityNotFoundException(User.name, userId);
+    }
+
+    const report = await this.expenseReportRepo.findOneBy({
+      id: reportId,
+      deletedAt: IsNull(),
+      user,
+    });
+
+    if (!report) {
+      throw new EntityNotFoundException(ExpenseReport.name, reportId);
     }
 
     const entity = await this.rentRepo.create({

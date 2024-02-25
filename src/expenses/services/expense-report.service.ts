@@ -9,12 +9,15 @@ import {
   UpdateExpenseReportInput,
 } from '../dtos/expense.input.dto';
 import { EntityNotFoundException } from 'src/shared/types/types';
+import { UserService } from 'src/user/user.service';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class ExpenseReportService {
   constructor(
     @InjectRepository(ExpenseReport)
     private expenseReportRepo: Repository<ExpenseReport>,
+    private userService: UserService,
   ) {}
 
   async create(
@@ -23,10 +26,16 @@ export class ExpenseReportService {
   ): Promise<void> {
     const { forMonth, forYear } = createExpenseReport;
 
+    const user = await this.userService.findOne(userId);
+
+    if (!user) {
+      throw new EntityNotFoundException(User.name, userId);
+    }
+
     const existingReport = await this.expenseReportRepo.findOneBy({
       forMonth,
       forYear,
-      user: { id: userId },
+      user,
       deletedAt: IsNull(),
     });
 
@@ -35,8 +44,9 @@ export class ExpenseReportService {
     }
 
     const entity = this.expenseReportRepo.create({
-      ...createExpenseReport,
-      user: { id: userId },
+      forMonth,
+      forYear,
+      user,
     });
 
     await this.expenseReportRepo.save(entity);

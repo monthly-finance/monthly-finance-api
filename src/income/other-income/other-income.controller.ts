@@ -6,6 +6,8 @@ import {
   DeleteOtherIncomeInput,
 } from '../dtos/income.input.dto';
 import { OtherIncomeService } from './other-income.service';
+import { MFContext } from 'src/shared/types/types';
+import { userInfo } from 'os';
 
 @Controller('income/other-income')
 @ApiTags('Other Income')
@@ -17,8 +19,9 @@ export class OtherIncomeController {
   async create(
     @Body()
     createOtherIncomeInput: CreateOtherIncomeInput,
+    @MFContext('userId') userId: string,
   ): Promise<void> {
-    return await this.service.addOtherIncome(createOtherIncomeInput);
+    return await this.service.addOtherIncome(createOtherIncomeInput, userId);
   }
 
   @Put()
@@ -26,8 +29,9 @@ export class OtherIncomeController {
   async update(
     @Body()
     updateOtherIncomeInput: UpdateOtherIncomeInput,
+    @MFContext('userId') userId: string,
   ): Promise<void> {
-    return await this.service.updateOtherIncome(updateOtherIncomeInput);
+    return await this.service.updateOtherIncome(updateOtherIncomeInput, userId);
   }
 
   @Delete()
@@ -35,7 +39,8 @@ export class OtherIncomeController {
   async delete(
     @Body()
     deleteOtherIncomeInput: DeleteOtherIncomeInput,
+    @MFContext('userId') userId: string,
   ): Promise<void> {
-    return await this.service.deleteOtherIncome(deleteOtherIncomeInput);
+    return await this.service.deleteOtherIncome(deleteOtherIncomeInput, userId);
   }
 }

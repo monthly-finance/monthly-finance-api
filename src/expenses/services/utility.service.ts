@@ -9,6 +9,8 @@ import {
 } from '../dtos/expense.input.dto';
 import { Utility } from '../entities/utility/utility.entity';
 import { EntityNotFoundException } from 'src/shared/types/types';
+import { UserService } from 'src/user/user.service';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class UtilityService {
@@ -17,6 +19,7 @@ export class UtilityService {
     private utilityRepo: Repository<Utility>,
     @InjectRepository(ExpenseReport)
     private expenseReportRepo: Repository<ExpenseReport>,
+    private userService: UserService,
   ) {}
 
   async addUtility(
@@ -24,9 +27,15 @@ export class UtilityService {
     userId: string,
   ): Promise<void> {
     const { reportId, ...utility } = createUtility;
+    const user = await this.userService.findOne(userId);
+
+    if (!user) {
+      throw new EntityNotFoundException(User.name, userId);
+    }
+
     const report = await this.expenseReportRepo.findOneBy({
       id: reportId,
-      user: { id: userId },
+      user,
       deletedAt: IsNull(),
     });
 
@@ -36,7 +45,9 @@ export class UtilityService {
 
     const entity = this.utilityRepo.create({
       expenseReport: report,
-      ...utility,
+      user,
+      amount: utility.amount,
+      type: utility.type,
     });
 
     await this.utilityRepo.save(entity);

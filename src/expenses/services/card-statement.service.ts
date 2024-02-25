@@ -8,7 +8,10 @@ import {
 } from '../dtos/expense.input.dto';
 import { ExpenseReport } from '../entities/expense-report.entity';
 import { CardEndOfMonthStatement } from '../entities/banking/card-statement.entity';
-import { EntityNotFoundException } from 'src/shared/types/types';
+import {
+  BankingAccountType,
+  EntityNotFoundException,
+} from 'src/shared/types/types';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
 
@@ -19,6 +22,8 @@ export class CardStatementService {
     private statementRepo: Repository<CardEndOfMonthStatement>,
     @InjectRepository(ExpenseReport)
     private expenseReportRepo: Repository<ExpenseReport>,
+    @InjectRepository(ExpenseReport)
+    private bankRepo: Repository<ExpenseReport>,
     private userService: UserService,
   ) {}
 
@@ -27,6 +32,12 @@ export class CardStatementService {
     userId: string,
   ): Promise<void> {
     const { reportId, ...statement } = createStatement;
+    const user = await this.userService.findOne(userId);
+
+    if (!user) {
+      throw new EntityNotFoundException(User.name, userId);
+    }
+
     const report = await this.expenseReportRepo.findOneBy({
       id: reportId,
       deletedAt: IsNull(),
@@ -37,19 +48,16 @@ export class CardStatementService {
       throw new EntityNotFoundException(ExpenseReport.name, reportId);
     }
 
-    const user = await this.userService.findOne(userId);
+    const bank = await this.bankRepo.upsert();
 
-    if (!user) {
-      throw new EntityNotFoundException(User.name, userId);
-    }
-
-    const entity = this.statementRepo.create(statement);
-
-    await this.statementRepo.save({
-      expenseReport: report,
-      ...(entity as CardEndOfMonthStatement),
+    const entity = this.statementRepo.create({
+      amount: statement.amount,
+      bank: statement.bank,
+      isPayed: statement.isPayed,
       user,
     });
+
+    await this.statementRepo.save(entity);
   }
 
   async updateStatement(
