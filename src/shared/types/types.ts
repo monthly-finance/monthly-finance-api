@@ -41,3 +41,8 @@ export class EntityNotFoundException extends HttpException {
     this.name = 'EntityNotFoundException';
   }
 }
+
+import { SetMetadata } from '@nestjs/common';
+
+export const IS_PUBLIC_KEY = 'isPublic';
+export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);

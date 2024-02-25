@@ -6,6 +6,7 @@ import {
   Get,
   Put,
   Delete,
+  Request,
 } from '@nestjs/common';
 import { ExpenseReportService } from '../services/expense-report.service';
 import {
@@ -25,10 +26,8 @@ export class ExpensesController {
 
   @Get()
   @ApiOperation({ summary: 'Find All Expense Reports' })
-  async findAllExpenseReport(
-    @Headers() headers: MFHeader,
-  ): Promise<ExpenseReport[]> {
-    const res = await this.service.findAll(headers.userid);
+  async findAllExpenseReport(@Request() req): Promise<ExpenseReport[]> {
+    const res = await this.service.findAll(req.user.userId);
     return res;
   }
 

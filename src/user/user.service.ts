@@ -1,9 +1,18 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { BadRequestException, Injectable } from '@nestjs/common';
+
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import {
+  CreateUserInputDto,
+  LoginUserInputDto,
+  UpdateUserInputDto,
+} from './dto/input.user.dto';
+import {
+  CreateUserOutputDto,
+  FindOneUserOutputDto,
+  UpdateUserOutputDto,
+} from './dto/output.user.dto';
 
 @Injectable()
 export class UserService {
@@ -12,24 +21,42 @@ export class UserService {
     private userRepo: Repository<User>,
   ) {}
 
-  async create(createUserDto: CreateUserDto): Promise<void> {
+  async create(
+    createUserDto: CreateUserInputDto,
+  ): Promise<CreateUserOutputDto> {
     const entity = await this.userRepo.create({ ...createUserDto });
     this.userRepo.save(entity);
+
+    return await this.userRepo.findOneBy({ username: createUserDto.username });
   }
 
-  async findAll() {
-    return `This action returns all user`;
+  async findOne(id: string): Promise<FindOneUserOutputDto> {
+    const user = await this.userRepo.findOneBy({ id });
+    return user;
   }
 
-  async findOne(id: string): Promise<User> {
-    return new User();
+  async update(
+    id: string,
+    updateUserDto: UpdateUserInputDto,
+  ): Promise<UpdateUserOutputDto> {
+    await this.userRepo.update(id, updateUserDto);
+    return await this.userRepo.findOneBy({ id });
   }
 
-  async update(id: string, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async delete(id: string): Promise<void> {
+    await this.userRepo.softDelete({ id });
   }
 
-  async delete(id: string) {
-    return `This action removes a #${id} user`;
+  async findUserByCredentials(
+    loginDto: LoginUserInputDto,
+  ): Promise<FindOneUserOutputDto> {
+    const { username, password } = loginDto;
+    const user = await this.userRepo.findOneBy({ username, password });
+
+    if (!user) {
+      throw new BadRequestException({}, 'Login failed to find user');
+    }
+
+    return user;
   }
 }

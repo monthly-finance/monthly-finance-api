@@ -6,45 +6,42 @@ import {
   Patch,
   Param,
   Delete,
-  NotImplementedException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import {
+  CreateUserInputDto,
+  LoginUserInputDto,
+  UpdateUserInputDto,
+} from './dto/input.user.dto';
+
 import { ApiTags } from '@nestjs/swagger';
+import { LoginUserOutputDto } from './dto/output.user.dto';
 
 @Controller('user')
 @ApiTags('User')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly service: UserService) {}
 
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.userService.findAll();
+  async create(@Body() createUserDto: CreateUserInputDto) {
+    return await this.service.create(createUserDto);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    throw new NotImplementedException();
-
-    // return this.userService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    return await this.service.findOne(id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    throw new NotImplementedException();
-
-    // return this.userService.update(+id, updateUserDto);
+  async update(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserInputDto,
+  ) {
+    return await this.service.update(id, updateUserDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    throw new NotImplementedException();
-    // return this.userService.delete(+id);
+  async remove(@Param('id') id: string) {
+    return await this.service.delete(id);
   }
 }

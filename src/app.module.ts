@@ -4,11 +4,16 @@ import { IncomeModule } from './income/income.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from '../db/data-source';
 import { UserModule } from './user/user.module';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { GlobalExceptionFilter } from './exceptions/global-exception.filter';
+import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
+import { AuthGuard } from './auth/auth.guard';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     ExpensesModule,
     IncomeModule,
     TypeOrmModule.forRoot({
@@ -17,8 +22,14 @@ import { GlobalExceptionFilter } from './exceptions/global-exception.filter';
     }),
     ExpensesModule,
     UserModule,
+    AuthModule,
+    JwtModule,
   ],
   providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
     {
       provide: APP_FILTER,
       useClass: GlobalExceptionFilter,
