@@ -26,14 +26,13 @@ jobs:
 
       - name: make env file
         run: |
-          echo "POSTGRES_HOST={{ secrets.POSTGRES_HOST }}" >> .env
-          echo "POSTGRES_PORT={{ secrets.POSTGRES_PORT }}" >> .env
+          echo "POSTGRES_INSTANCE_CONNECTION_NAME={{ secrets.POSTGRES_INSTANCE_CONNECTION_NAME }}"
           echo "POSTGRES_USER={{ secrets.POSTGRES_USER }}" >> .env
           echo "POSTGRES_PASSWORD={{ secrets.POSTGRES_PASSWORD }}" >> .env
           echo "POSTGRES_DATABASE={{ secrets.POSTGRES_DATABASE }}" >> .env
           echo "PORT={{ secrets.PORT }}" >> .env
-          echo "MODE={{ secrets.MODE }}" >> .env
-          echo "RUN_MIGRATIONS={{ secrets.RUN_MIGRATIONS }}" >> .env
+          echo "MODE=DEV" >> .env
+          echo "RUN_MIGRATIONS=true" >> .env
           echo "AUTH_SECRET={{ serets.AUTH_SECRET }}" >> .env
 
       - name: Google Auth
