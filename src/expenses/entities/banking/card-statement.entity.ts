@@ -1,15 +1,15 @@
 import { BaseMFEntity } from 'src/shared/base-mf-entity.entity';
 import { Entity, Column, ManyToOne } from 'typeorm';
-import { Bank } from './bank.entity';
 import { ExpenseReport } from '../expense-report.entity';
+import { BankingAccountType } from 'src/shared/types/types';
 
 @Entity()
 export class CardEndOfMonthStatement extends BaseMFEntity {
-  @ManyToOne(() => Bank, (bank) => bank.cardEndOfMonthStatement, {
-    // cascade: ['insert', 'update', 'soft-remove'],
-    // orphanedRowAction: 'soft-delete',
-  })
-  bank: Bank;
+  @Column()
+  bankName: string;
+
+  @Column()
+  accountType: BankingAccountType;
 
   @Column()
   amount: number;

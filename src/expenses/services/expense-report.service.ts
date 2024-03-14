@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExpenseReport } from '../entities/expense-report.entity';
 import { IsNull, Repository } from 'typeorm';
@@ -9,12 +9,15 @@ import {
   UpdateExpenseReportInput,
 } from '../dtos/expense.input.dto';
 import { EntityNotFoundException } from 'src/shared/types/types';
+import { UserService } from 'src/user/user.service';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class ExpenseReportService {
   constructor(
     @InjectRepository(ExpenseReport)
     private expenseReportRepo: Repository<ExpenseReport>,
+    private userService: UserService,
   ) {}
 
   async create(
@@ -23,19 +26,30 @@ export class ExpenseReportService {
   ): Promise<void> {
     const { forMonth, forYear } = createExpenseReport;
 
+    const user = await this.userService.findOne(userId);
+
+    if (!user) {
+      throw new EntityNotFoundException(User.name, userId);
+    }
+
     const existingReport = await this.expenseReportRepo.findOneBy({
       forMonth,
       forYear,
       user: { id: userId },
+      deletedAt: IsNull(),
     });
 
     if (existingReport) {
-      throw new EntityNotFoundException(ExpenseReport.name, userId);
+      throw new HttpException(
+        `Report allready exists for month: ${forMonth} and year: ${forYear}`,
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     const entity = this.expenseReportRepo.create({
-      ...createExpenseReport,
-      user: { id: userId },
+      forMonth,
+      forYear,
+      user,
     });
 
     await this.expenseReportRepo.save(entity);
@@ -50,8 +64,8 @@ export class ExpenseReportService {
         rent: { deletedAt: IsNull() },
       },
       relations: {
-        cardEndOfMonthStatement: { bank: true },
-        utilities: { type: true },
+        cardEndOfMonthStatement: true,
+        utilities: true,
         rent: true,
       },
     });
@@ -73,21 +87,30 @@ export class ExpenseReportService {
         rent: { deletedAt: IsNull() },
       },
       relations: {
-        cardEndOfMonthStatement: { bank: true },
-        utilities: { type: true },
+        cardEndOfMonthStatement: true,
+        utilities: true,
         rent: true,
       },
     });
   }
 
-  async update(updateExpenseReport: UpdateExpenseReportInput) {
+  async update(updateExpenseReport: UpdateExpenseReportInput, userId: string) {
     const { reportId: id, ...report } = updateExpenseReport;
+    const current_report = await this.expenseReportRepo.findOneBy({
+      id,
+      user: { id: userId },
+      deletedAt: IsNull(),
+    });
 
-    await this.expenseReportRepo.update({ id }, report);
+    if (!current_report) {
+      throw new EntityNotFoundException(ExpenseReport.name, id);
+    }
+
+    await this.expenseReportRepo.update({ id, deletedAt: IsNull() }, report);
   }
 
-  async delete(deleteExpenseReport: DeleteExpenseReportInput) {
+  async delete(deleteExpenseReport: DeleteExpenseReportInput, userId: string) {
     const { reportId: id } = deleteExpenseReport;
-    this.expenseReportRepo.delete({ id });
+    this.expenseReportRepo.softRemove({ id, user: { id: userId } });
   }
 }

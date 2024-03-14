@@ -6,6 +6,8 @@ import {
   UpdateCardEndOfMonthStatementInput,
   DeleteCardEndOfMonthStatementInput,
 } from '../dtos/expense.input.dto';
+import { MFContext } from 'src/shared/types/types';
+import { RequestContext } from 'src/auth/types/auth.type';
 
 @Controller('expense/card-statement')
 @ApiTags('Card Statement')
@@ -17,8 +19,12 @@ export class CardStatementController {
   async create(
     @Body()
     createCardEndOfMonthStatementInput: CreateCardEndOfMonthStatementInput,
+    @MFContext() context: RequestContext,
   ): Promise<void> {
-    return await this.service.addStatement(createCardEndOfMonthStatementInput);
+    return await this.service.addStatement(
+      createCardEndOfMonthStatementInput,
+      context.userId,
+    );
   }
 
   @Put()
@@ -26,9 +32,11 @@ export class CardStatementController {
   async update(
     @Body()
     updateCardEndOfMonthStatementInput: UpdateCardEndOfMonthStatementInput,
+    @MFContext() context: RequestContext,
   ): Promise<void> {
     return await this.service.updateStatement(
       updateCardEndOfMonthStatementInput,
+      context.userId,
     );
   }
 
@@ -37,9 +45,11 @@ export class CardStatementController {
   async deleteCard(
     @Body()
     deleteCardEndOfMonthStatementInput: DeleteCardEndOfMonthStatementInput,
+    @MFContext() context: RequestContext,
   ): Promise<void> {
     return await this.service.deleteStatement(
       deleteCardEndOfMonthStatementInput,
+      context.userId,
     );
   }
 }

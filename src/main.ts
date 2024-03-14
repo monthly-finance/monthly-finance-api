@@ -12,6 +12,14 @@ async function bootstrap() {
     .addApiKey(
       {
         type: 'apiKey',
+        name: 'Bearer',
+        in: 'header',
+      },
+      'Bearer',
+    )
+    .addApiKey(
+      {
+        type: 'apiKey',
         name: 'userId',
         in: 'header',
       },

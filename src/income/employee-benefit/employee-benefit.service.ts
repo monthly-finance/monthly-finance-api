@@ -3,13 +3,15 @@ import { EmployeeBenefit } from '../entities/employee-benefit/employee-benefit.e
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExpenseReport } from 'src/expenses/entities/expense-report.entity';
 import { EntityNotFoundException } from 'src/shared/types/types';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import {
   CreateEmployeeBenefitInput,
   UpdateEmployeeBenefitInput,
   DeleteEmployeeBenefitInput,
 } from '../dtos/income.input.dto';
 import { IncomeReport } from '../entities/income-report.entity';
+import { UserService } from 'src/user/user.service';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class EmployeeBenefitService {
@@ -18,23 +20,36 @@ export class EmployeeBenefitService {
     private EmployeeBenefitRepo: Repository<EmployeeBenefit>,
     @InjectRepository(IncomeReport)
     private incomeReportRepo: Repository<IncomeReport>,
+    private userService: UserService,
   ) {}
 
   async addEmployeeBenefit(
     createEmployeeBenefit: CreateEmployeeBenefitInput,
+    userId: string,
   ): Promise<void> {
     const { reportId, ...employeeBenefit } = createEmployeeBenefit;
-    const report = await this.incomeReportRepo.findOneBy({ id: reportId });
+    const user = await this.userService.findOne(userId);
+
+    if (!user) {
+      throw new EntityNotFoundException(User.name, userId);
+    }
+
+    const report = await this.incomeReportRepo.findOneBy({
+      id: reportId,
+      user: { id: userId },
+      deletedAt: IsNull(),
+    });
 
     if (!report) {
       throw new EntityNotFoundException(ExpenseReport.name, reportId);
     }
 
-    const entity = await this.EmployeeBenefitRepo.create({
+    const entity = this.EmployeeBenefitRepo.create({
       incomeReport: report,
+      type: employeeBenefit.type,
       amount: employeeBenefit.amount,
       datePayed: employeeBenefit.datePayed,
-      employeeBenefitType: employeeBenefit.employeeBenefitType,
+      user,
     });
 
     await this.EmployeeBenefitRepo.save(entity);
@@ -42,10 +57,14 @@ export class EmployeeBenefitService {
 
   async updateEmployeeBenefit(
     updateEmployeeBenefit: UpdateEmployeeBenefitInput,
+    userId: string,
   ) {
     const { employeeBenefitId, ...employeeBenefit } = updateEmployeeBenefit;
+
     const current_employeeBenefit = await this.EmployeeBenefitRepo.findOneBy({
       id: employeeBenefitId,
+      user: { id: userId },
+      deletedAt: IsNull(),
     });
 
     if (!current_employeeBenefit) {
@@ -56,16 +75,20 @@ export class EmployeeBenefitService {
     }
 
     await this.EmployeeBenefitRepo.update(
-      { id: employeeBenefitId },
+      { id: employeeBenefitId, user: { id: userId }, deletedAt: IsNull() },
       employeeBenefit,
     );
   }
 
   async deleteEmployeeBenefit(
     deleteEmployeeBenefit: DeleteEmployeeBenefitInput,
+    userId: string,
   ) {
     const { employeeBenefitId } = deleteEmployeeBenefit;
 
-    await this.EmployeeBenefitRepo.softDelete({ id: employeeBenefitId });
+    await this.EmployeeBenefitRepo.softDelete({
+      id: employeeBenefitId,
+      user: { id: userId },
+    });
   }
 }

@@ -1,10 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ExpenseReportService } from './services/expense-report.service';
-import { ExpensesController } from './controllers/expenses.controller';
+import { ExpensesController } from './controllers/expense-report.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { CardEndOfMonthStatement } from './entities/banking/card-statement.entity';
-import { Bank } from './entities/banking/bank.entity';
-import { UtilityType } from './entities/utility/utility-type.entity';
 import { Utility } from './entities/utility/utility.entity';
 import { ExpenseReport } from './entities/expense-report.entity';
 import { User } from 'src/user/entities/user.entity';
@@ -34,8 +32,7 @@ import { RentService } from './services/rent.service';
   imports: [
     TypeOrmModule.forFeature([
       CardEndOfMonthStatement,
-      Bank,
-      UtilityType,
+
       Utility,
       ExpenseReport,
       User,

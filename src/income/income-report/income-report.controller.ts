@@ -18,6 +18,7 @@ import {
   UpdateIncomeReportInput,
 } from '../dtos/income.input.dto';
 import { IncomeReport } from '../entities/income-report.entity';
+import { MFContext } from 'src/shared/types/types';
 
 @Controller('income/income-report')
 @ApiTags('Income Report')
@@ -27,43 +28,45 @@ export class IncomeReportController {
   @Get()
   @ApiOperation({ summary: 'Find All Income Reports' })
   async findAllIncomeReport(
-    @Headers() headers: MFHeader,
+    @MFContext('userId') userId: string,
   ): Promise<IncomeReportDto[]> {
-    const res = await this.service.findAll(headers.userid);
+    const res = await this.service.findAll(userId);
     return res;
   }
 
   @Post()
   @ApiOperation({ summary: 'Create Income Report' })
   async createIncomeReport(
-    @Headers() headers: MFHeader,
+    @MFContext('userId') userId: string,
     @Body() createIncomeReportInput: CreateIncomeReportInput,
   ): Promise<void> {
-    return await this.service.create(headers.userid, createIncomeReportInput);
+    return await this.service.create(userId, createIncomeReportInput);
   }
 
   @Post('findOne')
   @ApiOperation({ summary: 'FindOne Income Report' })
   async findOneIncomeReport(
-    @Headers() headers: MFHeader,
+    @MFContext('userId') userId: string,
     @Body() findOneIncomeReportInput: FindOneIncomeReportInput,
   ): Promise<IncomeReport> {
-    return await this.service.findOne(headers.userid, findOneIncomeReportInput);
+    return await this.service.findOne(userId, findOneIncomeReportInput);
   }
 
   @Put()
   @ApiOperation({ summary: 'Update Income Report' })
   async updateIncomeReport(
     @Body() updateIncomeReportInput: UpdateIncomeReportInput,
+    @MFContext('userId') userId: string,
   ): Promise<void> {
-    return await this.service.update(updateIncomeReportInput);
+    return await this.service.update(userId, updateIncomeReportInput);
   }
 
   @Delete()
   @ApiOperation({ summary: 'Delete Income Report' })
   async deleteIncomeReport(
     @Body() deleteIncomeReportInput: DeleteIncomeReportInput,
+    @MFContext('userId') userId: string,
   ): Promise<void> {
-    return await this.service.delete(deleteIncomeReportInput);
+    return await this.service.delete(userId, deleteIncomeReportInput);
   }
 }

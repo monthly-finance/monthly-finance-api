@@ -6,6 +6,7 @@ import {
 } from '../dtos/income.input.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaycheckService } from './paycheck.service';
+import { MFContext } from 'src/shared/types/types';
 
 @Controller('income/paycheck')
 @ApiTags('Paycheck')
@@ -17,8 +18,9 @@ export class PaycheckController {
   async create(
     @Body()
     createPaycheckInput: CreatePaycheckInput,
+    @MFContext('userId') userId: string,
   ): Promise<void> {
-    return await this.service.addPaycheck(createPaycheckInput);
+    return await this.service.addPaycheck(createPaycheckInput, userId);
   }
 
   @Put()
@@ -26,8 +28,9 @@ export class PaycheckController {
   async update(
     @Body()
     updatePaycheckInput: UpdatePaycheckInput,
+    @MFContext('userId') userId: string,
   ): Promise<void> {
-    return await this.service.updatePaycheck(updatePaycheckInput);
+    return await this.service.updatePaycheck(updatePaycheckInput, userId);
   }
 
   @Delete()
@@ -35,7 +38,8 @@ export class PaycheckController {
   async delete(
     @Body()
     deletePaycheckInput: DeletePaycheckInput,
+    @MFContext('userId') userId: string,
   ): Promise<void> {
-    return await this.service.deletePaycheck(deletePaycheckInput);
+    return await this.service.deletePaycheck(deletePaycheckInput, userId);
   }
 }

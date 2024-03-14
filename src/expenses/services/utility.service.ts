@@ -1,7 +1,7 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExpenseReport } from '../entities/expense-report.entity';
-import { Repository } from 'typeorm';
+import { IsNull, Repository } from 'typeorm';
 import {
   CreateUtilityInput,
   DeleteUtilityInput,
@@ -9,6 +9,8 @@ import {
 } from '../dtos/expense.input.dto';
 import { Utility } from '../entities/utility/utility.entity';
 import { EntityNotFoundException } from 'src/shared/types/types';
+import { UserService } from 'src/user/user.service';
+import { User } from 'src/user/entities/user.entity';
 
 @Injectable()
 export class UtilityService {
@@ -17,38 +19,61 @@ export class UtilityService {
     private utilityRepo: Repository<Utility>,
     @InjectRepository(ExpenseReport)
     private expenseReportRepo: Repository<ExpenseReport>,
+    private userService: UserService,
   ) {}
 
-  async addUtility(createUtility: CreateUtilityInput): Promise<void> {
+  async addUtility(
+    createUtility: CreateUtilityInput,
+    userId: string,
+  ): Promise<void> {
     const { reportId, ...utility } = createUtility;
-    const report = await this.expenseReportRepo.findOneBy({ id: reportId });
+    const user = await this.userService.findOne(userId);
+
+    if (!user) {
+      throw new EntityNotFoundException(User.name, userId);
+    }
+
+    const report = await this.expenseReportRepo.findOneBy({
+      id: reportId,
+      user: { id: userId },
+      deletedAt: IsNull(),
+    });
 
     if (!report) {
       throw new EntityNotFoundException(ExpenseReport.name, reportId);
     }
 
-    const entity = await this.utilityRepo.create({
+    const entity = this.utilityRepo.create({
       expenseReport: report,
-      ...utility,
+      user,
+      amount: utility.amount,
+      type: utility.type,
     });
 
     await this.utilityRepo.save(entity);
   }
 
-  async updateUtility(updateUtility: UpdateUtilityInput) {
+  async updateUtility(updateUtility: UpdateUtilityInput, userId: string) {
     const { utilityId, ...utility } = updateUtility;
-    const current_utility = await this.utilityRepo.findOneBy({ id: utilityId });
+    const current_utility = await this.utilityRepo.findOneBy({
+      id: utilityId,
+      user: { id: userId },
+      deletedAt: IsNull(),
+    });
 
     if (!current_utility) {
-      throw new ConflictException(`Utilty with ${utilityId} does not exists`);
+      throw new EntityNotFoundException(Utility.name, utilityId);
     }
 
-    await this.utilityRepo.update({ id: utilityId }, utility);
+    await this.utilityRepo.update(
+      { id: utilityId, user: { id: userId } },
+      utility,
+    );
   }
 
-  async deleteUtility(deleteUtility: DeleteUtilityInput) {
+  async deleteUtility(deleteUtility: DeleteUtilityInput, userId: string) {
     const { utilityId } = deleteUtility;
 
-    await this.utilityRepo.softDelete({ id: utilityId });
+    await this.utilityRepo.softDelete({ id: utilityId, user: { id: userId } });
   }
 }
