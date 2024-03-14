@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Month, OtherIncomeType } from 'src/shared/types/types';
 
-export class EmployeeBenefitTypeDto {
-  @ApiProperty({ example: '401k' })
-  name: string;
-}
+// export class EmployeeBenefitTypeDto {
+//   @ApiProperty({ example: '401k' })
+//   name: string;
+// }
 
 export class EmployeeBenefitDto {
   @ApiProperty({ example: '2024-02-10T10:07:58.767Z' })
@@ -13,8 +13,8 @@ export class EmployeeBenefitDto {
   @ApiProperty({ example: 20 })
   amount: number;
 
-  @ApiProperty({ type: EmployeeBenefitTypeDto })
-  employeeBenefitType: EmployeeBenefitTypeDto;
+  @ApiProperty({ example: '401k' })
+  type: string;
 }
 
 export class OtherIncomeDto {

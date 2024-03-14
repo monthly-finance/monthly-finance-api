@@ -35,7 +35,7 @@ export class UtilityService {
 
     const report = await this.expenseReportRepo.findOneBy({
       id: reportId,
-      user,
+      user: { id: userId },
       deletedAt: IsNull(),
     });
 

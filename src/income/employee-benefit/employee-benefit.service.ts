@@ -36,7 +36,7 @@ export class EmployeeBenefitService {
 
     const report = await this.incomeReportRepo.findOneBy({
       id: reportId,
-      user,
+      user: { id: userId },
       deletedAt: IsNull(),
     });
 
@@ -46,9 +46,9 @@ export class EmployeeBenefitService {
 
     const entity = this.EmployeeBenefitRepo.create({
       incomeReport: report,
+      type: employeeBenefit.type,
       amount: employeeBenefit.amount,
       datePayed: employeeBenefit.datePayed,
-      employeeBenefitType: employeeBenefit.employeeBenefitType,
       user,
     });
 

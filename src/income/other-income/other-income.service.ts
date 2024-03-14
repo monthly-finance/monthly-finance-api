@@ -37,7 +37,7 @@ export class OtherIncomeService {
 
     const report = await this.incomeReportRepo.findOneBy({
       id: reportId,
-      user,
+      user: { id: userId },
       deletedAt: IsNull(),
     });
 
@@ -45,7 +45,7 @@ export class OtherIncomeService {
       throw new EntityNotFoundException(ExpenseReport.name, reportId);
     }
 
-    const entity = await this.OtherIncomeRepo.create({
+    const entity = this.OtherIncomeRepo.create({
       incomeReport: report,
       amount: otherIncome.amount,
       datePayed: otherIncome.datePayed,

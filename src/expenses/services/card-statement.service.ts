@@ -48,11 +48,11 @@ export class CardStatementService {
       throw new EntityNotFoundException(ExpenseReport.name, reportId);
     }
 
-    const bank = await this.bankRepo.upsert();
-
     const entity = this.statementRepo.create({
+      expenseReport: report,
       amount: statement.amount,
-      bank: statement.bank,
+      bankName: statement.bankName,
+      accountType: statement.accountType,
       isPayed: statement.isPayed,
       user,
     });

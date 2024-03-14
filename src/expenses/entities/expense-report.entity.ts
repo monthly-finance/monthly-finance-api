@@ -6,6 +6,7 @@ import {
   Unique,
   CreateDateColumn,
   UpdateDateColumn,
+  Index,
 } from 'typeorm';
 import { Utility } from './utility/utility.entity';
 import { BaseMFEntity } from 'src/shared/base-mf-entity.entity';
@@ -14,7 +15,17 @@ import { Month } from 'src/shared/types/types';
 import { Rent } from './rent.entity';
 
 @Entity()
-@Unique('ExpenseReport_MonthAndYear', ['forMonth', 'forYear', 'user'])
+// @Unique('ExpenseReport_MonthAndYear', [
+//   'forMonth',
+//   'forYear',
+//   'user',
+//   'deletedAt',
+// ])
+@Index(
+  'ExpenseReport_MonthAndYear_Null_deletedAt',
+  ['forMonth', 'forYear', 'user'],
+  { unique: true, where: '("deletedAt" IS NULL)' },
+)
 export class ExpenseReport extends BaseMFEntity {
   @Column()
   forMonth: Month;

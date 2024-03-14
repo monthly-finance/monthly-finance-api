@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExpenseReport } from '../entities/expense-report.entity';
 import { IsNull, Repository } from 'typeorm';
@@ -35,12 +35,15 @@ export class ExpenseReportService {
     const existingReport = await this.expenseReportRepo.findOneBy({
       forMonth,
       forYear,
-      user,
+      user: { id: userId },
       deletedAt: IsNull(),
     });
 
     if (existingReport) {
-      throw new EntityNotFoundException(ExpenseReport.name, userId);
+      throw new HttpException(
+        `Report allready exists for month: ${forMonth} and year: ${forYear}`,
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     const entity = this.expenseReportRepo.create({
@@ -61,8 +64,8 @@ export class ExpenseReportService {
         rent: { deletedAt: IsNull() },
       },
       relations: {
-        cardEndOfMonthStatement: { bank: true },
-        utilities: { type: true },
+        cardEndOfMonthStatement: true,
+        utilities: true,
         rent: true,
       },
     });
@@ -84,8 +87,8 @@ export class ExpenseReportService {
         rent: { deletedAt: IsNull() },
       },
       relations: {
-        cardEndOfMonthStatement: { bank: true },
-        utilities: { type: true },
+        cardEndOfMonthStatement: true,
+        utilities: true,
         rent: true,
       },
     });
@@ -108,6 +111,6 @@ export class ExpenseReportService {
 
   async delete(deleteExpenseReport: DeleteExpenseReportInput, userId: string) {
     const { reportId: id } = deleteExpenseReport;
-    this.expenseReportRepo.delete({ id, user: { id: userId } });
+    this.expenseReportRepo.softRemove({ id, user: { id: userId } });
   }
 }

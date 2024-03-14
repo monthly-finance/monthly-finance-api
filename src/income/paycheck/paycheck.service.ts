@@ -38,7 +38,7 @@ export class PaycheckService {
 
     const report = await this.incomeReportRepo.findOneBy({
       id: reportId,
-      user,
+      user: { id: userId },
       deletedAt: IsNull(),
     });
 

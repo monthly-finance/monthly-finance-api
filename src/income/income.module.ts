@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EmployeeBenefitType } from './entities/employee-benefit/employee-benefit-type.entity';
 import { EmployeeBenefit } from './entities/employee-benefit/employee-benefit.entity';
 import { IncomeReport } from './entities/income-report.entity';
 import { OtherIncome } from './entities/other-income.entity';
@@ -31,7 +30,6 @@ import { User } from 'src/user/entities/user.entity';
   ],
   imports: [
     TypeOrmModule.forFeature([
-      EmployeeBenefitType,
       EmployeeBenefit,
       IncomeReport,
       OtherIncome,

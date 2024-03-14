@@ -22,7 +22,7 @@ export class AuthService {
       password,
     });
 
-    if (password !== retrievedUser.password) {
+    if (password !== retrievedUser?.password || !retrievedUser) {
       throw new UnauthorizedException();
     }
 
@@ -36,5 +36,11 @@ export class AuthService {
     return {
       accessToken: await this.jwtService.signAsync(payload),
     };
+  }
+
+  async getUser(userId: string) {
+    const user = await this.userRepo.findOneBy({ id: userId });
+    delete user.password;
+    return user;
   }
 }

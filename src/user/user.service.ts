@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -13,7 +18,7 @@ import {
   FindOneUserOutputDto,
   UpdateUserOutputDto,
 } from './dto/output.user.dto';
-import { Public } from 'src/shared/types/types';
+import { EntityNotFoundException, Public } from 'src/shared/types/types';
 
 @Injectable()
 export class UserService {
@@ -25,14 +30,30 @@ export class UserService {
   async create(
     createUserDto: CreateUserInputDto,
   ): Promise<CreateUserOutputDto> {
-    const entity = await this.userRepo.create({ ...createUserDto });
-    this.userRepo.save(entity);
+    const entity = this.userRepo.create({ ...createUserDto });
 
-    return await this.userRepo.findOneBy({ username: createUserDto.username });
+    try {
+      await this.userRepo.save(entity);
+    } catch (e) {
+      throw new HttpException(
+        'Could not create user. username or email may already be in use',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    const user = await this.userRepo.findOneBy({
+      username: createUserDto.username,
+    });
+    delete user.password;
+    return user;
   }
 
   async findOne(id: string): Promise<FindOneUserOutputDto> {
     const user = await this.userRepo.findOneBy({ id });
+    if (!user) {
+      throw new EntityNotFoundException(User.name, id);
+    }
+
     return user;
   }
 
@@ -41,7 +62,14 @@ export class UserService {
     updateUserDto: UpdateUserInputDto,
   ): Promise<UpdateUserOutputDto> {
     await this.userRepo.update(id, updateUserDto);
-    return await this.userRepo.findOneBy({ id });
+    const user = await this.userRepo.findOneBy({ id });
+
+    if (!user) {
+      throw new EntityNotFoundException(User.name, id);
+    }
+
+    delete user.password;
+    return user;
   }
 
   async delete(id: string): Promise<void> {
@@ -55,9 +83,9 @@ export class UserService {
     const user = await this.userRepo.findOneBy({ username, password });
 
     if (!user) {
-      throw new BadRequestException({}, 'Login failed to find user');
+      throw new EntityNotFoundException(User.name, username);
     }
-
+    delete user.password;
     return user;
   }
 }

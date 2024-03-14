@@ -34,14 +34,14 @@ export class RentService {
     const report = await this.expenseReportRepo.findOneBy({
       id: reportId,
       deletedAt: IsNull(),
-      user,
+      user: { id: userId },
     });
 
     if (!report) {
       throw new EntityNotFoundException(ExpenseReport.name, reportId);
     }
 
-    const entity = await this.rentRepo.create({
+    const entity = this.rentRepo.create({
       expenseReport: report,
       rentAmount: rent.amount,
       rentor: rent.rentor,

@@ -2,17 +2,17 @@ import { BankingAccountType, Month } from 'src/shared/types/types';
 import { ApiProperty } from '@nestjs/swagger';
 
 // TODO: need CRUD
-export class UtilityTypeDto {
-  @ApiProperty({ example: 'water' })
-  name: string;
-}
+// export class UtilityTypeDto {
+//   @ApiProperty({ example: 'water' })
+//   name: string;
+// }
 
 export class UtilityDto {
   @ApiProperty({ example: 20 })
   amount: number;
 
-  @ApiProperty({ type: UtilityTypeDto })
-  type: UtilityTypeDto;
+  @ApiProperty({ example: 'water' })
+  type: string;
 }
 
 export class RentDto {
@@ -24,20 +24,23 @@ export class RentDto {
 }
 
 // TODO: need CRUD
-export class BankDto {
+// export class BankDto {
+//   @ApiProperty({ example: 'Truist' })
+//   bankName: string;
+
+//   @ApiProperty({ enum: BankingAccountType })
+//   accountType: BankingAccountType;
+
+//   @ApiProperty({ example: true })
+//   isActive: boolean;
+// }
+
+export class CardEndOfMonthStatementDto {
   @ApiProperty({ example: 'Truist' })
   bankName: string;
 
   @ApiProperty({ enum: BankingAccountType })
   accountType: BankingAccountType;
-
-  @ApiProperty({ example: true })
-  isActive: boolean;
-}
-
-export class CardEndOfMonthStatementDto {
-  @ApiProperty({ type: BankDto })
-  bank: BankDto;
 
   @ApiProperty({ example: 1500 })
   amount: number;

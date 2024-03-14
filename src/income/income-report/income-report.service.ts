@@ -1,4 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import {
+  HttpCode,
+  HttpException,
+  HttpStatus,
+  Injectable,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
 import { IncomeReport } from '../entities/income-report.entity';
@@ -31,6 +36,20 @@ export class IncomeReportService {
       throw new EntityNotFoundException(User.name, userId);
     }
 
+    const existingReport = await this.incomeReportRepo.findOneBy({
+      forMonth,
+      forYear,
+      user: { id: userId },
+      deletedAt: IsNull(),
+    });
+
+    if (existingReport) {
+      throw new HttpException(
+        `Report allready exists for month: ${forMonth} and year: ${forYear}`,
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     const entity = this.incomeReportRepo.create({
       user,
       forMonth,
@@ -48,6 +67,7 @@ export class IncomeReportService {
 
     return await this.incomeReportRepo.find({
       where: {
+        deletedAt: IsNull(),
         user: { id: userId },
         paycheck: { deletedAt: IsNull() },
         otherIncome: { deletedAt: IsNull() },
@@ -56,7 +76,7 @@ export class IncomeReportService {
       relations: {
         paycheck: true,
         otherIncome: true,
-        employeeBenefit: { employeeBenefitType: true },
+        employeeBenefit: true,
       },
     });
   }
@@ -86,7 +106,7 @@ export class IncomeReportService {
       relations: {
         paycheck: true,
         otherIncome: true,
-        employeeBenefit: { employeeBenefitType: true },
+        employeeBenefit: true,
       },
     });
   }
@@ -121,6 +141,6 @@ export class IncomeReportService {
       deletedAt: IsNull(),
     });
 
-    await this.incomeReportRepo.delete(report);
+    await this.incomeReportRepo.softRemove(report);
   }
 }
