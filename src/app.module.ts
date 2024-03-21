@@ -14,6 +14,12 @@ const devEnv = (config: ConfigService): TypeOrmModuleOptions => {
   return {
     type: 'postgres',
     host: `/cloudsql/${config.get('POSTGRES_INSTANCE_CONNECTION_NAME')}`,
+    port: 5432,
+    // extra: {
+    //   socketPath: `/cloudsql/${config.get(
+    //     'POSTGRES_INSTANCE_CONNECTION_NAME',
+    //   )}`,
+    // },
     username: config.get('POSTGRES_USER'),
     password: config.get('POSTGRES_PASSWORD'),
     database: config.get('POSTGRES_DATABASE'),
@@ -27,10 +33,10 @@ const devEnv = (config: ConfigService): TypeOrmModuleOptions => {
 const localEnv = (config: ConfigService): TypeOrmModuleOptions => {
   return {
     type: 'postgres',
-    host: 'localhost',
+    host: config.get('LOCAL_POSTGRES_HOST'),
     port: config.get('POSTGRES_PORT'),
-    username: config.get('POSTGRES_USER'),
-    password: config.get('POSTGRES_PASSWORD'),
+    username: config.get('LOCAL_POSTGRES_USER'),
+    password: config.get('LOCAL_POSTGRES_PASSWORD'),
     database: config.get('POSTGRES_DATABASE'),
     entities: ['dist/**/*.entity.js'],
     synchronize: true,
@@ -51,9 +57,7 @@ const localEnv = (config: ConfigService): TypeOrmModuleOptions => {
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (config: ConfigService) => {
-        const dbConfig =
-          config.get('MODE') == 'DEV' ? devEnv(config) : localEnv(config);
-        return dbConfig;
+        return config.get('MODE') == 'DEV' ? devEnv(config) : localEnv(config);
       },
     }),
     ExpensesModule,

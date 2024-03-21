@@ -4,7 +4,7 @@ services:
   postgres:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: ./db/Dockerfile
     ports:
       - "5432:5432"
     volumes:
@@ -13,6 +13,23 @@ services:
       POSTGRES_DB: monthly_finance
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
+
+  nestjs_app:
+    build: 
+      dockerfile: ./Dockerfile
+    container_name: nestjs_app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    environment:
+      MODE: local
+      LOCAL_POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+
+      # DB_USERNAME: your_username
+      # DB_PASSWORD: your_password
+      # DB_DATABASE: your_database_name
 
 volumes:
   monthly_finance_data:
