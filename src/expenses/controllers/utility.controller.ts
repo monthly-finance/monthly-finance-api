@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Post, Put } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   CreateUtilityInput,
   UpdateUtilityInput,
@@ -10,6 +10,7 @@ import { RequestContext } from 'src/auth/types/auth.type';
 import { MFContext } from 'src/shared/types/types';
 
 @Controller('expense/utility')
+@ApiBearerAuth()
 @ApiTags('Utility')
 export class UtilityController {
   constructor(private service: UtilityService) {}

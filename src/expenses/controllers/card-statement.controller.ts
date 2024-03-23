@@ -1,6 +1,6 @@
 import { Body, Controller, Delete, Post, Put } from '@nestjs/common';
 import { CardStatementService } from '../services/card-statement.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   CreateCardEndOfMonthStatementInput,
   UpdateCardEndOfMonthStatementInput,
@@ -10,6 +10,7 @@ import { MFContext } from 'src/shared/types/types';
 import { RequestContext } from 'src/auth/types/auth.type';
 
 @Controller('expense/card-statement')
+@ApiBearerAuth()
 @ApiTags('Card Statement')
 export class CardStatementController {
   constructor(private service: CardStatementService) {}

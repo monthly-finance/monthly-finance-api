@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Post,
-  Body,
-  Headers,
-  Get,
-  Put,
-  Delete,
-  Request,
-} from '@nestjs/common';
+import { Controller, Post, Body, Get, Put, Delete } from '@nestjs/common';
 import { ExpenseReportService } from '../services/expense-report.service';
 import {
   CreateExpenseReportInput,
@@ -15,13 +6,13 @@ import {
   FindOneExpenseReportInput,
   UpdateExpenseReportInput,
 } from '../dtos/expense.input.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { MFHeader } from 'src/shared/dto/common.dto';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ExpenseReport } from '../entities/expense-report.entity';
 import { MFContext } from 'src/shared/types/types';
 import { RequestContext } from 'src/auth/types/auth.type';
 
 @Controller('expense/expense-report')
+@ApiBearerAuth()
 @ApiTags('Expense Report')
 export class ExpensesController {
   constructor(private service: ExpenseReportService) {}

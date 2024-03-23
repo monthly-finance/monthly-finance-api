@@ -1,15 +1,6 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Headers,
-  Delete,
-  Put,
-} from '@nestjs/common';
+import { Body, Controller, Get, Post, Delete, Put } from '@nestjs/common';
 import { IncomeReportService } from './income-report.service';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { MFHeader } from 'src/shared/dto/common.dto';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { IncomeReportDto } from '../dtos/income.common.dto';
 import {
   CreateIncomeReportInput,
@@ -21,6 +12,7 @@ import { IncomeReport } from '../entities/income-report.entity';
 import { MFContext } from 'src/shared/types/types';
 
 @Controller('income/income-report')
+@ApiBearerAuth()
 @ApiTags('Income Report')
 export class IncomeReportController {
   constructor(private service: IncomeReportService) {}

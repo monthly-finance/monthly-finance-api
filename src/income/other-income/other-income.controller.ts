@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Post, Put } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   CreateOtherIncomeInput,
   UpdateOtherIncomeInput,
@@ -7,9 +7,9 @@ import {
 } from '../dtos/income.input.dto';
 import { OtherIncomeService } from './other-income.service';
 import { MFContext } from 'src/shared/types/types';
-import { userInfo } from 'os';
 
 @Controller('income/other-income')
+@ApiBearerAuth()
 @ApiTags('Other Income')
 export class OtherIncomeController {
   constructor(private service: OtherIncomeService) {}

@@ -4,11 +4,12 @@ import {
   UpdatePaycheckInput,
   DeletePaycheckInput,
 } from '../dtos/income.input.dto';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaycheckService } from './paycheck.service';
 import { MFContext } from 'src/shared/types/types';
 
 @Controller('income/paycheck')
+@ApiBearerAuth()
 @ApiTags('Paycheck')
 export class PaycheckController {
   constructor(private service: PaycheckService) {}
