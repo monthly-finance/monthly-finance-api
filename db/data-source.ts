@@ -3,35 +3,22 @@ import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { DataSource, DataSourceOptions } from 'typeorm';
 
 const getDatabaseOptions = (): TypeOrmModuleOptions & DataSourceOptions => {
-  if (process.env.MODE == 'DEV') {
-    return {
-      type: 'postgres',
-      host: `/cloudsql/${process.env.POSTGRES_INSTANCE_CONNECTION_NAME}`,
-      port: 5432,
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DATABASE,
-      entities: ['dist/**/*.entity.js'],
-      synchronize: true,
-      migrations: ['dist/db/migrations/*.js'], // Path to your migrations folder
-      logging: true,
-      autoLoadEntities: true,
-    };
-  } else {
-    return {
-      type: 'postgres',
-      host: process.env.LOCAL_POSTGRES_HOST,
-      port: +process.env.POSTGRES_PORT,
-      username: process.env.LOCAL_POSTGRES_USER,
-      password: `${process.env.LOCAL_POSTGRES_PASSWORD}`,
-      database: process.env.POSTGRES_DATABASE,
-      entities: ['dist/**/*.entity.js'],
-      synchronize: true,
-      migrations: ['dist/db/migrations/*.js'], // Path to your migrations folder
-      logging: true,
-      autoLoadEntities: true,
-    };
-  }
+  return {
+    type: 'postgres',
+    host:
+      process.env.MODE == 'DEV'
+        ? `/cloudsql/${process.env.POSTGRES_INSTANCE_CONNECTION_NAME}`
+        : process.env.POSTGRES_HOST,
+    port: 5432,
+    username: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+    database: process.env.POSTGRES_DATABASE,
+    entities: ['dist/**/*.entity.js'],
+    synchronize: true,
+    migrations: ['dist/db/migrations/*.js'], // Path to your migrations folder
+    logging: true,
+    autoLoadEntities: true,
+  };
 };
 
 export const databaseConfig = registerAs('database', getDatabaseOptions);
