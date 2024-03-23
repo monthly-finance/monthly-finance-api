@@ -9,14 +9,15 @@ async function bootstrap() {
     .setDescription('Keep track of your monthy finances.')
     .setVersion('1.0')
     // .addTag('your-tag')
-    .addApiKey(
-      {
-        type: 'apiKey',
-        name: 'Bearer',
-        in: 'header',
-      },
-      'Bearer',
-    )
+    // .addApiKey(
+    //   {
+    //     type: 'apiKey',
+    //     name: 'Bearer',
+    //     in: 'header',
+    //   },
+    //   'Bearer',
+    // )
+    .addBearerAuth()
     .addApiKey(
       {
         type: 'apiKey',

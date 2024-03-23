@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -18,7 +13,7 @@ import {
   FindOneUserOutputDto,
   UpdateUserOutputDto,
 } from './dto/output.user.dto';
-import { EntityNotFoundException, Public } from 'src/shared/types/types';
+import { EntityNotFoundException } from 'src/shared/types/types';
 
 @Injectable()
 export class UserService {

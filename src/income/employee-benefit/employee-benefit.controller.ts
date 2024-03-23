@@ -1,5 +1,5 @@
 import { Body, Controller, Delete, Post, Put } from '@nestjs/common';
-import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   CreateEmployeeBenefitInput,
   UpdateEmployeeBenefitInput,
@@ -10,6 +10,7 @@ import { MFContext } from 'src/shared/types/types';
 import { EmployeeBenefitService } from './employee-benefit.service';
 
 @Controller('income/employee-benefit')
+@ApiBearerAuth()
 @ApiTags('Employee Benefit')
 export class EmployeeBenefitController {
   constructor(private service: EmployeeBenefitService) {}
