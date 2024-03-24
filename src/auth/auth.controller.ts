@@ -1,9 +1,19 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  UseGuards,
+  HttpStatus,
+  Req,
+  Res,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginAuthInputDto } from './dto/auth.input.dto';
 import { LoginAuthOutputDto } from './dto/auth.output.dto';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MFContext, Public } from 'src/shared/types/types';
+import { GoogleOauthGuard } from './guards/google-oauth.guard';
 
 @Controller('auth')
 @ApiBearerAuth()
@@ -21,6 +31,19 @@ export class AuthController {
   @Get('user')
   @ApiOperation({ summary: 'Get User Info from Access Token' })
   getUser(@MFContext('userId') userId: string): Promise<any> {
-    return this.authService.getUser(userId);
+    return this.authService.getUserById(userId);
+  }
+
+  @Get('google')
+  @UseGuards(GoogleOauthGuard)
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
+  async auth() {}
+
+  @Get('google/callback')
+  @UseGuards(GoogleOauthGuard)
+  async googleAuthCallback(@Req() req) {
+    const token = await this.authService.signInByOauthUserName(req.user);
+
+    return { access_token: token };
   }
 }

@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Put, Delete } from '@nestjs/common';
+import { Controller, Post, Body, Get, Put, Delete, Req } from '@nestjs/common';
 import { ExpenseReportService } from '../services/expense-report.service';
 import {
   CreateExpenseReportInput,
@@ -26,6 +26,7 @@ export class ExpensesController {
   @ApiOperation({ summary: 'Find All Expense Reports' })
   async findAllExpenseReport(
     @MFContext() context: RequestContext,
+    @Req() req,
   ): Promise<ExpenseReport[]> {
     const res = await this.service.findAll(context.userId);
     return res;
