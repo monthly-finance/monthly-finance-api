@@ -4,9 +4,11 @@ import {
   ExceptionFilter,
   HttpException,
   HttpStatus,
+  InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { HttpAdapterHost } from '@nestjs/core';
+import { Request, Response, response } from 'express';
 import {
   QueryFailedError,
   EntityNotFoundError,
@@ -15,47 +17,41 @@ import {
 
 @Catch()
 export class GlobalExceptionFilter implements ExceptionFilter {
+  constructor(protected readonly httpAdapterHost: HttpAdapterHost) {}
+
   catch(exception: unknown, host: ArgumentsHost) {
+    const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
-    const response = ctx.getResponse<Response>();
+
     const request = ctx.getRequest<Request>();
-    let message = (exception as any).message.message;
-    let code = 'HttpException';
+    const error = (exception as any).message.message;
+    const code = 'HttpException';
 
     Logger.error(
-      message,
+      error,
       (exception as any).stack,
       `${request.method} ${request.url}`,
+      `--------------------------------------------------
+      body: ${JSON.stringify(request.headers, null, 2)}
+      headers: ${JSON.stringify(request.body, null, 2)}
+      ------------------------------------------------------`,
     );
 
-    let status = HttpStatus.INTERNAL_SERVER_ERROR;
-
-    switch (exception.constructor) {
-      case HttpException:
-        status = (exception as HttpException).getStatus();
-        break;
-      case QueryFailedError: // this is a TypeOrm error
-        status = HttpStatus.UNPROCESSABLE_ENTITY;
-        message = (exception as QueryFailedError).message;
-        code = (exception as any).code;
-        break;
-      case EntityNotFoundError: // this is another TypeOrm error
-        status = HttpStatus.UNPROCESSABLE_ENTITY;
-        message = (exception as EntityNotFoundError).message;
-        code = (exception as any).code;
-        break;
-      case CannotCreateEntityIdMapError: // and another
-        status = HttpStatus.UNPROCESSABLE_ENTITY;
-        message = (exception as CannotCreateEntityIdMapError).message;
-        code = (exception as any).code;
-        break;
-      default:
-        status = HttpStatus.INTERNAL_SERVER_ERROR;
-    }
-
-    response
-      .status(status)
-      .json(GlobalResponseError(status, message, code, request));
+    const responseBody =
+      exception instanceof HttpException
+        ? {
+            statusCode: exception.getStatus(),
+            response: exception.getResponse(),
+            message: exception.message,
+            name: exception.name,
+          }
+        : {
+            statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+            response: null,
+            message: exception,
+            name: InternalServerErrorException.name,
+          };
+    httpAdapter.reply(ctx.getResponse(), responseBody, responseBody.statusCode);
   }
 }
 

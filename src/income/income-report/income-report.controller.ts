@@ -1,6 +1,11 @@
 import { Body, Controller, Get, Post, Delete, Put } from '@nestjs/common';
 import { IncomeReportService } from './income-report.service';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiExcludeEndpoint,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { IncomeReportDto } from '../dtos/income.common.dto';
 import {
   CreateIncomeReportInput,
@@ -54,7 +59,8 @@ export class IncomeReportController {
   }
 
   @Delete()
-  @ApiOperation({ summary: 'Delete Income Report' })
+  // @ApiOperation({ summary: 'Delete Income Report' })
+  @ApiExcludeEndpoint()
   async deleteIncomeReport(
     @Body() deleteIncomeReportInput: DeleteIncomeReportInput,
     @MFContext('userId') userId: string,

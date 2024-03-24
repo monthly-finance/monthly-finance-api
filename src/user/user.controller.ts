@@ -10,7 +10,12 @@ import {
 import { UserService } from './user.service';
 import { CreateUserInputDto, UpdateUserInputDto } from './dto/input.user.dto';
 
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiExcludeEndpoint,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Public } from 'src/shared/types/types';
 
 @Controller('user')
@@ -27,13 +32,15 @@ export class UserController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get User By Id' })
+  // @ApiOperation({ summary: 'Get User By Id' })
+  @ApiExcludeEndpoint()
   async findOne(@Param('id') id: string) {
     return await this.service.findOne(id);
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update User By Id' })
+  // @ApiOperation({ summary: 'Update User By Id' })
+  @ApiExcludeEndpoint()
   async update(
     @Param('id') id: string,
     @Body() updateUserDto: UpdateUserInputDto,
@@ -42,7 +49,8 @@ export class UserController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete User By id' })
+  // @ApiOperation({ summary: 'Delete User By id' })
+  @ApiExcludeEndpoint()
   async remove(@Param('id') id: string) {
     return await this.service.delete(id);
   }
