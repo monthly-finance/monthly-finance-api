@@ -16,7 +16,7 @@ const getDatabaseOptions = (): TypeOrmModuleOptions & DataSourceOptions => {
     entities: ['dist/**/*.entity.js'],
     synchronize: true,
     migrations: ['dist/db/migrations/*.js'], // Path to your migrations folder
-    logging: true,
+    // logging: true,
     autoLoadEntities: true,
   };
 };

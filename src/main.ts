@@ -8,24 +8,7 @@ async function bootstrap() {
     .setTitle('Monthly Finance')
     .setDescription('Keep track of your monthy finances.')
     .setVersion('1.0')
-    // .addTag('your-tag')
-    // .addApiKey(
-    //   {
-    //     type: 'apiKey',
-    //     name: 'Bearer',
-    //     in: 'header',
-    //   },
-    //   'Bearer',
-    // )
     .addBearerAuth()
-    .addApiKey(
-      {
-        type: 'apiKey',
-        name: 'userId',
-        in: 'header',
-      },
-      'userId',
-    )
     .build();
 
   const document = SwaggerModule.createDocument(app, options);

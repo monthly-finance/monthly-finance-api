@@ -6,7 +6,12 @@ import {
   FindOneExpenseReportInput,
   UpdateExpenseReportInput,
 } from '../dtos/expense.input.dto';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiExcludeEndpoint,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { ExpenseReport } from '../entities/expense-report.entity';
 import { MFContext } from 'src/shared/types/types';
 import { RequestContext } from 'src/auth/types/auth.type';
@@ -58,7 +63,8 @@ export class ExpensesController {
   }
 
   @Delete()
-  @ApiOperation({ summary: 'Delete Expense Report' })
+  // @ApiOperation({ summary: 'Delete Expense Report' })
+  @ApiExcludeEndpoint()
   async deleteExpenseReport(
     @Body() deleteExpenseReportInput: DeleteExpenseReportInput,
     @MFContext() context: RequestContext,
