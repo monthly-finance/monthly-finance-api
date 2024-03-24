@@ -32,8 +32,8 @@ export class GlobalExceptionFilter implements ExceptionFilter {
       (exception as any).stack,
       `${request.method} ${request.url}`,
       `--------------------------------------------------
-      body: ${request.headers}
-      headers: ${request.body}
+      body: ${JSON.stringify(request.headers, null, 2)}
+      headers: ${JSON.stringify(request.body, null, 2)}
       ------------------------------------------------------`,
     );
 
