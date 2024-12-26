@@ -11,13 +11,19 @@ import {
 import { EntityNotFoundException } from 'src/shared/types/types';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
+import { RentService } from './rent.service';
+import { UtilityService } from './utility.service';
+import { CardStatementService } from './card-statement.service';
 
 @Injectable()
 export class ExpenseReportService {
   constructor(
     @InjectRepository(ExpenseReport)
     private expenseReportRepo: Repository<ExpenseReport>,
-    private userService: UserService,
+    private readonly userService: UserService,
+    private readonly rentService: RentService,
+    private readonly utilityservice: UtilityService,
+    private readonly cardStatementService: CardStatementService,
   ) {}
 
   async create(
@@ -95,18 +101,27 @@ export class ExpenseReportService {
   }
 
   async update(updateExpenseReport: UpdateExpenseReportInput, userId: string) {
-    const { reportId: id, ...report } = updateExpenseReport;
-    const current_report = await this.expenseReportRepo.findOneBy({
+    const { id, utilities, cardEndOfMonthStatement, rent, ...report } =
+      updateExpenseReport;
+    const currentReport = await this.expenseReportRepo.findOneBy({
       id,
       user: { id: userId },
       deletedAt: IsNull(),
     });
 
-    if (!current_report) {
+    if (!currentReport) {
       throw new EntityNotFoundException(ExpenseReport.name, id);
     }
 
     await this.expenseReportRepo.update({ id, deletedAt: IsNull() }, report);
+
+    if (utilities) await this.utilityservice.bulkUpdate(utilities, userId);
+    if (cardEndOfMonthStatement)
+      await this.cardStatementService.bulkUpdate(
+        cardEndOfMonthStatement,
+        userId,
+      );
+    if (rent) await this.rentService.bulkUpdate(rent, userId);
   }
 
   async delete(deleteExpenseReport: DeleteExpenseReportInput, userId: string) {

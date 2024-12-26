@@ -133,7 +133,10 @@ export class IncomeReportService {
     if (!currentReport)
       throw new EntityNotFoundException(IncomeReport.name, id);
 
-    await this.incomeReportRepo.update({ id, user: { id: userId } }, report);
+    await this.incomeReportRepo.update(
+      { id, user: { id: userId }, deletedAt: IsNull() },
+      report,
+    );
 
     if (employeeBenefit)
       await this.employeeBenefitService.bulkUpdate(employeeBenefit, userId);

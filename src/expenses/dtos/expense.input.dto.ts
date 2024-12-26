@@ -7,30 +7,13 @@ import {
 } from './expense.common.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateExpenseReportInput extends ExpenseReportDto {}
-export class UpdateExpenseReportInput extends ExpenseReportDto {
-  @ApiProperty()
-  reportId: number;
-}
-export class DeleteExpenseReportInput {
-  @ApiProperty()
-  reportId: number;
-}
-export class FindOneExpenseReportInput {
-  @ApiProperty({ enum: Month })
-  forMonth: Month;
-
-  @ApiProperty({ example: '2001' })
-  forYear: string;
-}
-
 export class CreateUtilityInput extends UtilityDto {
   @ApiProperty()
   reportId: number;
 }
 export class UpdateUtilityInput extends UtilityDto {
   @ApiProperty()
-  utilityId: number;
+  id: number;
 }
 export class DeleteUtilityInput {
   @ApiProperty()
@@ -43,7 +26,7 @@ export class CreateCardEndOfMonthStatementInput extends CardEndOfMonthStatementD
 }
 export class UpdateCardEndOfMonthStatementInput extends CardEndOfMonthStatementDto {
   @ApiProperty()
-  statementId: number;
+  id: number;
 }
 export class DeleteCardEndOfMonthStatementInput {
   @ApiProperty()
@@ -56,9 +39,35 @@ export class CreateRentInput extends RentDto {
 }
 export class UpdateRentInput extends RentDto {
   @ApiProperty()
-  rentId: number;
+  id: number;
 }
 export class DeleteRentInput {
   @ApiProperty()
   rentId: number;
+}
+
+export class CreateExpenseReportInput extends ExpenseReportDto {}
+export class UpdateExpenseReportInput extends ExpenseReportDto {
+  @ApiProperty()
+  id: number;
+
+  @ApiProperty({ type: [UpdateUtilityInput] })
+  utilities: UpdateUtilityInput[];
+
+  @ApiProperty({ type: [UpdateCardEndOfMonthStatementInput] })
+  cardEndOfMonthStatement: UpdateCardEndOfMonthStatementInput[];
+
+  @ApiProperty({ type: [UpdateRentInput] })
+  rent: UpdateRentInput[];
+}
+export class DeleteExpenseReportInput {
+  @ApiProperty()
+  reportId: number;
+}
+export class FindOneExpenseReportInput {
+  @ApiProperty({ enum: Month })
+  forMonth: Month;
+
+  @ApiProperty({ example: '2001' })
+  forYear: string;
 }

@@ -56,10 +56,4 @@ export class ExpenseReportDto {
 
   @ApiProperty({ example: '1000' })
   forYear: string;
-
-  // @ApiProperty({ type: [UtilityDto] })
-  // utilities: UtilityDto[];
-
-  // @ApiProperty({ type: [CardEndOfMonthStatementDto] })
-  // cardEndOfMonthStatement: CardEndOfMonthStatementDto[];
 }

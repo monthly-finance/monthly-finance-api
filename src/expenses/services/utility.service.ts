@@ -1,4 +1,4 @@
-import { ConflictException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExpenseReport } from '../entities/expense-report.entity';
 import { IsNull, Repository } from 'typeorm';
@@ -54,26 +54,40 @@ export class UtilityService {
   }
 
   async updateUtility(updateUtility: UpdateUtilityInput, userId: string) {
-    const { utilityId, ...utility } = updateUtility;
+    const { id, ...utility } = updateUtility;
     const current_utility = await this.utilityRepo.findOneBy({
-      id: utilityId,
+      id,
       user: { id: userId },
       deletedAt: IsNull(),
     });
 
     if (!current_utility) {
-      throw new EntityNotFoundException(Utility.name, utilityId);
+      throw new EntityNotFoundException(Utility.name, id);
     }
 
-    await this.utilityRepo.update(
-      { id: utilityId, user: { id: userId } },
-      utility,
-    );
+    await this.utilityRepo.update({ id: id, user: { id: userId } }, utility);
   }
 
   async deleteUtility(deleteUtility: DeleteUtilityInput, userId: string) {
     const { utilityId } = deleteUtility;
 
     await this.utilityRepo.softDelete({ id: utilityId, user: { id: userId } });
+  }
+
+  async bulkUpdate(
+    updateUtilities: UpdateUtilityInput[],
+    userId: string,
+  ): Promise<void> {
+    const ids = updateUtilities.map((utility) => utility.id);
+    const uniqueIds = new Set(ids);
+
+    if (ids.length !== uniqueIds.size)
+      throw new Error('Utility ids are not unique for bulk update');
+
+    const updatePromises = updateUtilities.map((utility) =>
+      this.updateUtility(utility, userId),
+    );
+
+    await Promise.all(updatePromises);
   }
 }

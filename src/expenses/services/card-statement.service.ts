@@ -64,22 +64,19 @@ export class CardStatementService {
     updateStatement: UpdateCardEndOfMonthStatementInput,
     userId: string,
   ): Promise<void> {
-    const { statementId, ...statement } = updateStatement;
+    const { id, ...statement } = updateStatement;
     const current_statement = await this.statementRepo.findOneBy({
-      id: statementId,
+      id: id,
       deletedAt: IsNull(),
       user: { id: userId },
     });
 
     if (!current_statement) {
-      throw new EntityNotFoundException(
-        CardEndOfMonthStatement.name,
-        statementId,
-      );
+      throw new EntityNotFoundException(CardEndOfMonthStatement.name, id);
     }
 
     await this.statementRepo.update(
-      { id: statementId, user: { id: userId } },
+      { id, user: { id: userId } },
       statement as CardEndOfMonthStatement,
     );
   }
@@ -94,5 +91,22 @@ export class CardStatementService {
       id: statementId,
       user: { id: userId },
     });
+  }
+
+  async bulkUpdate(
+    updateStatements: UpdateCardEndOfMonthStatementInput[],
+    userId: string,
+  ): Promise<void> {
+    const ids = updateStatements.map((statement) => statement.id);
+    const uniqueIds = new Set(ids);
+
+    if (ids.length !== uniqueIds.size)
+      throw new Error('Card Statement ids are not unique for bulk update');
+
+    const updatePromises = updateStatements.map((statement) =>
+      this.updateStatement(statement, userId),
+    );
+
+    await Promise.all(updatePromises);
   }
 }
