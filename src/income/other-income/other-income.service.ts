@@ -18,7 +18,7 @@ import { IncomeModule } from '../income.module';
 export class OtherIncomeService {
   constructor(
     @InjectRepository(OtherIncome)
-    private OtherIncomeRepo: Repository<OtherIncome>,
+    private otherIncomeRepo: Repository<OtherIncome>,
     @InjectRepository(IncomeReport)
     private incomeReportRepo: Repository<IncomeReport>,
     private userService: UserService,
@@ -45,7 +45,7 @@ export class OtherIncomeService {
       throw new EntityNotFoundException(ExpenseReport.name, reportId);
     }
 
-    const entity = this.OtherIncomeRepo.create({
+    const entity = this.otherIncomeRepo.create({
       incomeReport: report,
       amount: otherIncome.amount,
       datePayed: otherIncome.datePayed,
@@ -53,26 +53,26 @@ export class OtherIncomeService {
       user,
     });
 
-    await this.OtherIncomeRepo.save(entity);
+    await this.otherIncomeRepo.save(entity);
   }
 
   async updateOtherIncome(
     updateOtherIncome: UpdateOtherIncomeInput,
     userId: string,
   ) {
-    const { otherIncomeId, ...otherIncome } = updateOtherIncome;
-    const current_OtherIncome = await this.OtherIncomeRepo.findOneBy({
-      id: otherIncomeId,
+    const { id, ...otherIncome } = updateOtherIncome;
+    const current_OtherIncome = await this.otherIncomeRepo.findOneBy({
+      id: id,
       user: { id: userId },
       deletedAt: IsNull(),
     });
 
     if (!current_OtherIncome) {
-      throw new EntityNotFoundException(OtherIncome.name, otherIncomeId);
+      throw new EntityNotFoundException(OtherIncome.name, id);
     }
 
-    await this.OtherIncomeRepo.update(
-      { id: otherIncomeId, user: { id: userId } },
+    await this.otherIncomeRepo.update(
+      { id, user: { id: userId } },
       otherIncome,
     );
   }
@@ -83,9 +83,26 @@ export class OtherIncomeService {
   ) {
     const { otherIncomeId } = deleteOtherIncome;
 
-    await this.OtherIncomeRepo.softDelete({
+    await this.otherIncomeRepo.softDelete({
       id: otherIncomeId,
       user: { id: userId },
     });
+  }
+
+  async bulkUpdate(
+    updateOtherIncomeInputs: UpdateOtherIncomeInput[],
+    userId: string,
+  ): Promise<void> {
+    const ids = updateOtherIncomeInputs.map((oi) => oi.id);
+    const uniqueIds = new Set(ids);
+
+    if (ids.length !== uniqueIds.size)
+      throw new Error('Other Income ids are not unique for bulk update');
+
+    const updatePromises = updateOtherIncomeInputs.map((oi) =>
+      this.updateOtherIncome(oi, userId),
+    );
+
+    await Promise.all(updatePromises);
   }
 }

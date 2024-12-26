@@ -15,6 +15,8 @@ import {
 } from '../dtos/income.input.dto';
 import { EntityNotFoundException } from 'src/shared/types/types';
 import { User } from 'src/user/entities/user.entity';
+import { EmployeeBenefitService } from '../employee-benefit/employee-benefit.service';
+import { OtherIncomeService } from '../other-income/other-income.service';
 
 @Injectable()
 export class IncomeReportService {
@@ -23,6 +25,8 @@ export class IncomeReportService {
     private incomeReportRepo: Repository<IncomeReport>,
     @InjectRepository(User)
     private userRepo: Repository<User>,
+    private readonly employeeBenefitService: EmployeeBenefitService,
+    private readonly otherIncomeService: OtherIncomeService,
   ) {}
 
   async create(
@@ -115,18 +119,22 @@ export class IncomeReportService {
     userId: string,
     updateIncomeReportInput: UpdateIncomeReportInput,
   ) {
-    const { reportId: id, ...report } = updateIncomeReportInput;
-    const current_report = await this.incomeReportRepo.findOneBy({
+    const { id, employeeBenefit, otherIncome, paycheck, ...report } =
+      updateIncomeReportInput;
+
+    const currentReport = await this.incomeReportRepo.findOneBy({
       id,
       user: { id: userId },
       deletedAt: IsNull(),
     });
 
-    if (!current_report) {
+    if (!currentReport)
       throw new EntityNotFoundException(IncomeReport.name, id);
-    }
 
     await this.incomeReportRepo.update({ id, user: { id: userId } }, report);
+
+    await this.employeeBenefitService.bulkUpdate(employeeBenefit, userId);
+    await this.otherIncomeService.bulkUpdate(otherIncome, userId);
   }
 
   async delete(

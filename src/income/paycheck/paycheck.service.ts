@@ -57,18 +57,18 @@ export class PaycheckService {
   }
 
   async updatePaycheck(updatePaycheck: UpdatePaycheckInput, userId: string) {
-    const { paycheckId, ...paycheck } = updatePaycheck;
-    const current_Paycheck = await this.paycheckRepo.findOneBy({
-      id: paycheckId,
+    const { id, ...paycheck } = updatePaycheck;
+    const currentPaycheck = await this.paycheckRepo.findOneBy({
+      id,
       user: { id: userId },
       deletedAt: IsNull(),
     });
 
-    if (!current_Paycheck) {
-      throw new EntityNotFoundException(Paycheck.name, paycheckId);
+    if (!currentPaycheck) {
+      throw new EntityNotFoundException(Paycheck.name, id);
     }
 
-    await this.paycheckRepo.update({ id: paycheckId }, paycheck);
+    await this.paycheckRepo.update({ id }, paycheck);
   }
 
   async deletePaycheck(deletePaycheck: DeletePaycheckInput, userId: string) {

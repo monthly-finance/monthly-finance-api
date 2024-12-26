@@ -42,13 +42,4 @@ export class IncomeReportDto {
 
   @ApiProperty({ example: '1000' })
   forYear: string;
-
-  // @ApiProperty({ type: [PaycheckDto] })
-  // paycheck: PaycheckDto[];
-
-  // @ApiProperty({ type: [OtherIncomeDto] })
-  // otherIncome: OtherIncomeDto[];
-
-  // @ApiProperty({ type: [EmployeeBenefitDto] })
-  // employeeBenefit: EmployeeBenefitDto[];
 }
