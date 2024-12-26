@@ -1,4 +1,13 @@
-import { Controller, Post, Body, Get, Put, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Get,
+  Put,
+  Delete,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+} from '@nestjs/common';
 import { ExpenseReportService } from '../services/expense-report.service';
 import {
   CreateExpenseReportInput,
@@ -19,6 +28,7 @@ import { RequestContext } from 'src/auth/types/auth.type';
 @Controller('expense/expense-report')
 @ApiBearerAuth()
 @ApiTags('Expense Report')
+@UseInterceptors(ClassSerializerInterceptor)
 export class ExpensesController {
   constructor(private service: ExpenseReportService) {}
 
@@ -36,7 +46,7 @@ export class ExpensesController {
   async createExpenseReport(
     @Body() createExpenseReportInput: CreateExpenseReportInput,
     @MFContext() context: RequestContext,
-  ): Promise<void> {
+  ): Promise<ExpenseReport> {
     return await this.service.create(context.userId, createExpenseReportInput);
   }
 
@@ -58,7 +68,7 @@ export class ExpensesController {
   async updateExpenseReport(
     @Body() updateExpenseReportInput: UpdateExpenseReportInput,
     @MFContext() context: RequestContext,
-  ): Promise<void> {
+  ): Promise<ExpenseReport> {
     return await this.service.update(updateExpenseReportInput, context.userId);
   }
 

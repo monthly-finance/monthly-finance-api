@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Post,
+  Put,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   CreateUtilityInput,
@@ -8,10 +16,12 @@ import {
 import { UtilityService } from '../services/utility.service';
 import { RequestContext } from 'src/auth/types/auth.type';
 import { MFContext } from 'src/shared/types/types';
+import { Utility } from '../entities/utility/utility.entity';
 
 @Controller('expense/utility')
 @ApiBearerAuth()
 @ApiTags('Utility')
+@UseInterceptors(ClassSerializerInterceptor)
 export class UtilityController {
   constructor(private service: UtilityService) {}
 
@@ -21,7 +31,7 @@ export class UtilityController {
     @Body()
     createUtilityInput: CreateUtilityInput,
     @MFContext() context: RequestContext,
-  ): Promise<void> {
+  ): Promise<Utility> {
     return await this.service.addUtility(createUtilityInput, context.userId);
   }
 
@@ -31,7 +41,7 @@ export class UtilityController {
     @Body()
     updateUtilityInput: UpdateUtilityInput,
     @MFContext() context: RequestContext,
-  ): Promise<void> {
+  ): Promise<Utility> {
     return await this.service.updateUtility(updateUtilityInput, context.userId);
   }
 

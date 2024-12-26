@@ -23,7 +23,7 @@ export class ExpenseReportService {
   async create(
     userId: string,
     createExpenseReport: CreateExpenseReportInput,
-  ): Promise<void> {
+  ): Promise<ExpenseReport> {
     const { forMonth, forYear } = createExpenseReport;
 
     const user = await this.userService.findOne(userId);
@@ -52,7 +52,7 @@ export class ExpenseReportService {
       user,
     });
 
-    await this.expenseReportRepo.save(entity);
+    return await this.expenseReportRepo.save(entity);
   }
 
   async findAll(userId: string) {
@@ -94,7 +94,10 @@ export class ExpenseReportService {
     });
   }
 
-  async update(updateExpenseReport: UpdateExpenseReportInput, userId: string) {
+  async update(
+    updateExpenseReport: UpdateExpenseReportInput,
+    userId: string,
+  ): Promise<ExpenseReport> {
     const { reportId: id, ...report } = updateExpenseReport;
     const current_report = await this.expenseReportRepo.findOneBy({
       id,
@@ -107,6 +110,8 @@ export class ExpenseReportService {
     }
 
     await this.expenseReportRepo.update({ id, deletedAt: IsNull() }, report);
+
+    return await this.expenseReportRepo.findOneBy({ id });
   }
 
   async delete(deleteExpenseReport: DeleteExpenseReportInput, userId: string) {

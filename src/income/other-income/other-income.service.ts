@@ -18,7 +18,7 @@ import { IncomeModule } from '../income.module';
 export class OtherIncomeService {
   constructor(
     @InjectRepository(OtherIncome)
-    private OtherIncomeRepo: Repository<OtherIncome>,
+    private otherIncomeRepo: Repository<OtherIncome>,
     @InjectRepository(IncomeReport)
     private incomeReportRepo: Repository<IncomeReport>,
     private userService: UserService,
@@ -27,7 +27,7 @@ export class OtherIncomeService {
   async addOtherIncome(
     createOtherIncome: CreateOtherIncomeInput,
     userId: string,
-  ): Promise<void> {
+  ): Promise<OtherIncome> {
     const { reportId, ...otherIncome } = createOtherIncome;
     const user = await this.userService.findOne(userId);
 
@@ -45,7 +45,7 @@ export class OtherIncomeService {
       throw new EntityNotFoundException(ExpenseReport.name, reportId);
     }
 
-    const entity = this.OtherIncomeRepo.create({
+    const entity = this.otherIncomeRepo.create({
       incomeReport: report,
       amount: otherIncome.amount,
       datePayed: otherIncome.datePayed,
@@ -53,15 +53,15 @@ export class OtherIncomeService {
       user,
     });
 
-    await this.OtherIncomeRepo.save(entity);
+    return await this.otherIncomeRepo.save(entity);
   }
 
   async updateOtherIncome(
     updateOtherIncome: UpdateOtherIncomeInput,
     userId: string,
-  ) {
+  ): Promise<OtherIncome> {
     const { otherIncomeId, ...otherIncome } = updateOtherIncome;
-    const current_OtherIncome = await this.OtherIncomeRepo.findOneBy({
+    const current_OtherIncome = await this.otherIncomeRepo.findOneBy({
       id: otherIncomeId,
       user: { id: userId },
       deletedAt: IsNull(),
@@ -71,10 +71,12 @@ export class OtherIncomeService {
       throw new EntityNotFoundException(OtherIncome.name, otherIncomeId);
     }
 
-    await this.OtherIncomeRepo.update(
+    await this.otherIncomeRepo.update(
       { id: otherIncomeId, user: { id: userId } },
       otherIncome,
     );
+
+    return await this.otherIncomeRepo.findOneBy({ id: otherIncomeId });
   }
 
   async deleteOtherIncome(
@@ -83,7 +85,7 @@ export class OtherIncomeService {
   ) {
     const { otherIncomeId } = deleteOtherIncome;
 
-    await this.OtherIncomeRepo.softDelete({
+    await this.otherIncomeRepo.softDelete({
       id: otherIncomeId,
       user: { id: userId },
     });
