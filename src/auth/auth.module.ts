@@ -17,7 +17,7 @@ import { User } from 'src/user/entities/user.entity';
         return {
           secret: configService.get('AUTH_SECRET'),
           global: true,
-          signOptions: { expiresIn: '15m' },
+          signOptions: { expiresIn: '1d' },
         };
       },
       inject: [ConfigService],
