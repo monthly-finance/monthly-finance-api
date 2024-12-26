@@ -47,6 +47,19 @@ export class DeleteOtherIncomeInput {
 }
 
 export class CreateIncomeReportInput extends IncomeReportDto {}
+export class InsertIncomeReportInput {
+  @ApiProperty()
+  reportId: number;
+
+  @ApiProperty({ type: [CreateEmployeeBenefitInput] })
+  employeeBenefit: CreateEmployeeBenefitInput[];
+
+  @ApiProperty({ type: [CreatePaycheckInput] })
+  paycheck: CreatePaycheckInput[];
+
+  @ApiProperty({ type: [CreateOtherIncomeInput] })
+  otherIncome: CreateOtherIncomeInput[];
+}
 export class UpdateIncomeReportInput extends IncomeReportDto {
   @ApiProperty()
   id: number;

@@ -11,10 +11,12 @@ import {
   CreateIncomeReportInput,
   DeleteIncomeReportInput,
   FindOneIncomeReportInput,
+  InsertIncomeReportInput,
   UpdateIncomeReportInput,
 } from '../dtos/income.input.dto';
 import { IncomeReport } from '../entities/income-report.entity';
 import { MFContext } from 'src/shared/types/types';
+import { InsertExpenseReportInput } from 'src/expenses/dtos/expense.input.dto';
 
 @Controller('income/income-report')
 @ApiBearerAuth()
@@ -66,5 +68,14 @@ export class IncomeReportController {
     @MFContext('userId') userId: string,
   ): Promise<void> {
     return await this.service.delete(userId, deleteIncomeReportInput);
+  }
+
+  @Post('insert')
+  @ApiOperation({ summary: 'Insert data into income Report' })
+  async insertExpenseReport(
+    @Body() insertExpenseReport: InsertIncomeReportInput,
+    @MFContext('userId') userId: string,
+  ): Promise<void> {
+    return await this.service.insert(userId, insertExpenseReport);
   }
 }

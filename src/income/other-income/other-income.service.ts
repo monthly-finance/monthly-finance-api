@@ -105,4 +105,15 @@ export class OtherIncomeService {
 
     await Promise.all(updatePromises);
   }
+
+  async bulkInsert(
+    insertOtherIncomes: CreateOtherIncomeInput[],
+    userId: string,
+  ) {
+    const insertPromises = insertOtherIncomes.map((oi) =>
+      this.addOtherIncome(oi, userId),
+    );
+
+    await Promise.all(insertPromises);
+  }
 }

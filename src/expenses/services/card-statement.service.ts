@@ -109,4 +109,15 @@ export class CardStatementService {
 
     await Promise.all(updatePromises);
   }
+
+  async bulkInsert(
+    insertStatement: CreateCardEndOfMonthStatementInput[],
+    userId: string,
+  ) {
+    const insertPromises = insertStatement.map((statement) =>
+      this.addStatement(statement, userId),
+    );
+
+    await Promise.all(insertPromises);
+  }
 }

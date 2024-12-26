@@ -6,6 +6,7 @@ import {
   CreateExpenseReportInput,
   DeleteExpenseReportInput,
   FindOneExpenseReportInput,
+  InsertExpenseReportInput,
   UpdateExpenseReportInput,
 } from '../dtos/expense.input.dto';
 import { EntityNotFoundException } from 'src/shared/types/types';
@@ -109,9 +110,8 @@ export class ExpenseReportService {
       deletedAt: IsNull(),
     });
 
-    if (!currentReport) {
+    if (!currentReport)
       throw new EntityNotFoundException(ExpenseReport.name, id);
-    }
 
     await this.expenseReportRepo.update({ id, deletedAt: IsNull() }, report);
 
@@ -122,6 +122,31 @@ export class ExpenseReportService {
         userId,
       );
     if (rent) await this.rentService.bulkUpdate(rent, userId);
+  }
+
+  async insert(
+    insertExpenseReportInput: InsertExpenseReportInput,
+    userId: string,
+  ): Promise<void> {
+    const { reportId, utilities, cardEndOfMonthStatement, rent } =
+      insertExpenseReportInput;
+
+    const currentReport = await this.expenseReportRepo.findOneBy({
+      id: reportId,
+      user: { id: userId },
+      deletedAt: IsNull(),
+    });
+
+    if (!currentReport)
+      throw new EntityNotFoundException(ExpenseReport.name, reportId);
+
+    if (utilities) await this.utilityservice.bulkInsert(utilities, userId);
+    if (cardEndOfMonthStatement)
+      await this.cardStatementService.bulkInsert(
+        cardEndOfMonthStatement,
+        userId,
+      );
+    if (rent) await this.rentService.bulkInsert(rent, userId);
   }
 
   async delete(deleteExpenseReport: DeleteExpenseReportInput, userId: string) {

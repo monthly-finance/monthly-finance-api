@@ -91,4 +91,12 @@ export class RentService {
 
     await Promise.all(updatePromises);
   }
+
+  async bulkInsert(insetOtherIncomes: CreateRentInput[], userId: string) {
+    const insertPromises = insetOtherIncomes.map((statement) =>
+      this.addRent(statement, userId),
+    );
+
+    await Promise.all(insertPromises);
+  }
 }

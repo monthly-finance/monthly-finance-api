@@ -90,4 +90,12 @@ export class UtilityService {
 
     await Promise.all(updatePromises);
   }
+
+  async bulkInsert(insertUtilities: CreateUtilityInput[], userId: string) {
+    const insertPromises = insertUtilities.map((statement) =>
+      this.addUtility(statement, userId),
+    );
+
+    await Promise.all(insertPromises);
+  }
 }

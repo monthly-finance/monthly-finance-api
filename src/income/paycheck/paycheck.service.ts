@@ -96,4 +96,12 @@ export class PaycheckService {
 
     await Promise.all(updatePromises);
   }
+
+  async bulkInsert(insertOtherIncomes: CreatePaycheckInput[], userId: string) {
+    const insertPromises = insertOtherIncomes.map((oi) =>
+      this.addPaycheck(oi, userId),
+    );
+
+    await Promise.all(insertPromises);
+  }
 }

@@ -108,4 +108,15 @@ export class EmployeeBenefitService {
 
     await Promise.all(updatePromises);
   }
+
+  async bulkInsert(
+    insertEmployeeBenefits: CreateEmployeeBenefitInput[],
+    userId: string,
+  ) {
+    const insertPromises = insertEmployeeBenefits.map((eb) =>
+      this.addEmployeeBenefit(eb, userId),
+    );
+
+    await Promise.all(insertPromises);
+  }
 }

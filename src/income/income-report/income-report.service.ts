@@ -11,6 +11,7 @@ import {
   CreateIncomeReportInput,
   DeleteIncomeReportInput,
   FindOneIncomeReportInput,
+  InsertIncomeReportInput,
   UpdateIncomeReportInput,
 } from '../dtos/income.input.dto';
 import { EntityNotFoundException } from 'src/shared/types/types';
@@ -101,7 +102,7 @@ export class IncomeReportService {
 
     return await this.incomeReportRepo.findOneOrFail({
       where: {
-        user,
+        user: { id: userId },
         forMonth,
         forYear,
         deletedAt: IsNull(),
@@ -115,6 +116,29 @@ export class IncomeReportService {
         employeeBenefit: true,
       },
     });
+  }
+
+  async insert(
+    userId: string,
+    addToIncomeReportInput: InsertIncomeReportInput,
+  ) {
+    const { reportId, employeeBenefit, otherIncome, paycheck } =
+      addToIncomeReportInput;
+
+    const currentReport = await this.incomeReportRepo.findOneBy({
+      id: reportId,
+      user: { id: userId },
+      deletedAt: IsNull(),
+    });
+
+    if (!currentReport)
+      throw new EntityNotFoundException(IncomeReport.name, reportId);
+
+    if (employeeBenefit)
+      await this.employeeBenefitService.bulkInsert(employeeBenefit, userId);
+    if (otherIncome)
+      await this.otherIncomeService.bulkInsert(otherIncome, userId);
+    if (paycheck) await this.paycheckService.bulkInsert(paycheck, userId);
   }
 
   async update(

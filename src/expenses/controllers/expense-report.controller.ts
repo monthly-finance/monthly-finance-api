@@ -4,6 +4,7 @@ import {
   CreateExpenseReportInput,
   DeleteExpenseReportInput,
   FindOneExpenseReportInput,
+  InsertExpenseReportInput,
   UpdateExpenseReportInput,
 } from '../dtos/expense.input.dto';
 import {
@@ -70,5 +71,14 @@ export class ExpensesController {
     @MFContext() context: RequestContext,
   ): Promise<void> {
     return await this.service.delete(deleteExpenseReportInput, context.userId);
+  }
+
+  @Post('insert')
+  @ApiOperation({ summary: 'Insert data into Expense Report' })
+  async insertExpenseReport(
+    @Body() insertExpenseReport: InsertExpenseReportInput,
+    @MFContext() context: RequestContext,
+  ): Promise<void> {
+    return await this.service.insert(insertExpenseReport, context.userId);
   }
 }

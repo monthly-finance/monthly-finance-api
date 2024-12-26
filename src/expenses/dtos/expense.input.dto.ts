@@ -47,6 +47,19 @@ export class DeleteRentInput {
 }
 
 export class CreateExpenseReportInput extends ExpenseReportDto {}
+export class InsertExpenseReportInput {
+  @ApiProperty()
+  reportId: number;
+
+  @ApiProperty({ type: [CreateUtilityInput] })
+  utilities: CreateUtilityInput[];
+
+  @ApiProperty({ type: [CreateCardEndOfMonthStatementInput] })
+  cardEndOfMonthStatement: CreateCardEndOfMonthStatementInput[];
+
+  @ApiProperty({ type: [CreateRentInput] })
+  rent: CreateRentInput[];
+}
 export class UpdateExpenseReportInput extends ExpenseReportDto {
   @ApiProperty()
   id: number;
