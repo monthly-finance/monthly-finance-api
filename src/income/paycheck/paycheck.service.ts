@@ -79,4 +79,21 @@ export class PaycheckService {
       user: { id: userId },
     });
   }
+
+  async bulkUpdate(
+    updatePaycheckInputs: UpdatePaycheckInput[],
+    userId: string,
+  ): Promise<void> {
+    const ids = updatePaycheckInputs.map((eb) => eb.id);
+    const uniqueIds = new Set(ids);
+
+    if (ids.length !== uniqueIds.size)
+      throw new Error('Paycheck ids are not unique for bulk update');
+
+    const updatePromises = updatePaycheckInputs.map((paycheck) =>
+      this.updatePaycheck(paycheck, userId),
+    );
+
+    await Promise.all(updatePromises);
+  }
 }

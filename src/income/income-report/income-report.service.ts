@@ -17,6 +17,7 @@ import { EntityNotFoundException } from 'src/shared/types/types';
 import { User } from 'src/user/entities/user.entity';
 import { EmployeeBenefitService } from '../employee-benefit/employee-benefit.service';
 import { OtherIncomeService } from '../other-income/other-income.service';
+import { PaycheckService } from '../paycheck/paycheck.service';
 
 @Injectable()
 export class IncomeReportService {
@@ -27,6 +28,7 @@ export class IncomeReportService {
     private userRepo: Repository<User>,
     private readonly employeeBenefitService: EmployeeBenefitService,
     private readonly otherIncomeService: OtherIncomeService,
+    private readonly paycheckService: PaycheckService,
   ) {}
 
   async create(
@@ -133,8 +135,11 @@ export class IncomeReportService {
 
     await this.incomeReportRepo.update({ id, user: { id: userId } }, report);
 
-    await this.employeeBenefitService.bulkUpdate(employeeBenefit, userId);
-    await this.otherIncomeService.bulkUpdate(otherIncome, userId);
+    if (employeeBenefit)
+      await this.employeeBenefitService.bulkUpdate(employeeBenefit, userId);
+    if (otherIncome)
+      await this.otherIncomeService.bulkUpdate(otherIncome, userId);
+    if (paycheck) await this.paycheckService.bulkUpdate(paycheck, userId);
   }
 
   async delete(
