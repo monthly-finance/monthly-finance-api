@@ -22,7 +22,7 @@ export class RentService {
     private userService: UserService,
   ) {}
 
-  async addRent(createRent: CreateRentInput, userId: string): Promise<void> {
+  async addRent(createRent: CreateRentInput, userId: string): Promise<Rent> {
     const { reportId, ...rent } = createRent;
 
     const user = await this.userService.findOne(userId);
@@ -48,10 +48,10 @@ export class RentService {
       user,
     });
 
-    await this.rentRepo.save(entity);
+    return await this.rentRepo.save(entity);
   }
 
-  async updateRent(updateRent: UpdateRentInput, userId: string) {
+  async updateRent(updateRent: UpdateRentInput, userId: string): Promise<Rent> {
     const { rentId, ...rent } = updateRent;
     const current_rent = await this.rentRepo.findOneBy({
       id: rentId,
@@ -67,6 +67,8 @@ export class RentService {
       { id: rentId, user: { id: userId } },
       { rentAmount: rent.amount, rentor: rent.rentor },
     );
+
+    return await this.rentRepo.findOneBy({ id: rentId });
   }
 
   async deleteRent(deleteRent: DeleteRentInput, userId: string) {

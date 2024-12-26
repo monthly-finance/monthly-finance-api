@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Post,
+  Put,
+  UseInterceptors,
+} from '@nestjs/common';
 import { CardStatementService } from '../services/card-statement.service';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
@@ -8,10 +16,12 @@ import {
 } from '../dtos/expense.input.dto';
 import { MFContext } from 'src/shared/types/types';
 import { RequestContext } from 'src/auth/types/auth.type';
+import { CardEndOfMonthStatement } from '../entities/banking/card-statement.entity';
 
 @Controller('expense/card-statement')
 @ApiBearerAuth()
 @ApiTags('Card Statement')
+@UseInterceptors(ClassSerializerInterceptor)
 export class CardStatementController {
   constructor(private service: CardStatementService) {}
 
@@ -21,7 +31,7 @@ export class CardStatementController {
     @Body()
     createCardEndOfMonthStatementInput: CreateCardEndOfMonthStatementInput,
     @MFContext() context: RequestContext,
-  ): Promise<void> {
+  ): Promise<CardEndOfMonthStatement> {
     return await this.service.addStatement(
       createCardEndOfMonthStatementInput,
       context.userId,
@@ -34,7 +44,7 @@ export class CardStatementController {
     @Body()
     updateCardEndOfMonthStatementInput: UpdateCardEndOfMonthStatementInput,
     @MFContext() context: RequestContext,
-  ): Promise<void> {
+  ): Promise<CardEndOfMonthStatement> {
     return await this.service.updateStatement(
       updateCardEndOfMonthStatementInput,
       context.userId,

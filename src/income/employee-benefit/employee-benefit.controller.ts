@@ -1,17 +1,26 @@
-import { Body, Controller, Delete, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Post,
+  Put,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   CreateEmployeeBenefitInput,
   UpdateEmployeeBenefitInput,
   DeleteEmployeeBenefitInput,
 } from '../dtos/income.input.dto';
-
 import { MFContext } from 'src/shared/types/types';
 import { EmployeeBenefitService } from './employee-benefit.service';
+import { EmployeeBenefit } from '../entities/employee-benefit/employee-benefit.entity';
 
 @Controller('income/employee-benefit')
 @ApiBearerAuth()
 @ApiTags('Employee Benefit')
+@UseInterceptors(ClassSerializerInterceptor)
 export class EmployeeBenefitController {
   constructor(private service: EmployeeBenefitService) {}
 
@@ -21,7 +30,7 @@ export class EmployeeBenefitController {
     @Body()
     createInput: CreateEmployeeBenefitInput,
     @MFContext('userId') userId: string,
-  ): Promise<void> {
+  ): Promise<EmployeeBenefit> {
     return await this.service.addEmployeeBenefit(createInput, userId);
   }
 
@@ -31,7 +40,7 @@ export class EmployeeBenefitController {
     @Body()
     updateInput: UpdateEmployeeBenefitInput,
     @MFContext('userId') userId: string,
-  ): Promise<void> {
+  ): Promise<EmployeeBenefit> {
     return await this.service.updateEmployeeBenefit(updateInput, userId);
   }
 

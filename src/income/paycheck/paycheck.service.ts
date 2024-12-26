@@ -27,7 +27,7 @@ export class PaycheckService {
   async addPaycheck(
     createPaycheck: CreatePaycheckInput,
     userId: string,
-  ): Promise<void> {
+  ): Promise<Paycheck> {
     const { reportId, ...paycheck } = createPaycheck;
 
     const user = await this.userService.findOne(userId);
@@ -53,10 +53,13 @@ export class PaycheckService {
       user,
     });
 
-    await this.paycheckRepo.save(entity);
+    return await this.paycheckRepo.save(entity);
   }
 
-  async updatePaycheck(updatePaycheck: UpdatePaycheckInput, userId: string) {
+  async updatePaycheck(
+    updatePaycheck: UpdatePaycheckInput,
+    userId: string,
+  ): Promise<Paycheck> {
     const { paycheckId, ...paycheck } = updatePaycheck;
     const current_Paycheck = await this.paycheckRepo.findOneBy({
       id: paycheckId,
@@ -69,6 +72,8 @@ export class PaycheckService {
     }
 
     await this.paycheckRepo.update({ id: paycheckId }, paycheck);
+
+    return await this.paycheckRepo.findOneBy({ id: paycheckId });
   }
 
   async deletePaycheck(deletePaycheck: DeletePaycheckInput, userId: string) {

@@ -17,7 +17,7 @@ import { User } from 'src/user/entities/user.entity';
 export class EmployeeBenefitService {
   constructor(
     @InjectRepository(EmployeeBenefit)
-    private EmployeeBenefitRepo: Repository<EmployeeBenefit>,
+    private employeeBenefitRepo: Repository<EmployeeBenefit>,
     @InjectRepository(IncomeReport)
     private incomeReportRepo: Repository<IncomeReport>,
     private userService: UserService,
@@ -26,7 +26,7 @@ export class EmployeeBenefitService {
   async addEmployeeBenefit(
     createEmployeeBenefit: CreateEmployeeBenefitInput,
     userId: string,
-  ): Promise<void> {
+  ): Promise<EmployeeBenefit> {
     const { reportId, ...employeeBenefit } = createEmployeeBenefit;
     const user = await this.userService.findOne(userId);
 
@@ -44,7 +44,7 @@ export class EmployeeBenefitService {
       throw new EntityNotFoundException(ExpenseReport.name, reportId);
     }
 
-    const entity = this.EmployeeBenefitRepo.create({
+    const entity = this.employeeBenefitRepo.create({
       incomeReport: report,
       type: employeeBenefit.type,
       amount: employeeBenefit.amount,
@@ -52,16 +52,16 @@ export class EmployeeBenefitService {
       user,
     });
 
-    await this.EmployeeBenefitRepo.save(entity);
+    return await this.employeeBenefitRepo.save(entity);
   }
 
   async updateEmployeeBenefit(
     updateEmployeeBenefit: UpdateEmployeeBenefitInput,
     userId: string,
-  ) {
+  ): Promise<EmployeeBenefit> {
     const { employeeBenefitId, ...employeeBenefit } = updateEmployeeBenefit;
 
-    const current_employeeBenefit = await this.EmployeeBenefitRepo.findOneBy({
+    const current_employeeBenefit = await this.employeeBenefitRepo.findOneBy({
       id: employeeBenefitId,
       user: { id: userId },
       deletedAt: IsNull(),
@@ -74,10 +74,12 @@ export class EmployeeBenefitService {
       );
     }
 
-    await this.EmployeeBenefitRepo.update(
+    await this.employeeBenefitRepo.update(
       { id: employeeBenefitId, user: { id: userId }, deletedAt: IsNull() },
       employeeBenefit,
     );
+
+    return await this.employeeBenefitRepo.findOneBy({ id: employeeBenefitId });
   }
 
   async deleteEmployeeBenefit(
@@ -86,7 +88,7 @@ export class EmployeeBenefitService {
   ) {
     const { employeeBenefitId } = deleteEmployeeBenefit;
 
-    await this.EmployeeBenefitRepo.softDelete({
+    await this.employeeBenefitRepo.softDelete({
       id: employeeBenefitId,
       user: { id: userId },
     });

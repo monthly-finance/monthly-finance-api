@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Post,
+  Put,
+  UseInterceptors,
+} from '@nestjs/common';
 import {
   CreatePaycheckInput,
   UpdatePaycheckInput,
@@ -7,10 +15,12 @@ import {
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { PaycheckService } from './paycheck.service';
 import { MFContext } from 'src/shared/types/types';
+import { Paycheck } from '../entities/paycheck.entity';
 
 @Controller('income/paycheck')
 @ApiBearerAuth()
 @ApiTags('Paycheck')
+@UseInterceptors(ClassSerializerInterceptor)
 export class PaycheckController {
   constructor(private service: PaycheckService) {}
 
@@ -20,7 +30,7 @@ export class PaycheckController {
     @Body()
     createPaycheckInput: CreatePaycheckInput,
     @MFContext('userId') userId: string,
-  ): Promise<void> {
+  ): Promise<Paycheck> {
     return await this.service.addPaycheck(createPaycheckInput, userId);
   }
 
@@ -30,7 +40,7 @@ export class PaycheckController {
     @Body()
     updatePaycheckInput: UpdatePaycheckInput,
     @MFContext('userId') userId: string,
-  ): Promise<void> {
+  ): Promise<Paycheck> {
     return await this.service.updatePaycheck(updatePaycheckInput, userId);
   }
 

@@ -25,7 +25,7 @@ export class UtilityService {
   async addUtility(
     createUtility: CreateUtilityInput,
     userId: string,
-  ): Promise<void> {
+  ): Promise<Utility> {
     const { reportId, ...utility } = createUtility;
     const user = await this.userService.findOne(userId);
 
@@ -50,7 +50,7 @@ export class UtilityService {
       type: utility.type,
     });
 
-    await this.utilityRepo.save(entity);
+    return await this.utilityRepo.save(entity);
   }
 
   async updateUtility(updateUtility: UpdateUtilityInput, userId: string) {
@@ -69,6 +69,8 @@ export class UtilityService {
       { id: utilityId, user: { id: userId } },
       utility,
     );
+
+    return await this.utilityRepo.findOneBy({ id: utilityId });
   }
 
   async deleteUtility(deleteUtility: DeleteUtilityInput, userId: string) {

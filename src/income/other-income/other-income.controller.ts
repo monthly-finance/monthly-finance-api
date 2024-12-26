@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  ClassSerializerInterceptor,
+  Controller,
+  Delete,
+  Post,
+  Put,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   CreateOtherIncomeInput,
@@ -7,10 +15,12 @@ import {
 } from '../dtos/income.input.dto';
 import { OtherIncomeService } from './other-income.service';
 import { MFContext } from 'src/shared/types/types';
+import { OtherIncome } from '../entities/other-income.entity';
 
 @Controller('income/other-income')
 @ApiBearerAuth()
 @ApiTags('Other Income')
+@UseInterceptors(ClassSerializerInterceptor)
 export class OtherIncomeController {
   constructor(private service: OtherIncomeService) {}
 
@@ -20,7 +30,7 @@ export class OtherIncomeController {
     @Body()
     createOtherIncomeInput: CreateOtherIncomeInput,
     @MFContext('userId') userId: string,
-  ): Promise<void> {
+  ): Promise<OtherIncome> {
     return await this.service.addOtherIncome(createOtherIncomeInput, userId);
   }
 
@@ -30,7 +40,7 @@ export class OtherIncomeController {
     @Body()
     updateOtherIncomeInput: UpdateOtherIncomeInput,
     @MFContext('userId') userId: string,
-  ): Promise<void> {
+  ): Promise<OtherIncome> {
     return await this.service.updateOtherIncome(updateOtherIncomeInput, userId);
   }
 
