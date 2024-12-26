@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ExpenseReport } from '../entities/expense-report.entity';
+import { ExpenseReport } from './entities/expense-report.entity';
 import { IsNull, Repository } from 'typeorm';
 import {
   CreateExpenseReportInput,
@@ -8,7 +8,7 @@ import {
   FindOneExpenseReportInput,
   InsertExpenseReportInput,
   UpdateExpenseReportInput,
-} from '../dtos/expense.input.dto';
+} from './dtos/expense.input.dto';
 import { EntityNotFoundException } from 'src/shared/types/types';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
@@ -30,7 +30,7 @@ export class ExpenseReportService {
   async create(
     userId: string,
     createExpenseReport: CreateExpenseReportInput,
-  ): Promise<void> {
+  ): Promise<ExpenseReport> {
     const { forMonth, forYear } = createExpenseReport;
 
     const user = await this.userService.findOne(userId);
@@ -59,7 +59,7 @@ export class ExpenseReportService {
       user,
     });
 
-    await this.expenseReportRepo.save(entity);
+    return await this.expenseReportRepo.save(entity);
   }
 
   async findAll(userId: string) {

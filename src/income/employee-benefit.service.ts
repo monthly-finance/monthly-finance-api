@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { EmployeeBenefit } from '../entities/employee-benefit/employee-benefit.entity';
+import { EmployeeBenefit } from './entities/employee-benefit/employee-benefit.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExpenseReport } from 'src/expenses/entities/expense-report.entity';
 import { EntityNotFoundException } from 'src/shared/types/types';
@@ -8,8 +8,8 @@ import {
   CreateEmployeeBenefitInput,
   UpdateEmployeeBenefitInput,
   DeleteEmployeeBenefitInput,
-} from '../dtos/income.input.dto';
-import { IncomeReport } from '../entities/income-report.entity';
+} from './dtos/income.input.dto';
+import { IncomeReport } from './entities/income-report.entity';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
 

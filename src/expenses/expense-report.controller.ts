@@ -1,25 +1,36 @@
-import { Controller, Post, Body, Get, Put, Delete } from '@nestjs/common';
-import { ExpenseReportService } from '../services/expense-report.service';
 import {
-  CreateExpenseReportInput,
-  DeleteExpenseReportInput,
-  FindOneExpenseReportInput,
-  InsertExpenseReportInput,
-  UpdateExpenseReportInput,
-} from '../dtos/expense.input.dto';
+  Controller,
+  Post,
+  Body,
+  Get,
+  Put,
+  Delete,
+  ClassSerializerInterceptor,
+  UseInterceptors,
+} from '@nestjs/common';
+
 import {
   ApiBearerAuth,
   ApiExcludeEndpoint,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { ExpenseReport } from '../entities/expense-report.entity';
 import { MFContext } from 'src/shared/types/types';
 import { RequestContext } from 'src/auth/types/auth.type';
+import {
+  CreateExpenseReportInput,
+  FindOneExpenseReportInput,
+  UpdateExpenseReportInput,
+  DeleteExpenseReportInput,
+  InsertExpenseReportInput,
+} from './dtos/expense.input.dto';
+import { ExpenseReport } from './entities/expense-report.entity';
+import { ExpenseReportService } from './expense-report.service';
 
 @Controller('expense/expense-report')
 @ApiBearerAuth()
 @ApiTags('Expense Report')
+@UseInterceptors(ClassSerializerInterceptor)
 export class ExpensesController {
   constructor(private service: ExpenseReportService) {}
 
@@ -37,7 +48,7 @@ export class ExpensesController {
   async createExpenseReport(
     @Body() createExpenseReportInput: CreateExpenseReportInput,
     @MFContext() context: RequestContext,
-  ): Promise<void> {
+  ): Promise<ExpenseReport> {
     return await this.service.create(context.userId, createExpenseReportInput);
   }
 

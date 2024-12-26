@@ -4,16 +4,13 @@ import { EmployeeBenefit } from './entities/employee-benefit/employee-benefit.en
 import { IncomeReport } from './entities/income-report.entity';
 import { OtherIncome } from './entities/other-income.entity';
 import { UserModule } from 'src/user/user.module';
-import { IncomeReportService } from './income-report/income-report.service';
-import { PaycheckService } from './paycheck/paycheck.service';
-import { PaycheckController } from './paycheck/paycheck.controller';
-import { EmployeeBenefitController } from './employee-benefit/employee-benefit.controller';
-import { EmployeeBenefitService } from './employee-benefit/employee-benefit.service';
-import { OtherIncomeService } from './other-income/other-income.service';
-import { OtherIncomeController } from './other-income/other-income.controller';
-import { IncomeReportController } from './income-report/income-report.controller';
+import { IncomeReportController } from './income-report.controller';
 import { Paycheck } from './entities/paycheck.entity';
 import { User } from 'src/user/entities/user.entity';
+import { EmployeeBenefitService } from './employee-benefit.service';
+import { IncomeReportService } from './income-report.service';
+import { OtherIncomeService } from './other-income.service';
+import { PaycheckService } from './paycheck.service';
 
 @Module({
   providers: [
@@ -22,12 +19,7 @@ import { User } from 'src/user/entities/user.entity';
     EmployeeBenefitService,
     OtherIncomeService,
   ],
-  controllers: [
-    PaycheckController,
-    EmployeeBenefitController,
-    OtherIncomeController,
-    IncomeReportController,
-  ],
+  controllers: [IncomeReportController],
   imports: [
     TypeOrmModule.forFeature([
       EmployeeBenefit,

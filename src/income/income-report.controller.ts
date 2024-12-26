@@ -1,22 +1,21 @@
 import { Body, Controller, Get, Post, Delete, Put } from '@nestjs/common';
-import { IncomeReportService } from './income-report.service';
 import {
   ApiBearerAuth,
   ApiExcludeEndpoint,
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { IncomeReportDto } from '../dtos/income.common.dto';
+import { IncomeReportDto } from './dtos/income.common.dto';
 import {
   CreateIncomeReportInput,
   DeleteIncomeReportInput,
   FindOneIncomeReportInput,
   InsertIncomeReportInput,
   UpdateIncomeReportInput,
-} from '../dtos/income.input.dto';
-import { IncomeReport } from '../entities/income-report.entity';
+} from './dtos/income.input.dto';
+import { IncomeReport } from './entities/income-report.entity';
 import { MFContext } from 'src/shared/types/types';
-import { InsertExpenseReportInput } from 'src/expenses/dtos/expense.input.dto';
+import { IncomeReportService } from './income-report.service';
 
 @Controller('income/income-report')
 @ApiBearerAuth()
@@ -38,7 +37,7 @@ export class IncomeReportController {
   async createIncomeReport(
     @MFContext('userId') userId: string,
     @Body() createIncomeReportInput: CreateIncomeReportInput,
-  ): Promise<void> {
+  ): Promise<IncomeReport> {
     return await this.service.create(userId, createIncomeReportInput);
   }
 

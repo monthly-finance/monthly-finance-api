@@ -6,19 +6,19 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
-import { IncomeReport } from '../entities/income-report.entity';
+import { IncomeReport } from './entities/income-report.entity';
 import {
   CreateIncomeReportInput,
   DeleteIncomeReportInput,
   FindOneIncomeReportInput,
   InsertIncomeReportInput,
   UpdateIncomeReportInput,
-} from '../dtos/income.input.dto';
+} from './dtos/income.input.dto';
 import { EntityNotFoundException } from 'src/shared/types/types';
 import { User } from 'src/user/entities/user.entity';
-import { EmployeeBenefitService } from '../employee-benefit/employee-benefit.service';
-import { OtherIncomeService } from '../other-income/other-income.service';
-import { PaycheckService } from '../paycheck/paycheck.service';
+import { EmployeeBenefitService } from './employee-benefit.service';
+import { OtherIncomeService } from './other-income.service';
+import { PaycheckService } from './paycheck.service';
 
 @Injectable()
 export class IncomeReportService {
@@ -35,7 +35,7 @@ export class IncomeReportService {
   async create(
     userId: string,
     createIncomeReport: CreateIncomeReportInput,
-  ): Promise<void> {
+  ): Promise<IncomeReport> {
     const { forMonth, forYear } = createIncomeReport;
     const user = await this.userRepo.findOneBy({ id: userId });
 
@@ -63,7 +63,7 @@ export class IncomeReportService {
       forYear,
     });
 
-    await this.incomeReportRepo.save(entity);
+    return await this.incomeReportRepo.save(entity);
   }
 
   async findAll(userId: string): Promise<IncomeReport[]> {

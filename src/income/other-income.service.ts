@@ -2,17 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExpenseReport } from 'src/expenses/entities/expense-report.entity';
 import { EntityNotFoundException } from 'src/shared/types/types';
-import { IsNull, Repository } from 'typeorm';
-import { IncomeReport } from '../entities/income-report.entity';
-import { OtherIncome } from '../entities/other-income.entity';
+import { OtherIncome } from './entities/other-income.entity';
+import { User } from 'src/user/entities/user.entity';
+import { UserService } from 'src/user/user.service';
+import { Repository, IsNull } from 'typeorm';
 import {
   CreateOtherIncomeInput,
   UpdateOtherIncomeInput,
   DeleteOtherIncomeInput,
-} from '../dtos/income.input.dto';
-import { UserService } from 'src/user/user.service';
-import { User } from 'src/user/entities/user.entity';
-import { IncomeModule } from '../income.module';
+} from './dtos/income.input.dto';
+import { IncomeReport } from './entities/income-report.entity';
 
 @Injectable()
 export class OtherIncomeService {

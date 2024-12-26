@@ -6,9 +6,9 @@ import {
   CreateRentInput,
   DeleteRentInput,
   UpdateRentInput,
-} from '../dtos/expense.input.dto';
-import { ExpenseReport } from '../entities/expense-report.entity';
-import { Rent } from '../entities/rent.entity';
+} from './dtos/expense.input.dto';
+import { ExpenseReport } from './entities/expense-report.entity';
+import { Rent } from './entities/rent.entity';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
 

@@ -1,18 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Paycheck } from '../entities/paycheck.entity';
-import { IsNull, Repository } from 'typeorm';
-import { IncomeReport } from '../entities/income-report.entity';
-
-import { ExpenseReport } from 'src/expenses/entities/expense-report.entity';
-import { EntityNotFoundException } from 'src/shared/types/types';
-import {
-  CreatePaycheckInput,
-  DeletePaycheckInput,
-  UpdatePaycheckInput,
-} from '../dtos/income.input.dto';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
+import { ExpenseReport } from 'src/expenses/entities/expense-report.entity';
+import { EntityNotFoundException } from 'src/shared/types/types';
+import { Repository, IsNull } from 'typeorm';
+import {
+  CreatePaycheckInput,
+  UpdatePaycheckInput,
+  DeletePaycheckInput,
+} from './dtos/income.input.dto';
+import { IncomeReport } from './entities/income-report.entity';
+import { Paycheck } from './entities/paycheck.entity';
 
 @Injectable()
 export class PaycheckService {

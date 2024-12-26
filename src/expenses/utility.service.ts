@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ExpenseReport } from '../entities/expense-report.entity';
+import { ExpenseReport } from './entities/expense-report.entity';
 import { IsNull, Repository } from 'typeorm';
 import {
   CreateUtilityInput,
   DeleteUtilityInput,
   UpdateUtilityInput,
-} from '../dtos/expense.input.dto';
-import { Utility } from '../entities/utility/utility.entity';
+} from './dtos/expense.input.dto';
+import { Utility } from './entities/utility/utility.entity';
 import { EntityNotFoundException } from 'src/shared/types/types';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';

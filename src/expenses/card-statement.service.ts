@@ -5,9 +5,9 @@ import {
   CreateCardEndOfMonthStatementInput,
   UpdateCardEndOfMonthStatementInput,
   DeleteCardEndOfMonthStatementInput,
-} from '../dtos/expense.input.dto';
-import { ExpenseReport } from '../entities/expense-report.entity';
-import { CardEndOfMonthStatement } from '../entities/banking/card-statement.entity';
+} from './dtos/expense.input.dto';
+import { ExpenseReport } from './entities/expense-report.entity';
+import { CardEndOfMonthStatement } from './entities/banking/card-statement.entity';
 import {
   BankingAccountType,
   EntityNotFoundException,
