@@ -106,7 +106,7 @@ export class CardStatementService {
       this.updateStatement(statement, userId),
     );
 
-    await Promise.all(updatePromises);
+    await Promise.allSettled(updatePromises);
   }
 
   async bulkInsert(
@@ -117,6 +117,6 @@ export class CardStatementService {
       this.addStatement(statement, userId),
     );
 
-    await Promise.all(insertPromises);
+    await Promise.allSettled(insertPromises);
   }
 }

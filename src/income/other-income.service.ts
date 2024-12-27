@@ -26,8 +26,8 @@ export class OtherIncomeService {
   async addOtherIncome(
     createOtherIncome: CreateOtherIncomeInput,
     userId: string,
+    reportId: number,
   ): Promise<OtherIncome> {
-    const { reportId, ...otherIncome } = createOtherIncome;
     const user = await this.userService.findOne(userId);
 
     if (!user) {
@@ -46,9 +46,9 @@ export class OtherIncomeService {
 
     const entity = this.otherIncomeRepo.create({
       incomeReport: report,
-      amount: otherIncome.amount,
-      datePayed: otherIncome.datePayed,
-      type: otherIncome.type,
+      amount: createOtherIncome.amount,
+      datePayed: createOtherIncome.datePayed,
+      type: createOtherIncome.type,
       user,
     });
 
@@ -104,17 +104,18 @@ export class OtherIncomeService {
       this.updateOtherIncome(oi, userId),
     );
 
-    await Promise.all(updatePromises);
+    await Promise.allSettled(updatePromises);
   }
 
   async bulkInsert(
     insertOtherIncomes: CreateOtherIncomeInput[],
     userId: string,
+    reportId: number,
   ) {
     const insertPromises = insertOtherIncomes.map((oi) =>
-      this.addOtherIncome(oi, userId),
+      this.addOtherIncome(oi, userId, reportId),
     );
 
-    await Promise.all(insertPromises);
+    await Promise.allSettled(insertPromises);
   }
 }

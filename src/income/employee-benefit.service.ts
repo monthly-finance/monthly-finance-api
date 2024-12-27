@@ -26,8 +26,8 @@ export class EmployeeBenefitService {
   async addEmployeeBenefit(
     createEmployeeBenefit: CreateEmployeeBenefitInput,
     userId: string,
+    reportId: number,
   ): Promise<EmployeeBenefit> {
-    const { reportId, ...employeeBenefit } = createEmployeeBenefit;
     const user = await this.userService.findOne(userId);
 
     if (!user) {
@@ -46,9 +46,9 @@ export class EmployeeBenefitService {
 
     const entity = this.employeeBenefitRepo.create({
       incomeReport: report,
-      type: employeeBenefit.type,
-      amount: employeeBenefit.amount,
-      datePayed: employeeBenefit.datePayed,
+      type: createEmployeeBenefit.type,
+      amount: createEmployeeBenefit.amount,
+      datePayed: createEmployeeBenefit.datePayed,
       user,
     });
 
@@ -108,17 +108,18 @@ export class EmployeeBenefitService {
       this.updateEmployeeBenefit(eb, userId),
     );
 
-    await Promise.all(updatePromises);
+    await Promise.allSettled(updatePromises);
   }
 
   async bulkInsert(
     insertEmployeeBenefits: CreateEmployeeBenefitInput[],
     userId: string,
+    reportId: number,
   ) {
     const insertPromises = insertEmployeeBenefits.map((eb) =>
-      this.addEmployeeBenefit(eb, userId),
+      this.addEmployeeBenefit(eb, userId, reportId),
     );
 
-    await Promise.all(insertPromises);
+    await Promise.allSettled(insertPromises);
   }
 }

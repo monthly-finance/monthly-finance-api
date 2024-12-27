@@ -90,7 +90,7 @@ export class UtilityService {
       this.updateUtility(utility, userId),
     );
 
-    await Promise.all(updatePromises);
+    await Promise.allSettled(updatePromises);
   }
 
   async bulkInsert(insertUtilities: CreateUtilityInput[], userId: string) {
@@ -98,6 +98,6 @@ export class UtilityService {
       this.addUtility(statement, userId),
     );
 
-    await Promise.all(insertPromises);
+    await Promise.allSettled(insertPromises);
   }
 }

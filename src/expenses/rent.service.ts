@@ -91,7 +91,7 @@ export class RentService {
       this.updateRent(rent, userId),
     );
 
-    await Promise.all(updatePromises);
+    await Promise.allSettled(updatePromises);
   }
 
   async bulkInsert(insetOtherIncomes: CreateRentInput[], userId: string) {
@@ -99,6 +99,6 @@ export class RentService {
       this.addRent(statement, userId),
     );
 
-    await Promise.all(insertPromises);
+    await Promise.allSettled(insertPromises);
   }
 }

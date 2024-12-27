@@ -7,10 +7,7 @@ import {
 } from './income.common.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreatePaycheckInput extends PaycheckDto {
-  @ApiProperty()
-  reportId: number;
-}
+export class CreatePaycheckInput extends PaycheckDto {}
 export class UpdatePaycheckInput extends PaycheckDto {
   @ApiProperty()
   id: number;
@@ -20,10 +17,7 @@ export class DeletePaycheckInput {
   paycheckId: number;
 }
 
-export class CreateEmployeeBenefitInput extends EmployeeBenefitDto {
-  @ApiProperty()
-  reportId: number;
-}
+export class CreateEmployeeBenefitInput extends EmployeeBenefitDto {}
 export class UpdateEmployeeBenefitInput extends EmployeeBenefitDto {
   @ApiProperty()
   id: number;
@@ -33,10 +27,7 @@ export class DeleteEmployeeBenefitInput {
   employeeBenefitId: number;
 }
 
-export class CreateOtherIncomeInput extends OtherIncomeDto {
-  @ApiProperty()
-  reportId: number;
-}
+export class CreateOtherIncomeInput extends OtherIncomeDto {}
 export class UpdateOtherIncomeInput extends OtherIncomeDto {
   @ApiProperty()
   id: number;

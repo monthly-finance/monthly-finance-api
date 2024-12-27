@@ -140,12 +140,20 @@ export class IncomeReportService {
 
     if (employeeBenefit)
       promiseList.push(
-        this.employeeBenefitService.bulkInsert(employeeBenefit, userId),
+        this.employeeBenefitService.bulkInsert(
+          employeeBenefit,
+          userId,
+          reportId,
+        ),
       );
     if (otherIncome)
-      promiseList.push(this.otherIncomeService.bulkInsert(otherIncome, userId));
+      promiseList.push(
+        this.otherIncomeService.bulkInsert(otherIncome, userId, reportId),
+      );
     if (paycheck)
-      promiseList.push(this.paycheckService.bulkInsert(paycheck, userId));
+      promiseList.push(
+        this.paycheckService.bulkInsert(paycheck, userId, reportId),
+      );
 
     return evaluateSettledPromises(await Promise.allSettled(promiseList));
   }

@@ -26,9 +26,8 @@ export class PaycheckService {
   async addPaycheck(
     createPaycheck: CreatePaycheckInput,
     userId: string,
+    reportId: number,
   ): Promise<Paycheck> {
-    const { reportId, ...paycheck } = createPaycheck;
-
     const user = await this.userService.findOne(userId);
 
     if (!user) {
@@ -47,8 +46,8 @@ export class PaycheckService {
 
     const entity = this.paycheckRepo.create({
       incomeReport: report,
-      amount: paycheck.amount,
-      datePayed: paycheck.datePayed,
+      amount: createPaycheck.amount,
+      datePayed: createPaycheck.datePayed,
       user,
     });
 
@@ -95,14 +94,18 @@ export class PaycheckService {
       this.updatePaycheck(paycheck, userId),
     );
 
-    await Promise.all(updatePromises);
+    await Promise.allSettled(updatePromises);
   }
 
-  async bulkInsert(insertOtherIncomes: CreatePaycheckInput[], userId: string) {
-    const insertPromises = insertOtherIncomes.map((oi) =>
-      this.addPaycheck(oi, userId),
+  async bulkInsert(
+    insertPaycheck: CreatePaycheckInput[],
+    userId: string,
+    reportId: number,
+  ) {
+    const insertPromises = insertPaycheck.map((oi) =>
+      this.addPaycheck(oi, userId, reportId),
     );
 
-    await Promise.all(insertPromises);
+    await Promise.allSettled(insertPromises);
   }
 }
