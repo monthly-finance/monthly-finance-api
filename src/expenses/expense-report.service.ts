@@ -161,26 +161,22 @@ export class ExpenseReportService {
 
     const promiseList: Array<Promise<any>> = [];
 
-    //TODO: ids should be strings
     if (cardIds)
-      cardIds.forEach((id) => {
+      cardIds.forEach((statementId) => {
         promiseList.push(
-          this.cardStatementService.deleteStatement(
-            { statementId: +id },
-            userId,
-          ),
+          this.cardStatementService.deleteStatement({ statementId }, userId),
         );
       });
 
     if (rentIds)
-      rentIds.forEach((id) => {
-        promiseList.push(this.rentService.deleteRent({ rentId: +id }, userId));
+      rentIds.forEach((rentId) => {
+        promiseList.push(this.rentService.deleteRent({ rentId }, userId));
       });
 
     if (utilityIds)
-      utilityIds.forEach((id) => {
+      utilityIds.forEach((utilityId) => {
         promiseList.push(
-          this.utilityservice.deleteUtility({ utilityId: +id }, userId),
+          this.utilityservice.deleteUtility({ utilityId }, userId),
         );
       });
 
