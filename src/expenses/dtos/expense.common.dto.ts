@@ -23,17 +23,16 @@ export class RentDto {
   rentor: string;
 }
 
-// TODO: need CRUD
-// export class BankDto {
-//   @ApiProperty({ example: 'Truist' })
-//   bankName: string;
+export class OtherExpenseDto {
+  @ApiProperty({ example: '2024-02-10T10:07:58.767Z' })
+  datePayed: Date;
 
-//   @ApiProperty({ enum: BankingAccountType })
-//   accountType: BankingAccountType;
+  @ApiProperty({ example: 'debt re-payment' })
+  type: string;
 
-//   @ApiProperty({ example: true })
-//   isActive: boolean;
-// }
+  @ApiProperty({ example: 3000 })
+  amount: number;
+}
 
 export class CardEndOfMonthStatementDto {
   @ApiProperty({ example: 'Truist' })
@@ -49,7 +48,6 @@ export class CardEndOfMonthStatementDto {
   isPayed: boolean;
 }
 
-// TODO: need CRUD
 export class ExpenseReportDto {
   @ApiProperty({ enum: Month })
   forMonth: Month;

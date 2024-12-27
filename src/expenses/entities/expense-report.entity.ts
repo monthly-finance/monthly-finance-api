@@ -13,14 +13,9 @@ import { Month } from 'src/shared/types/types';
 import { Rent } from './rent.entity';
 import { Utility } from './utility.entity';
 import { CardEndOfMonthStatement } from './card-statement.entity';
+import { OtherExpense } from './other-expense.entity';
 
 @Entity()
-// @Unique('ExpenseReport_MonthAndYear', [
-//   'forMonth',
-//   'forYear',
-//   'user',
-//   'deletedAt',
-// ])
 @Index(
   'ExpenseReport_MonthAndYear_Null_deletedAt',
   ['forMonth', 'forYear', 'user'],
@@ -51,6 +46,9 @@ export class ExpenseReport extends BaseMFEntity {
     },
   )
   cardEndOfMonthStatement: CardEndOfMonthStatement[];
+
+  @OneToMany(() => OtherExpense, (otherExpense) => otherExpense.expenseReport)
+  otherExpense: OtherExpense[];
 
   @CreateDateColumn()
   createdAt: Date;

@@ -2,6 +2,7 @@ import { Month } from 'src/shared/types/types';
 import {
   CardEndOfMonthStatementDto,
   ExpenseReportDto,
+  OtherExpenseDto,
   RentDto,
   UtilityDto,
 } from './expense.common.dto';
@@ -31,6 +32,16 @@ export class UpdateCardEndOfMonthStatementInput extends CardEndOfMonthStatementD
 export class DeleteCardEndOfMonthStatementInput {
   @ApiProperty()
   statementId: number;
+}
+
+export class CreateOtherExpenseInput extends OtherExpenseDto {}
+export class UpdateOtherExpenseInput extends OtherExpenseDto {
+  @ApiProperty()
+  id: number;
+}
+export class DeleteOtherIncomeInput extends OtherExpenseDto {
+  @ApiProperty()
+  otherExpenseId: number;
 }
 
 export class CreateRentInput extends RentDto {

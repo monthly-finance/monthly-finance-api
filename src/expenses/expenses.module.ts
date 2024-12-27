@@ -11,6 +11,7 @@ import { Rent } from './entities/rent.entity';
 import { ExpensesController } from './expense-report.controller';
 import { CardEndOfMonthStatement } from './entities/card-statement.entity';
 import { Utility } from './entities/utility.entity';
+import { OtherExpenseService } from './other-expense.service';
 
 @Module({
   providers: [
@@ -18,13 +19,13 @@ import { Utility } from './entities/utility.entity';
     UtilityService,
     CardStatementService,
     RentService,
+    OtherExpenseService,
   ],
   controllers: [ExpensesController],
 
   imports: [
     TypeOrmModule.forFeature([
       CardEndOfMonthStatement,
-
       Utility,
       ExpenseReport,
       User,
