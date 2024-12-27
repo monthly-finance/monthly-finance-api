@@ -173,14 +173,47 @@ export class IncomeReportService {
     userId: string,
     deleteIncomeReportInput: DeleteIncomeReportInput,
   ) {
-    const { reportId: id } = deleteIncomeReportInput;
+    const { reportId, employeeIds, otherIncomeIds, paycheckIds } =
+      deleteIncomeReportInput;
 
     const report = await this.incomeReportRepo.findOneByOrFail({
-      id,
+      id: reportId,
       user: { id: userId },
       deletedAt: IsNull(),
     });
 
     await this.incomeReportRepo.softRemove(report);
+
+    //TODO: use a single transaction for this
+    const promiseList: Array<Promise<any>> = [];
+
+    if (employeeIds)
+      employeeIds.forEach((id) =>
+        promiseList.push(
+          this.employeeBenefitService.deleteEmployeeBenefit(
+            { employeeBenefitId: id },
+            userId,
+          ),
+        ),
+      );
+
+    if (otherIncomeIds)
+      otherIncomeIds.forEach((id) =>
+        promiseList.push(
+          this.otherIncomeService.deleteOtherIncome(
+            { otherIncomeId: id },
+            userId,
+          ),
+        ),
+      );
+
+    if (paycheckIds)
+      paycheckIds.forEach((id) =>
+        promiseList.push(
+          this.paycheckService.deletePaycheck({ paycheckId: id }, userId),
+        ),
+      );
+
+    await Promise.allSettled(promiseList);
   }
 }

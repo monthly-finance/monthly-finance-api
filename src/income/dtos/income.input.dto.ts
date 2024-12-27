@@ -77,7 +77,17 @@ export class UpdateIncomeReportInput extends IncomeReportDto {
 export class DeleteIncomeReportInput {
   @ApiProperty()
   reportId: number;
+
+  @ApiProperty()
+  employeeIds: number[];
+
+  @ApiProperty()
+  paycheckIds: number[];
+
+  @ApiProperty()
+  otherIncomeIds: number[];
 }
+
 export class FindOneIncomeReportInput {
   @ApiProperty({ enum: Month })
   forMonth: Month;

@@ -60,8 +60,7 @@ export class IncomeReportController {
   }
 
   @Delete()
-  // @ApiOperation({ summary: 'Delete Income Report' })
-  @ApiExcludeEndpoint()
+  @ApiOperation({ summary: 'Delete Income Report' })
   async deleteIncomeReport(
     @Body() deleteIncomeReportInput: DeleteIncomeReportInput,
     @MFContext('userId') userId: string,
