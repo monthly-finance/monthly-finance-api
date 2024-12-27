@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
 import {
@@ -7,13 +7,10 @@ import {
   DeleteCardEndOfMonthStatementInput,
 } from './dtos/expense.input.dto';
 import { ExpenseReport } from './entities/expense-report.entity';
-import { CardEndOfMonthStatement } from './entities/banking/card-statement.entity';
-import {
-  BankingAccountType,
-  EntityNotFoundException,
-} from 'src/shared/types/types';
+import { EntityNotFoundException } from 'src/shared/types/types';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
+import { CardEndOfMonthStatement } from './entities/card-statement.entity';
 
 @Injectable()
 export class CardStatementService {

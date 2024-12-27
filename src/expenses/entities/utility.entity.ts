@@ -1,6 +1,6 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
-import { ExpenseReport } from '../expense-report.entity';
 import { BaseMFEntity } from 'src/shared/base-mf-entity.entity';
+import { ExpenseReport } from './expense-report.entity';
 
 @Entity()
 export class Utility extends BaseMFEntity {
@@ -10,10 +10,8 @@ export class Utility extends BaseMFEntity {
   @Column()
   type: string;
 
-  @ManyToOne(
-    () => ExpenseReport,
-    (expenseReport) => expenseReport.utilities,
-    {},
-  )
+  @ManyToOne(() => ExpenseReport, (expenseReport) => expenseReport.utilities, {
+    cascade: true,
+  })
   expenseReport: ExpenseReport;
 }

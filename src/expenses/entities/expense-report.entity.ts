@@ -8,11 +8,11 @@ import {
   UpdateDateColumn,
   Index,
 } from 'typeorm';
-import { Utility } from './utility/utility.entity';
 import { BaseMFEntity } from 'src/shared/base-mf-entity.entity';
-import { CardEndOfMonthStatement } from './banking/card-statement.entity';
 import { Month } from 'src/shared/types/types';
 import { Rent } from './rent.entity';
+import { Utility } from './utility.entity';
+import { CardEndOfMonthStatement } from './card-statement.entity';
 
 @Entity()
 // @Unique('ExpenseReport_MonthAndYear', [
@@ -34,20 +34,20 @@ export class ExpenseReport extends BaseMFEntity {
   forYear: string;
 
   @OneToMany(() => Utility, (utilites) => utilites.expenseReport, {
-    // cascade: ['insert', 'update', 'soft-remove'],
-    // orphanedRowAction: 'soft-delete',
+    onDelete: 'CASCADE',
   })
   utilities: Utility[];
 
-  @OneToMany(() => Rent, (u) => u.expenseReport)
+  @OneToMany(() => Rent, (u) => u.expenseReport, {
+    onDelete: 'CASCADE',
+  })
   rent: Rent;
 
   @OneToMany(
     () => CardEndOfMonthStatement,
     (CardEndOfMonthStatement) => CardEndOfMonthStatement.expenseReport,
     {
-      // cascade: ['insert', 'update', 'soft-remove'],
-      // orphanedRowAction: 'soft-delete',
+      onDelete: 'CASCADE',
     },
   )
   cardEndOfMonthStatement: CardEndOfMonthStatement[];

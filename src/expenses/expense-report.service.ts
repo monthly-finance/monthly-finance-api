@@ -150,7 +150,40 @@ export class ExpenseReportService {
   }
 
   async delete(deleteExpenseReport: DeleteExpenseReportInput, userId: string) {
-    const { reportId: id } = deleteExpenseReport;
-    this.expenseReportRepo.softRemove({ id, user: { id: userId } });
+    const { reportId, cardIds, rentIds, utilityIds } = deleteExpenseReport;
+
+    //TODO: this should cascade. Also maybe i should error handle this
+    if (rentIds)
+      await this.expenseReportRepo.softRemove({
+        id: reportId,
+        user: { id: userId },
+      });
+
+    const promiseList: Array<Promise<any>> = [];
+
+    //TODO: ids should be strings
+    if (cardIds)
+      cardIds.forEach((id) => {
+        promiseList.push(
+          this.cardStatementService.deleteStatement(
+            { statementId: +id },
+            userId,
+          ),
+        );
+      });
+
+    if (rentIds)
+      rentIds.forEach((id) => {
+        promiseList.push(this.rentService.deleteRent({ rentId: +id }, userId));
+      });
+
+    if (utilityIds)
+      utilityIds.forEach((id) => {
+        promiseList.push(
+          this.utilityservice.deleteUtility({ utilityId: +id }, userId),
+        );
+      });
+
+    await Promise.all(promiseList);
   }
 }

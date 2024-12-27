@@ -75,8 +75,7 @@ export class ExpensesController {
   }
 
   @Delete()
-  // @ApiOperation({ summary: 'Delete Expense Report' })
-  @ApiExcludeEndpoint()
+  @ApiOperation({ summary: 'Delete Expense Report' })
   async deleteExpenseReport(
     @Body() deleteExpenseReportInput: DeleteExpenseReportInput,
     @MFContext() context: RequestContext,

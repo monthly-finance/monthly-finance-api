@@ -10,6 +10,6 @@ export class Rent extends BaseMFEntity {
   @Column()
   rentor: string;
 
-  @ManyToOne(() => ExpenseReport, (u) => u.rent)
+  @ManyToOne(() => ExpenseReport, (u) => u.rent, { cascade: true })
   expenseReport?: ExpenseReport;
 }

@@ -1,6 +1,9 @@
 import { registerAs } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { DataSource, DataSourceOptions } from 'typeorm';
+import * as dotenv from 'dotenv';
+
+dotenv.config(); // Load .env file
 
 const getDatabaseOptions = (): TypeOrmModuleOptions & DataSourceOptions => {
   return {
@@ -26,8 +29,8 @@ const dataSource = new DataSource({
   type: 'postgres',
   host: 'localhost',
   port: +process.env.POSTGRES_PORT,
-  username: `${process.env.LOCAL_POSTGRES_USER}`,
-  password: `${process.env.LOCAL_POSTGRES_PASSWORD}`,
+  username: `${process.env.POSTGRES_USER}`,
+  password: `${process.env.POSTGRES_PASSWORD}`,
   database: `${process.env.POSTGRES_DATABASE}`,
   entities: ['dist/**/*.entity.js'],
   synchronize: true,

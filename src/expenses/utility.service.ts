@@ -7,10 +7,10 @@ import {
   DeleteUtilityInput,
   UpdateUtilityInput,
 } from './dtos/expense.input.dto';
-import { Utility } from './entities/utility/utility.entity';
 import { EntityNotFoundException } from 'src/shared/types/types';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
+import { Utility } from './entities/utility.entity';
 
 @Injectable()
 export class UtilityService {

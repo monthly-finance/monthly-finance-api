@@ -52,30 +52,39 @@ export class InsertExpenseReportInput {
   reportId: number;
 
   @ApiProperty({ type: [CreateUtilityInput] })
-  utilities: CreateUtilityInput[];
+  utilities?: CreateUtilityInput[];
 
   @ApiProperty({ type: [CreateCardEndOfMonthStatementInput] })
-  cardEndOfMonthStatement: CreateCardEndOfMonthStatementInput[];
+  cardEndOfMonthStatement?: CreateCardEndOfMonthStatementInput[];
 
   @ApiProperty({ type: [CreateRentInput] })
-  rent: CreateRentInput[];
+  rent?: CreateRentInput[];
 }
 export class UpdateExpenseReportInput extends ExpenseReportDto {
   @ApiProperty()
   id: number;
 
   @ApiProperty({ type: [UpdateUtilityInput] })
-  utilities: UpdateUtilityInput[];
+  utilities?: UpdateUtilityInput[];
 
   @ApiProperty({ type: [UpdateCardEndOfMonthStatementInput] })
-  cardEndOfMonthStatement: UpdateCardEndOfMonthStatementInput[];
+  cardEndOfMonthStatement?: UpdateCardEndOfMonthStatementInput[];
 
   @ApiProperty({ type: [UpdateRentInput] })
-  rent: UpdateRentInput[];
+  rent?: UpdateRentInput[];
 }
 export class DeleteExpenseReportInput {
   @ApiProperty()
-  reportId: number;
+  reportId?: number;
+
+  @ApiProperty()
+  utilityIds?: number[];
+
+  @ApiProperty()
+  cardIds?: number[];
+
+  @ApiProperty()
+  rentIds?: number[];
 }
 export class FindOneExpenseReportInput {
   @ApiProperty({ enum: Month })
