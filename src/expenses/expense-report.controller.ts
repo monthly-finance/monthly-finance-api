@@ -5,25 +5,22 @@ import {
   Get,
   Put,
   Delete,
-  UseInterceptors,
   ClassSerializerInterceptor,
+  UseInterceptors,
 } from '@nestjs/common';
-import { ExpenseReportService } from '../services/expense-report.service';
-import {
-  CreateExpenseReportInput,
-  DeleteExpenseReportInput,
-  FindOneExpenseReportInput,
-  UpdateExpenseReportInput,
-} from '../dtos/expense.input.dto';
-import {
-  ApiBearerAuth,
-  ApiExcludeEndpoint,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
-import { ExpenseReport } from '../entities/expense-report.entity';
+
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MFContext } from 'src/shared/types/types';
 import { RequestContext } from 'src/auth/types/auth.type';
+import {
+  CreateExpenseReportInput,
+  FindOneExpenseReportInput,
+  UpdateExpenseReportInput,
+  DeleteExpenseReportInput,
+  InsertExpenseReportInput,
+} from './dtos/expense.input.dto';
+import { ExpenseReport } from './entities/expense-report.entity';
+import { ExpenseReportService } from './expense-report.service';
 
 @Controller('expense/expense-report')
 @ApiBearerAuth()
@@ -68,17 +65,25 @@ export class ExpensesController {
   async updateExpenseReport(
     @Body() updateExpenseReportInput: UpdateExpenseReportInput,
     @MFContext() context: RequestContext,
-  ): Promise<ExpenseReport> {
+  ): Promise<void> {
     return await this.service.update(updateExpenseReportInput, context.userId);
   }
 
   @Delete()
-  // @ApiOperation({ summary: 'Delete Expense Report' })
-  @ApiExcludeEndpoint()
+  @ApiOperation({ summary: 'Delete Expense Report' })
   async deleteExpenseReport(
     @Body() deleteExpenseReportInput: DeleteExpenseReportInput,
     @MFContext() context: RequestContext,
   ): Promise<void> {
     return await this.service.delete(deleteExpenseReportInput, context.userId);
+  }
+
+  @Post('insert')
+  @ApiOperation({ summary: 'Insert data into Expense Report' })
+  async insertExpenseReport(
+    @Body() insertExpenseReport: InsertExpenseReportInput,
+    @MFContext() context: RequestContext,
+  ): Promise<void> {
+    return await this.service.insert(insertExpenseReport, context.userId);
   }
 }

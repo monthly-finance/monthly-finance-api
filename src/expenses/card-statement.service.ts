@@ -1,19 +1,16 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
 import {
   CreateCardEndOfMonthStatementInput,
   UpdateCardEndOfMonthStatementInput,
   DeleteCardEndOfMonthStatementInput,
-} from '../dtos/expense.input.dto';
-import { ExpenseReport } from '../entities/expense-report.entity';
-import { CardEndOfMonthStatement } from '../entities/banking/card-statement.entity';
-import {
-  BankingAccountType,
-  EntityNotFoundException,
-} from 'src/shared/types/types';
+} from './dtos/expense.input.dto';
+import { ExpenseReport } from './entities/expense-report.entity';
+import { EntityNotFoundException } from 'src/shared/types/types';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
+import { CardEndOfMonthStatement } from './entities/card-statement.entity';
 
 @Injectable()
 export class CardStatementService {
@@ -64,26 +61,23 @@ export class CardStatementService {
     updateStatement: UpdateCardEndOfMonthStatementInput,
     userId: string,
   ): Promise<CardEndOfMonthStatement> {
-    const { statementId, ...statement } = updateStatement;
+    const { id, ...statement } = updateStatement;
     const current_statement = await this.statementRepo.findOneBy({
-      id: statementId,
+      id: id,
       deletedAt: IsNull(),
       user: { id: userId },
     });
 
     if (!current_statement) {
-      throw new EntityNotFoundException(
-        CardEndOfMonthStatement.name,
-        statementId,
-      );
+      throw new EntityNotFoundException(CardEndOfMonthStatement.name, id);
     }
 
     await this.statementRepo.update(
-      { id: statementId, user: { id: userId } },
+      { id, user: { id: userId } },
       statement as CardEndOfMonthStatement,
     );
 
-    return await this.statementRepo.findOneBy({ id: statementId });
+    return await this.statementRepo.findOneBy({ id });
   }
 
   async deleteStatement(
@@ -96,5 +90,33 @@ export class CardStatementService {
       id: statementId,
       user: { id: userId },
     });
+  }
+
+  async bulkUpdate(
+    updateStatements: UpdateCardEndOfMonthStatementInput[],
+    userId: string,
+  ): Promise<void> {
+    const ids = updateStatements.map((statement) => statement.id);
+    const uniqueIds = new Set(ids);
+
+    if (ids.length !== uniqueIds.size)
+      throw new Error('Card Statement ids are not unique for bulk update');
+
+    const updatePromises = updateStatements.map((statement) =>
+      this.updateStatement(statement, userId),
+    );
+
+    await Promise.all(updatePromises);
+  }
+
+  async bulkInsert(
+    insertStatement: CreateCardEndOfMonthStatementInput[],
+    userId: string,
+  ) {
+    const insertPromises = insertStatement.map((statement) =>
+      this.addStatement(statement, userId),
+    );
+
+    await Promise.all(insertPromises);
   }
 }

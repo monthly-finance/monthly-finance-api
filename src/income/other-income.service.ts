@@ -2,17 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExpenseReport } from 'src/expenses/entities/expense-report.entity';
 import { EntityNotFoundException } from 'src/shared/types/types';
-import { IsNull, Repository } from 'typeorm';
-import { IncomeReport } from '../entities/income-report.entity';
-import { OtherIncome } from '../entities/other-income.entity';
+import { OtherIncome } from './entities/other-income.entity';
+import { User } from 'src/user/entities/user.entity';
+import { UserService } from 'src/user/user.service';
+import { Repository, IsNull } from 'typeorm';
 import {
   CreateOtherIncomeInput,
   UpdateOtherIncomeInput,
   DeleteOtherIncomeInput,
-} from '../dtos/income.input.dto';
-import { UserService } from 'src/user/user.service';
-import { User } from 'src/user/entities/user.entity';
-import { IncomeModule } from '../income.module';
+} from './dtos/income.input.dto';
+import { IncomeReport } from './entities/income-report.entity';
 
 @Injectable()
 export class OtherIncomeService {
@@ -59,24 +58,24 @@ export class OtherIncomeService {
   async updateOtherIncome(
     updateOtherIncome: UpdateOtherIncomeInput,
     userId: string,
-  ): Promise<OtherIncome> {
-    const { otherIncomeId, ...otherIncome } = updateOtherIncome;
+  ) {
+    const { id, ...otherIncome } = updateOtherIncome;
     const current_OtherIncome = await this.otherIncomeRepo.findOneBy({
-      id: otherIncomeId,
+      id: id,
       user: { id: userId },
       deletedAt: IsNull(),
     });
 
     if (!current_OtherIncome) {
-      throw new EntityNotFoundException(OtherIncome.name, otherIncomeId);
+      throw new EntityNotFoundException(OtherIncome.name, id);
     }
 
     await this.otherIncomeRepo.update(
-      { id: otherIncomeId, user: { id: userId } },
+      { id, user: { id: userId } },
       otherIncome,
     );
 
-    return await this.otherIncomeRepo.findOneBy({ id: otherIncomeId });
+    return await this.otherIncomeRepo.findOneBy({ id });
   }
 
   async deleteOtherIncome(
@@ -89,5 +88,33 @@ export class OtherIncomeService {
       id: otherIncomeId,
       user: { id: userId },
     });
+  }
+
+  async bulkUpdate(
+    updateOtherIncomeInputs: UpdateOtherIncomeInput[],
+    userId: string,
+  ): Promise<void> {
+    const ids = updateOtherIncomeInputs.map((oi) => oi.id);
+    const uniqueIds = new Set(ids);
+
+    if (ids.length !== uniqueIds.size)
+      throw new Error('Other Income ids are not unique for bulk update');
+
+    const updatePromises = updateOtherIncomeInputs.map((oi) =>
+      this.updateOtherIncome(oi, userId),
+    );
+
+    await Promise.all(updatePromises);
+  }
+
+  async bulkInsert(
+    insertOtherIncomes: CreateOtherIncomeInput[],
+    userId: string,
+  ) {
+    const insertPromises = insertOtherIncomes.map((oi) =>
+      this.addOtherIncome(oi, userId),
+    );
+
+    await Promise.all(insertPromises);
   }
 }

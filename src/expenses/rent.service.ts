@@ -6,9 +6,9 @@ import {
   CreateRentInput,
   DeleteRentInput,
   UpdateRentInput,
-} from '../dtos/expense.input.dto';
-import { ExpenseReport } from '../entities/expense-report.entity';
-import { Rent } from '../entities/rent.entity';
+} from './dtos/expense.input.dto';
+import { ExpenseReport } from './entities/expense-report.entity';
+import { Rent } from './entities/rent.entity';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
 
@@ -51,29 +51,54 @@ export class RentService {
     return await this.rentRepo.save(entity);
   }
 
-  async updateRent(updateRent: UpdateRentInput, userId: string): Promise<Rent> {
-    const { rentId, ...rent } = updateRent;
+  async updateRent(updateRent: UpdateRentInput, userId: string) {
+    const { id, ...rent } = updateRent;
     const current_rent = await this.rentRepo.findOneBy({
-      id: rentId,
+      id,
       user: { id: userId },
       deletedAt: IsNull(),
     });
 
     if (!current_rent) {
-      throw new EntityNotFoundException(Rent.name, rentId);
+      throw new EntityNotFoundException(Rent.name, id);
     }
 
     await this.rentRepo.update(
-      { id: rentId, user: { id: userId } },
+      { id, user: { id: userId } },
       { rentAmount: rent.amount, rentor: rent.rentor },
     );
 
-    return await this.rentRepo.findOneBy({ id: rentId });
+    return await this.rentRepo.findOneBy({ id });
   }
 
   async deleteRent(deleteRent: DeleteRentInput, userId: string) {
     const { rentId } = deleteRent;
 
     await this.rentRepo.softDelete({ id: rentId, user: { id: userId } });
+  }
+
+  async bulkUpdate(
+    updateRents: UpdateRentInput[],
+    userId: string,
+  ): Promise<void> {
+    const ids = updateRents.map((rent) => rent.id);
+    const uniqueIds = new Set(ids);
+
+    if (ids.length !== uniqueIds.size)
+      throw new Error('Rent ids are not unique for bulk update');
+
+    const updatePromises = updateRents.map((rent) =>
+      this.updateRent(rent, userId),
+    );
+
+    await Promise.all(updatePromises);
+  }
+
+  async bulkInsert(insetOtherIncomes: CreateRentInput[], userId: string) {
+    const insertPromises = insetOtherIncomes.map((statement) =>
+      this.addRent(statement, userId),
+    );
+
+    await Promise.all(insertPromises);
   }
 }

@@ -1,23 +1,30 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ExpenseReport } from '../entities/expense-report.entity';
+import { ExpenseReport } from './entities/expense-report.entity';
 import { IsNull, Repository } from 'typeorm';
 import {
   CreateExpenseReportInput,
   DeleteExpenseReportInput,
   FindOneExpenseReportInput,
+  InsertExpenseReportInput,
   UpdateExpenseReportInput,
-} from '../dtos/expense.input.dto';
+} from './dtos/expense.input.dto';
 import { EntityNotFoundException } from 'src/shared/types/types';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
+import { RentService } from './rent.service';
+import { UtilityService } from './utility.service';
+import { CardStatementService } from './card-statement.service';
 
 @Injectable()
 export class ExpenseReportService {
   constructor(
     @InjectRepository(ExpenseReport)
     private expenseReportRepo: Repository<ExpenseReport>,
-    private userService: UserService,
+    private readonly userService: UserService,
+    private readonly rentService: RentService,
+    private readonly utilityservice: UtilityService,
+    private readonly cardStatementService: CardStatementService,
   ) {}
 
   async create(
@@ -94,28 +101,85 @@ export class ExpenseReportService {
     });
   }
 
-  async update(
-    updateExpenseReport: UpdateExpenseReportInput,
-    userId: string,
-  ): Promise<ExpenseReport> {
-    const { reportId: id, ...report } = updateExpenseReport;
-    const current_report = await this.expenseReportRepo.findOneBy({
+  async update(updateExpenseReport: UpdateExpenseReportInput, userId: string) {
+    const { id, utilities, cardEndOfMonthStatement, rent, ...report } =
+      updateExpenseReport;
+    const currentReport = await this.expenseReportRepo.findOneBy({
       id,
       user: { id: userId },
       deletedAt: IsNull(),
     });
 
-    if (!current_report) {
+    if (!currentReport)
       throw new EntityNotFoundException(ExpenseReport.name, id);
-    }
 
     await this.expenseReportRepo.update({ id, deletedAt: IsNull() }, report);
 
-    return await this.expenseReportRepo.findOneBy({ id });
+    if (utilities) await this.utilityservice.bulkUpdate(utilities, userId);
+    if (cardEndOfMonthStatement)
+      await this.cardStatementService.bulkUpdate(
+        cardEndOfMonthStatement,
+        userId,
+      );
+    if (rent) await this.rentService.bulkUpdate(rent, userId);
+  }
+
+  async insert(
+    insertExpenseReportInput: InsertExpenseReportInput,
+    userId: string,
+  ): Promise<void> {
+    const { reportId, utilities, cardEndOfMonthStatement, rent } =
+      insertExpenseReportInput;
+
+    const currentReport = await this.expenseReportRepo.findOneBy({
+      id: reportId,
+      user: { id: userId },
+      deletedAt: IsNull(),
+    });
+
+    if (!currentReport)
+      throw new EntityNotFoundException(ExpenseReport.name, reportId);
+
+    if (utilities) await this.utilityservice.bulkInsert(utilities, userId);
+    if (cardEndOfMonthStatement)
+      await this.cardStatementService.bulkInsert(
+        cardEndOfMonthStatement,
+        userId,
+      );
+    if (rent) await this.rentService.bulkInsert(rent, userId);
   }
 
   async delete(deleteExpenseReport: DeleteExpenseReportInput, userId: string) {
-    const { reportId: id } = deleteExpenseReport;
-    this.expenseReportRepo.softRemove({ id, user: { id: userId } });
+    const { reportId, cardIds, rentIds, utilityIds } = deleteExpenseReport;
+
+    //TODO: this should cascade. Also maybe i should error handle this
+    if (rentIds)
+      await this.expenseReportRepo.softRemove({
+        id: reportId,
+        user: { id: userId },
+      });
+
+    const promiseList: Array<Promise<any>> = [];
+
+    if (cardIds)
+      cardIds.forEach((statementId) => {
+        promiseList.push(
+          this.cardStatementService.deleteStatement({ statementId }, userId),
+        );
+      });
+
+    if (rentIds)
+      rentIds.forEach((rentId) => {
+        promiseList.push(this.rentService.deleteRent({ rentId }, userId));
+      });
+
+    if (utilityIds)
+      utilityIds.forEach((utilityId) => {
+        promiseList.push(
+          this.utilityservice.deleteUtility({ utilityId }, userId),
+        );
+      });
+
+    await Promise.all(promiseList);
   }
 }

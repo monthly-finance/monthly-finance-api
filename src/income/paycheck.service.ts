@@ -1,18 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Paycheck } from '../entities/paycheck.entity';
-import { IsNull, Repository } from 'typeorm';
-import { IncomeReport } from '../entities/income-report.entity';
-
-import { ExpenseReport } from 'src/expenses/entities/expense-report.entity';
-import { EntityNotFoundException } from 'src/shared/types/types';
-import {
-  CreatePaycheckInput,
-  DeletePaycheckInput,
-  UpdatePaycheckInput,
-} from '../dtos/income.input.dto';
 import { UserService } from 'src/user/user.service';
 import { User } from 'src/user/entities/user.entity';
+import { ExpenseReport } from 'src/expenses/entities/expense-report.entity';
+import { EntityNotFoundException } from 'src/shared/types/types';
+import { Repository, IsNull } from 'typeorm';
+import {
+  CreatePaycheckInput,
+  UpdatePaycheckInput,
+  DeletePaycheckInput,
+} from './dtos/income.input.dto';
+import { IncomeReport } from './entities/income-report.entity';
+import { Paycheck } from './entities/paycheck.entity';
 
 @Injectable()
 export class PaycheckService {
@@ -56,24 +55,21 @@ export class PaycheckService {
     return await this.paycheckRepo.save(entity);
   }
 
-  async updatePaycheck(
-    updatePaycheck: UpdatePaycheckInput,
-    userId: string,
-  ): Promise<Paycheck> {
-    const { paycheckId, ...paycheck } = updatePaycheck;
-    const current_Paycheck = await this.paycheckRepo.findOneBy({
-      id: paycheckId,
+  async updatePaycheck(updatePaycheck: UpdatePaycheckInput, userId: string) {
+    const { id, ...paycheck } = updatePaycheck;
+    const currentPaycheck = await this.paycheckRepo.findOneBy({
+      id,
       user: { id: userId },
       deletedAt: IsNull(),
     });
 
-    if (!current_Paycheck) {
-      throw new EntityNotFoundException(Paycheck.name, paycheckId);
+    if (!currentPaycheck) {
+      throw new EntityNotFoundException(Paycheck.name, id);
     }
 
-    await this.paycheckRepo.update({ id: paycheckId }, paycheck);
+    await this.paycheckRepo.update({ id }, paycheck);
 
-    return await this.paycheckRepo.findOneBy({ id: paycheckId });
+    return await this.paycheckRepo.findOneBy({ id });
   }
 
   async deletePaycheck(deletePaycheck: DeletePaycheckInput, userId: string) {
@@ -83,5 +79,30 @@ export class PaycheckService {
       id: paycheckId,
       user: { id: userId },
     });
+  }
+
+  async bulkUpdate(
+    updatePaycheckInputs: UpdatePaycheckInput[],
+    userId: string,
+  ): Promise<void> {
+    const ids = updatePaycheckInputs.map((eb) => eb.id);
+    const uniqueIds = new Set(ids);
+
+    if (ids.length !== uniqueIds.size)
+      throw new Error('Paycheck ids are not unique for bulk update');
+
+    const updatePromises = updatePaycheckInputs.map((paycheck) =>
+      this.updatePaycheck(paycheck, userId),
+    );
+
+    await Promise.all(updatePromises);
+  }
+
+  async bulkInsert(insertOtherIncomes: CreatePaycheckInput[], userId: string) {
+    const insertPromises = insertOtherIncomes.map((oi) =>
+      this.addPaycheck(oi, userId),
+    );
+
+    await Promise.all(insertPromises);
   }
 }

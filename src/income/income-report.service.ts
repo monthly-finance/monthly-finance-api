@@ -6,15 +6,19 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { IsNull, Repository } from 'typeorm';
-import { IncomeReport } from '../entities/income-report.entity';
+import { IncomeReport } from './entities/income-report.entity';
 import {
   CreateIncomeReportInput,
   DeleteIncomeReportInput,
   FindOneIncomeReportInput,
+  InsertIncomeReportInput,
   UpdateIncomeReportInput,
-} from '../dtos/income.input.dto';
+} from './dtos/income.input.dto';
 import { EntityNotFoundException } from 'src/shared/types/types';
 import { User } from 'src/user/entities/user.entity';
+import { EmployeeBenefitService } from './employee-benefit.service';
+import { OtherIncomeService } from './other-income.service';
+import { PaycheckService } from './paycheck.service';
 
 @Injectable()
 export class IncomeReportService {
@@ -23,12 +27,15 @@ export class IncomeReportService {
     private incomeReportRepo: Repository<IncomeReport>,
     @InjectRepository(User)
     private userRepo: Repository<User>,
+    private readonly employeeBenefitService: EmployeeBenefitService,
+    private readonly otherIncomeService: OtherIncomeService,
+    private readonly paycheckService: PaycheckService,
   ) {}
 
   async create(
     userId: string,
     createIncomeReport: CreateIncomeReportInput,
-  ): Promise<void> {
+  ): Promise<IncomeReport> {
     const { forMonth, forYear } = createIncomeReport;
     const user = await this.userRepo.findOneBy({ id: userId });
 
@@ -56,7 +63,7 @@ export class IncomeReportService {
       forYear,
     });
 
-    await this.incomeReportRepo.save(entity);
+    return await this.incomeReportRepo.save(entity);
   }
 
   async findAll(userId: string): Promise<IncomeReport[]> {
@@ -95,7 +102,7 @@ export class IncomeReportService {
 
     return await this.incomeReportRepo.findOneOrFail({
       where: {
-        user,
+        user: { id: userId },
         forMonth,
         forYear,
         deletedAt: IsNull(),
@@ -111,36 +118,102 @@ export class IncomeReportService {
     });
   }
 
+  async insert(
+    userId: string,
+    addToIncomeReportInput: InsertIncomeReportInput,
+  ) {
+    const { reportId, employeeBenefit, otherIncome, paycheck } =
+      addToIncomeReportInput;
+
+    const currentReport = await this.incomeReportRepo.findOneBy({
+      id: reportId,
+      user: { id: userId },
+      deletedAt: IsNull(),
+    });
+
+    if (!currentReport)
+      throw new EntityNotFoundException(IncomeReport.name, reportId);
+
+    if (employeeBenefit)
+      await this.employeeBenefitService.bulkInsert(employeeBenefit, userId);
+    if (otherIncome)
+      await this.otherIncomeService.bulkInsert(otherIncome, userId);
+    if (paycheck) await this.paycheckService.bulkInsert(paycheck, userId);
+  }
+
   async update(
     userId: string,
     updateIncomeReportInput: UpdateIncomeReportInput,
   ) {
-    const { reportId: id, ...report } = updateIncomeReportInput;
-    const current_report = await this.incomeReportRepo.findOneBy({
+    const { id, employeeBenefit, otherIncome, paycheck, ...report } =
+      updateIncomeReportInput;
+
+    const currentReport = await this.incomeReportRepo.findOneBy({
       id,
       user: { id: userId },
       deletedAt: IsNull(),
     });
 
-    if (!current_report) {
+    if (!currentReport)
       throw new EntityNotFoundException(IncomeReport.name, id);
-    }
 
-    await this.incomeReportRepo.update({ id, user: { id: userId } }, report);
+    await this.incomeReportRepo.update(
+      { id, user: { id: userId }, deletedAt: IsNull() },
+      report,
+    );
+
+    if (employeeBenefit)
+      await this.employeeBenefitService.bulkUpdate(employeeBenefit, userId);
+    if (otherIncome)
+      await this.otherIncomeService.bulkUpdate(otherIncome, userId);
+    if (paycheck) await this.paycheckService.bulkUpdate(paycheck, userId);
   }
 
   async delete(
     userId: string,
     deleteIncomeReportInput: DeleteIncomeReportInput,
   ) {
-    const { reportId: id } = deleteIncomeReportInput;
+    const { reportId, employeeIds, otherIncomeIds, paycheckIds } =
+      deleteIncomeReportInput;
 
     const report = await this.incomeReportRepo.findOneByOrFail({
-      id,
+      id: reportId,
       user: { id: userId },
       deletedAt: IsNull(),
     });
 
     await this.incomeReportRepo.softRemove(report);
+
+    //TODO: use a single transaction for this
+    const promiseList: Array<Promise<any>> = [];
+
+    if (employeeIds)
+      employeeIds.forEach((id) =>
+        promiseList.push(
+          this.employeeBenefitService.deleteEmployeeBenefit(
+            { employeeBenefitId: id },
+            userId,
+          ),
+        ),
+      );
+
+    if (otherIncomeIds)
+      otherIncomeIds.forEach((id) =>
+        promiseList.push(
+          this.otherIncomeService.deleteOtherIncome(
+            { otherIncomeId: id },
+            userId,
+          ),
+        ),
+      );
+
+    if (paycheckIds)
+      paycheckIds.forEach((id) =>
+        promiseList.push(
+          this.paycheckService.deletePaycheck({ paycheckId: id }, userId),
+        ),
+      );
+
+    await Promise.allSettled(promiseList);
   }
 }

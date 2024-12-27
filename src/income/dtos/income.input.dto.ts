@@ -7,30 +7,13 @@ import {
 } from './income.common.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateIncomeReportInput extends IncomeReportDto {}
-export class UpdateIncomeReportInput extends IncomeReportDto {
-  @ApiProperty()
-  reportId: number;
-}
-export class DeleteIncomeReportInput {
-  @ApiProperty()
-  reportId: number;
-}
-export class FindOneIncomeReportInput {
-  @ApiProperty({ enum: Month })
-  forMonth: Month;
-
-  @ApiProperty({ example: '2001' })
-  forYear: string;
-}
-
 export class CreatePaycheckInput extends PaycheckDto {
   @ApiProperty()
   reportId: number;
 }
 export class UpdatePaycheckInput extends PaycheckDto {
   @ApiProperty()
-  paycheckId: number;
+  id: number;
 }
 export class DeletePaycheckInput {
   @ApiProperty()
@@ -43,7 +26,7 @@ export class CreateEmployeeBenefitInput extends EmployeeBenefitDto {
 }
 export class UpdateEmployeeBenefitInput extends EmployeeBenefitDto {
   @ApiProperty()
-  employeeBenefitId: number;
+  id: number;
 }
 export class DeleteEmployeeBenefitInput {
   @ApiProperty()
@@ -56,9 +39,59 @@ export class CreateOtherIncomeInput extends OtherIncomeDto {
 }
 export class UpdateOtherIncomeInput extends OtherIncomeDto {
   @ApiProperty()
-  otherIncomeId: number;
+  id: number;
 }
 export class DeleteOtherIncomeInput {
   @ApiProperty()
   otherIncomeId: number;
+}
+
+export class CreateIncomeReportInput extends IncomeReportDto {}
+export class InsertIncomeReportInput {
+  @ApiProperty()
+  reportId: number;
+
+  @ApiProperty({ type: [CreateEmployeeBenefitInput] })
+  employeeBenefit: CreateEmployeeBenefitInput[];
+
+  @ApiProperty({ type: [CreatePaycheckInput] })
+  paycheck: CreatePaycheckInput[];
+
+  @ApiProperty({ type: [CreateOtherIncomeInput] })
+  otherIncome: CreateOtherIncomeInput[];
+}
+export class UpdateIncomeReportInput extends IncomeReportDto {
+  @ApiProperty()
+  id: number;
+
+  @ApiProperty({ type: [UpdateEmployeeBenefitInput] })
+  employeeBenefit: UpdateEmployeeBenefitInput[];
+
+  @ApiProperty({ type: [UpdatePaycheckInput] })
+  paycheck: UpdatePaycheckInput[];
+
+  @ApiProperty({ type: [UpdateOtherIncomeInput] })
+  otherIncome: UpdateOtherIncomeInput[];
+}
+
+export class DeleteIncomeReportInput {
+  @ApiProperty()
+  reportId: number;
+
+  @ApiProperty()
+  employeeIds: number[];
+
+  @ApiProperty()
+  paycheckIds: number[];
+
+  @ApiProperty()
+  otherIncomeIds: number[];
+}
+
+export class FindOneIncomeReportInput {
+  @ApiProperty({ enum: Month })
+  forMonth: Month;
+
+  @ApiProperty({ example: '2001' })
+  forYear: string;
 }

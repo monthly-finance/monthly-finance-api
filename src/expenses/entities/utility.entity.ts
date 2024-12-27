@@ -1,8 +1,8 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
-import { ExpenseReport } from '../expense-report.entity';
 import { BaseMFEntity } from 'src/shared/base-mf-entity.entity';
 import { Exclude } from 'class-transformer';
 import { User } from 'src/user/entities/user.entity';
+import { ExpenseReport } from './expense-report.entity';
 
 @Entity()
 export class Utility extends BaseMFEntity {

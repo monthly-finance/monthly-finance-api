@@ -1,9 +1,9 @@
 import { BaseMFEntity } from 'src/shared/base-mf-entity.entity';
 import { Entity, Column, ManyToOne } from 'typeorm';
-import { ExpenseReport } from '../expense-report.entity';
 import { BankingAccountType } from 'src/shared/types/types';
 import { Exclude } from 'class-transformer';
 import { User } from 'src/user/entities/user.entity';
+import { ExpenseReport } from './expense-report.entity';
 
 @Entity()
 export class CardEndOfMonthStatement extends BaseMFEntity {
@@ -23,6 +23,7 @@ export class CardEndOfMonthStatement extends BaseMFEntity {
   @ManyToOne(
     () => ExpenseReport,
     (expenseReport) => expenseReport.cardEndOfMonthStatement,
+    { cascade: true },
   )
   expenseReport: ExpenseReport;
 
