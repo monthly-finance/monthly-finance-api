@@ -7,6 +7,7 @@ import {
   Delete,
   ClassSerializerInterceptor,
   UseInterceptors,
+  Param,
 } from '@nestjs/common';
 
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -48,11 +49,11 @@ export class ExpensesController {
     return await this.service.create(context.userId, createExpenseReportInput);
   }
 
-  @Post('findOne')
+  @Get(':forMonth/:forYear')
   @ApiOperation({ summary: 'FindOne Expense Report' })
   async findOneExpenseReport(
     @MFContext() context: RequestContext,
-    @Body() findOneExpenseReportInput: FindOneExpenseReportInput,
+    @Param() findOneExpenseReportInput: FindOneExpenseReportInput,
   ): Promise<ExpenseReport> {
     const res = await this.service.findByMonthAndYear(
       context.userId,

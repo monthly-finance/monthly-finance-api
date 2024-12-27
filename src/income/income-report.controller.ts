@@ -7,6 +7,7 @@ import {
   Put,
   ClassSerializerInterceptor,
   UseInterceptors,
+  Param,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { IncomeReportDto } from './dtos/income.common.dto';
@@ -47,11 +48,11 @@ export class IncomeReportController {
     return await this.service.create(userId, createIncomeReportInput);
   }
 
-  @Post('findOne')
+  @Get(':forMonth/:forYear')
   @ApiOperation({ summary: 'FindOne Income Report' })
   async findOneIncomeReport(
     @MFContext('userId') userId: string,
-    @Body() findOneIncomeReportInput: FindOneIncomeReportInput,
+    @Param() findOneIncomeReportInput: FindOneIncomeReportInput,
   ): Promise<IncomeReport> {
     return await this.service.findOne(userId, findOneIncomeReportInput);
   }
