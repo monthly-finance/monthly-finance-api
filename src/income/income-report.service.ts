@@ -19,6 +19,8 @@ import { User } from 'src/user/entities/user.entity';
 import { EmployeeBenefitService } from './employee-benefit.service';
 import { OtherIncomeService } from './other-income.service';
 import { PaycheckService } from './paycheck.service';
+import { BulkOperationOutput } from 'src/shared/dto/common.dto';
+import { evaluateSettledPromises } from 'src/shared/utils';
 
 @Injectable()
 export class IncomeReportService {
@@ -121,7 +123,7 @@ export class IncomeReportService {
   async insert(
     userId: string,
     addToIncomeReportInput: InsertIncomeReportInput,
-  ) {
+  ): Promise<BulkOperationOutput> {
     const { reportId, employeeBenefit, otherIncome, paycheck } =
       addToIncomeReportInput;
 
@@ -134,17 +136,24 @@ export class IncomeReportService {
     if (!currentReport)
       throw new EntityNotFoundException(IncomeReport.name, reportId);
 
+    const promiseList: Array<Promise<any>> = [];
+
     if (employeeBenefit)
-      await this.employeeBenefitService.bulkInsert(employeeBenefit, userId);
+      promiseList.push(
+        this.employeeBenefitService.bulkInsert(employeeBenefit, userId),
+      );
     if (otherIncome)
-      await this.otherIncomeService.bulkInsert(otherIncome, userId);
-    if (paycheck) await this.paycheckService.bulkInsert(paycheck, userId);
+      promiseList.push(this.otherIncomeService.bulkInsert(otherIncome, userId));
+    if (paycheck)
+      promiseList.push(this.paycheckService.bulkInsert(paycheck, userId));
+
+    return evaluateSettledPromises(await Promise.allSettled(promiseList));
   }
 
   async update(
     userId: string,
     updateIncomeReportInput: UpdateIncomeReportInput,
-  ) {
+  ): Promise<BulkOperationOutput> {
     const { id, employeeBenefit, otherIncome, paycheck, ...report } =
       updateIncomeReportInput;
 
@@ -157,22 +166,30 @@ export class IncomeReportService {
     if (!currentReport)
       throw new EntityNotFoundException(IncomeReport.name, id);
 
-    await this.incomeReportRepo.update(
-      { id, user: { id: userId }, deletedAt: IsNull() },
-      report,
+    const promiseList: Array<Promise<any>> = [];
+    promiseList.push(
+      this.incomeReportRepo.update(
+        { id, user: { id: userId }, deletedAt: IsNull() },
+        report,
+      ),
     );
 
     if (employeeBenefit)
-      await this.employeeBenefitService.bulkUpdate(employeeBenefit, userId);
+      promiseList.push(
+        this.employeeBenefitService.bulkUpdate(employeeBenefit, userId),
+      );
     if (otherIncome)
-      await this.otherIncomeService.bulkUpdate(otherIncome, userId);
-    if (paycheck) await this.paycheckService.bulkUpdate(paycheck, userId);
+      promiseList.push(this.otherIncomeService.bulkUpdate(otherIncome, userId));
+    if (paycheck)
+      promiseList.push(this.paycheckService.bulkUpdate(paycheck, userId));
+
+    return evaluateSettledPromises(await Promise.allSettled(promiseList));
   }
 
   async delete(
     userId: string,
     deleteIncomeReportInput: DeleteIncomeReportInput,
-  ) {
+  ): Promise<BulkOperationOutput> {
     const { reportId, employeeIds, otherIncomeIds, paycheckIds } =
       deleteIncomeReportInput;
 
@@ -214,6 +231,6 @@ export class IncomeReportService {
         ),
       );
 
-    await Promise.allSettled(promiseList);
+    return evaluateSettledPromises(await Promise.allSettled(promiseList));
   }
 }
