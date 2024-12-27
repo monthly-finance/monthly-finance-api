@@ -27,7 +27,7 @@ export class CardStatementService {
   async addStatement(
     createStatement: CreateCardEndOfMonthStatementInput,
     userId: string,
-  ): Promise<void> {
+  ): Promise<CardEndOfMonthStatement> {
     const { reportId, ...statement } = createStatement;
     const user = await this.userService.findOne(userId);
 
@@ -54,13 +54,13 @@ export class CardStatementService {
       user,
     });
 
-    await this.statementRepo.save(entity);
+    return await this.statementRepo.save(entity);
   }
 
   async updateStatement(
     updateStatement: UpdateCardEndOfMonthStatementInput,
     userId: string,
-  ): Promise<void> {
+  ): Promise<CardEndOfMonthStatement> {
     const { id, ...statement } = updateStatement;
     const current_statement = await this.statementRepo.findOneBy({
       id: id,
@@ -76,6 +76,8 @@ export class CardStatementService {
       { id, user: { id: userId } },
       statement as CardEndOfMonthStatement,
     );
+
+    return await this.statementRepo.findOneBy({ id });
   }
 
   async deleteStatement(

@@ -26,7 +26,7 @@ export class OtherIncomeService {
   async addOtherIncome(
     createOtherIncome: CreateOtherIncomeInput,
     userId: string,
-  ): Promise<void> {
+  ): Promise<OtherIncome> {
     const { reportId, ...otherIncome } = createOtherIncome;
     const user = await this.userService.findOne(userId);
 
@@ -52,7 +52,7 @@ export class OtherIncomeService {
       user,
     });
 
-    await this.otherIncomeRepo.save(entity);
+    return await this.otherIncomeRepo.save(entity);
   }
 
   async updateOtherIncome(
@@ -74,6 +74,8 @@ export class OtherIncomeService {
       { id, user: { id: userId } },
       otherIncome,
     );
+
+    return await this.otherIncomeRepo.findOneBy({ id });
   }
 
   async deleteOtherIncome(

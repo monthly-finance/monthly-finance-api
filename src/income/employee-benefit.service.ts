@@ -26,7 +26,7 @@ export class EmployeeBenefitService {
   async addEmployeeBenefit(
     createEmployeeBenefit: CreateEmployeeBenefitInput,
     userId: string,
-  ): Promise<void> {
+  ): Promise<EmployeeBenefit> {
     const { reportId, ...employeeBenefit } = createEmployeeBenefit;
     const user = await this.userService.findOne(userId);
 
@@ -52,13 +52,13 @@ export class EmployeeBenefitService {
       user,
     });
 
-    await this.employeeBenefitRepo.save(entity);
+    return await this.employeeBenefitRepo.save(entity);
   }
 
   async updateEmployeeBenefit(
     updateEmployeeBenefit: UpdateEmployeeBenefitInput,
     userId: string,
-  ) {
+  ): Promise<EmployeeBenefit> {
     const { id: employeeBenefitId, ...employeeBenefit } = updateEmployeeBenefit;
 
     const current_employeeBenefit = await this.employeeBenefitRepo.findOneBy({
@@ -78,6 +78,8 @@ export class EmployeeBenefitService {
       { id: employeeBenefitId, user: { id: userId }, deletedAt: IsNull() },
       employeeBenefit,
     );
+
+    return await this.employeeBenefitRepo.findOneBy({ id: employeeBenefitId });
   }
 
   async deleteEmployeeBenefit(

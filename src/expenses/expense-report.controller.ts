@@ -9,12 +9,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 
-import {
-  ApiBearerAuth,
-  ApiExcludeEndpoint,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MFContext } from 'src/shared/types/types';
 import { RequestContext } from 'src/auth/types/auth.type';
 import {

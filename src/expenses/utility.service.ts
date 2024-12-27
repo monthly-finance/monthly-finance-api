@@ -25,7 +25,7 @@ export class UtilityService {
   async addUtility(
     createUtility: CreateUtilityInput,
     userId: string,
-  ): Promise<void> {
+  ): Promise<Utility> {
     const { reportId, ...utility } = createUtility;
     const user = await this.userService.findOne(userId);
 
@@ -50,7 +50,7 @@ export class UtilityService {
       type: utility.type,
     });
 
-    await this.utilityRepo.save(entity);
+    return await this.utilityRepo.save(entity);
   }
 
   async updateUtility(updateUtility: UpdateUtilityInput, userId: string) {
@@ -65,7 +65,9 @@ export class UtilityService {
       throw new EntityNotFoundException(Utility.name, id);
     }
 
-    await this.utilityRepo.update({ id: id, user: { id: userId } }, utility);
+    await this.utilityRepo.update({ id, user: { id: userId } }, utility);
+
+    return await this.utilityRepo.findOneBy({ id });
   }
 
   async deleteUtility(deleteUtility: DeleteUtilityInput, userId: string) {
