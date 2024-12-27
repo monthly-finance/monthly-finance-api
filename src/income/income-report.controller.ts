@@ -1,10 +1,14 @@
-import { Body, Controller, Get, Post, Delete, Put } from '@nestjs/common';
 import {
-  ApiBearerAuth,
-  ApiExcludeEndpoint,
-  ApiOperation,
-  ApiTags,
-} from '@nestjs/swagger';
+  Body,
+  Controller,
+  Get,
+  Post,
+  Delete,
+  Put,
+  ClassSerializerInterceptor,
+  UseInterceptors,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { IncomeReportDto } from './dtos/income.common.dto';
 import {
   CreateIncomeReportInput,
@@ -16,10 +20,12 @@ import {
 import { IncomeReport } from './entities/income-report.entity';
 import { MFContext } from 'src/shared/types/types';
 import { IncomeReportService } from './income-report.service';
+import { BulkOperationOutput } from 'src/shared/dto/common.dto';
 
 @Controller('income/income-report')
 @ApiBearerAuth()
 @ApiTags('Income Report')
+@UseInterceptors(ClassSerializerInterceptor)
 export class IncomeReportController {
   constructor(private service: IncomeReportService) {}
 
@@ -55,7 +61,7 @@ export class IncomeReportController {
   async updateIncomeReport(
     @Body() updateIncomeReportInput: UpdateIncomeReportInput,
     @MFContext('userId') userId: string,
-  ): Promise<void> {
+  ): Promise<BulkOperationOutput> {
     return await this.service.update(userId, updateIncomeReportInput);
   }
 
@@ -64,7 +70,7 @@ export class IncomeReportController {
   async deleteIncomeReport(
     @Body() deleteIncomeReportInput: DeleteIncomeReportInput,
     @MFContext('userId') userId: string,
-  ): Promise<void> {
+  ): Promise<BulkOperationOutput> {
     return await this.service.delete(userId, deleteIncomeReportInput);
   }
 
@@ -73,7 +79,7 @@ export class IncomeReportController {
   async insertExpenseReport(
     @Body() insertExpenseReport: InsertIncomeReportInput,
     @MFContext('userId') userId: string,
-  ): Promise<void> {
+  ): Promise<BulkOperationOutput> {
     return await this.service.insert(userId, insertExpenseReport);
   }
 }

@@ -21,6 +21,7 @@ import {
 } from './dtos/expense.input.dto';
 import { ExpenseReport } from './entities/expense-report.entity';
 import { ExpenseReportService } from './expense-report.service';
+import { BulkOperationOutput } from 'src/shared/dto/common.dto';
 
 @Controller('expense/expense-report')
 @ApiBearerAuth()
@@ -65,7 +66,7 @@ export class ExpensesController {
   async updateExpenseReport(
     @Body() updateExpenseReportInput: UpdateExpenseReportInput,
     @MFContext() context: RequestContext,
-  ): Promise<void> {
+  ): Promise<BulkOperationOutput> {
     return await this.service.update(updateExpenseReportInput, context.userId);
   }
 
@@ -74,7 +75,7 @@ export class ExpensesController {
   async deleteExpenseReport(
     @Body() deleteExpenseReportInput: DeleteExpenseReportInput,
     @MFContext() context: RequestContext,
-  ): Promise<void> {
+  ): Promise<BulkOperationOutput> {
     return await this.service.delete(deleteExpenseReportInput, context.userId);
   }
 
@@ -83,7 +84,7 @@ export class ExpensesController {
   async insertExpenseReport(
     @Body() insertExpenseReport: InsertExpenseReportInput,
     @MFContext() context: RequestContext,
-  ): Promise<void> {
+  ): Promise<BulkOperationOutput> {
     return await this.service.insert(insertExpenseReport, context.userId);
   }
 }

@@ -15,6 +15,8 @@ import { User } from 'src/user/entities/user.entity';
 import { RentService } from './rent.service';
 import { UtilityService } from './utility.service';
 import { CardStatementService } from './card-statement.service';
+import { evaluateSettledPromises } from 'src/shared/utils';
+import { BulkOperationOutput } from 'src/shared/dto/common.dto';
 
 @Injectable()
 export class ExpenseReportService {
@@ -101,7 +103,10 @@ export class ExpenseReportService {
     });
   }
 
-  async update(updateExpenseReport: UpdateExpenseReportInput, userId: string) {
+  async update(
+    updateExpenseReport: UpdateExpenseReportInput,
+    userId: string,
+  ): Promise<BulkOperationOutput> {
     const { id, utilities, cardEndOfMonthStatement, rent, ...report } =
       updateExpenseReport;
     const currentReport = await this.expenseReportRepo.findOneBy({
@@ -113,21 +118,26 @@ export class ExpenseReportService {
     if (!currentReport)
       throw new EntityNotFoundException(ExpenseReport.name, id);
 
-    await this.expenseReportRepo.update({ id, deletedAt: IsNull() }, report);
+    const promiseList: Array<Promise<any>> = [];
 
-    if (utilities) await this.utilityservice.bulkUpdate(utilities, userId);
+    promiseList.push(
+      this.expenseReportRepo.update({ id, deletedAt: IsNull() }, report),
+    );
+    if (utilities)
+      promiseList.push(this.utilityservice.bulkUpdate(utilities, userId));
     if (cardEndOfMonthStatement)
-      await this.cardStatementService.bulkUpdate(
-        cardEndOfMonthStatement,
-        userId,
+      promiseList.push(
+        this.cardStatementService.bulkUpdate(cardEndOfMonthStatement, userId),
       );
-    if (rent) await this.rentService.bulkUpdate(rent, userId);
+    if (rent) promiseList.push(this.rentService.bulkUpdate(rent, userId));
+
+    return evaluateSettledPromises(await Promise.allSettled(promiseList));
   }
 
   async insert(
     insertExpenseReportInput: InsertExpenseReportInput,
     userId: string,
-  ): Promise<void> {
+  ): Promise<BulkOperationOutput> {
     const { reportId, utilities, cardEndOfMonthStatement, rent } =
       insertExpenseReportInput;
 
@@ -140,16 +150,24 @@ export class ExpenseReportService {
     if (!currentReport)
       throw new EntityNotFoundException(ExpenseReport.name, reportId);
 
-    if (utilities) await this.utilityservice.bulkInsert(utilities, userId);
+    const promiseList: Array<Promise<any>> = [];
+
+    if (utilities)
+      promiseList.push(this.utilityservice.bulkInsert(utilities, userId));
     if (cardEndOfMonthStatement)
-      await this.cardStatementService.bulkInsert(
-        cardEndOfMonthStatement,
-        userId,
+      promiseList.push(
+        this.cardStatementService.bulkInsert(cardEndOfMonthStatement, userId),
       );
-    if (rent) await this.rentService.bulkInsert(rent, userId);
+
+    if (rent) promiseList.push(this.rentService.bulkInsert(rent, userId));
+
+    return evaluateSettledPromises(await Promise.allSettled(promiseList));
   }
 
-  async delete(deleteExpenseReport: DeleteExpenseReportInput, userId: string) {
+  async delete(
+    deleteExpenseReport: DeleteExpenseReportInput,
+    userId: string,
+  ): Promise<BulkOperationOutput> {
     const { reportId, cardIds, rentIds, utilityIds } = deleteExpenseReport;
 
     //TODO: this should cascade. Also maybe i should error handle this
@@ -180,6 +198,6 @@ export class ExpenseReportService {
         );
       });
 
-    await Promise.all(promiseList);
+    return evaluateSettledPromises(await Promise.allSettled(promiseList));
   }
 }
