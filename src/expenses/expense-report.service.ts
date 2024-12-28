@@ -17,6 +17,7 @@ import { UtilityService } from './utility.service';
 import { CardStatementService } from './card-statement.service';
 import { evaluateSettledPromises } from 'src/shared/utils';
 import { BulkOperationOutput } from 'src/shared/dto/common.dto';
+import { OtherExpenseService } from './other-expense.service';
 
 @Injectable()
 export class ExpenseReportService {
@@ -27,6 +28,7 @@ export class ExpenseReportService {
     private readonly rentService: RentService,
     private readonly utilityservice: UtilityService,
     private readonly cardStatementService: CardStatementService,
+    private readonly otherExpenseService: OtherExpenseService,
   ) {}
 
   async create(
@@ -107,8 +109,14 @@ export class ExpenseReportService {
     updateExpenseReport: UpdateExpenseReportInput,
     userId: string,
   ): Promise<BulkOperationOutput> {
-    const { id, utilities, cardEndOfMonthStatement, rent, ...report } =
-      updateExpenseReport;
+    const {
+      id,
+      utilities,
+      cardEndOfMonthStatement,
+      rent,
+      otherExpense,
+      ...report
+    } = updateExpenseReport;
     const currentReport = await this.expenseReportRepo.findOneBy({
       id,
       user: { id: userId },
@@ -130,6 +138,10 @@ export class ExpenseReportService {
         this.cardStatementService.bulkUpdate(cardEndOfMonthStatement, userId),
       );
     if (rent) promiseList.push(this.rentService.bulkUpdate(rent, userId));
+    if (otherExpense)
+      promiseList.push(
+        this.otherExpenseService.bulkUpdate(otherExpense, userId),
+      );
 
     return evaluateSettledPromises(await Promise.allSettled(promiseList));
   }
@@ -138,7 +150,7 @@ export class ExpenseReportService {
     insertExpenseReportInput: InsertExpenseReportInput,
     userId: string,
   ): Promise<BulkOperationOutput> {
-    const { reportId, utilities, cardEndOfMonthStatement, rent } =
+    const { reportId, utilities, cardEndOfMonthStatement, rent, otherExpense } =
       insertExpenseReportInput;
 
     const currentReport = await this.expenseReportRepo.findOneBy({
@@ -160,6 +172,10 @@ export class ExpenseReportService {
       );
 
     if (rent) promiseList.push(this.rentService.bulkInsert(rent, userId));
+    if (otherExpense)
+      promiseList.push(
+        this.otherExpenseService.bulkInsert(otherExpense, userId, reportId),
+      );
 
     return evaluateSettledPromises(await Promise.allSettled(promiseList));
   }
@@ -168,7 +184,8 @@ export class ExpenseReportService {
     deleteExpenseReport: DeleteExpenseReportInput,
     userId: string,
   ): Promise<BulkOperationOutput> {
-    const { reportId, cardIds, rentIds, utilityIds } = deleteExpenseReport;
+    const { reportId, cardIds, rentIds, utilityIds, otherExpenseIds } =
+      deleteExpenseReport;
 
     //TODO: this should cascade. Also maybe i should error handle this
     if (rentIds)
@@ -195,6 +212,12 @@ export class ExpenseReportService {
       utilityIds.forEach((utilityId) => {
         promiseList.push(
           this.utilityservice.deleteUtility({ utilityId }, userId),
+        );
+      });
+    if (otherExpenseIds)
+      otherExpenseIds.forEach((otherExpenseId) => {
+        promiseList.push(
+          this.otherExpenseService.delete({ otherExpenseId }, userId),
         );
       });
 

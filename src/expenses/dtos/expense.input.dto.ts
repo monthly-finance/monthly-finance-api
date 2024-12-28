@@ -39,7 +39,7 @@ export class UpdateOtherExpenseInput extends OtherExpenseDto {
   @ApiProperty()
   id: number;
 }
-export class DeleteOtherIncomeInput extends OtherExpenseDto {
+export class DeleteOtherExpenseInput {
   @ApiProperty()
   otherExpenseId: number;
 }
@@ -70,6 +70,9 @@ export class InsertExpenseReportInput {
 
   @ApiProperty({ type: [CreateRentInput] })
   rent?: CreateRentInput[];
+
+  @ApiProperty({ type: [CreateOtherExpenseInput] })
+  otherExpense?: CreateOtherExpenseInput[];
 }
 export class UpdateExpenseReportInput extends ExpenseReportDto {
   @ApiProperty()
@@ -83,6 +86,9 @@ export class UpdateExpenseReportInput extends ExpenseReportDto {
 
   @ApiProperty({ type: [UpdateRentInput] })
   rent?: UpdateRentInput[];
+
+  @ApiProperty({ type: [UpdateOtherExpenseInput] })
+  otherExpense?: UpdateOtherExpenseInput[];
 }
 export class DeleteExpenseReportInput {
   @ApiProperty()
@@ -96,6 +102,9 @@ export class DeleteExpenseReportInput {
 
   @ApiProperty()
   rentIds?: number[];
+
+  @ApiProperty()
+  otherExpenseIds?: number[];
 }
 export class FindOneExpenseReportInput {
   @ApiProperty({ enum: Month })

@@ -22,6 +22,7 @@ export class RentService {
     private userService: UserService,
   ) {}
 
+  //TODO: fix this. this should have reportId as 3rd argument
   async addRent(createRent: CreateRentInput, userId: string): Promise<Rent> {
     const { reportId, ...rent } = createRent;
 
