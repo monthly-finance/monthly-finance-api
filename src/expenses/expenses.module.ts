@@ -12,6 +12,7 @@ import { ExpensesController } from './expense-report.controller';
 import { CardEndOfMonthStatement } from './entities/card-statement.entity';
 import { Utility } from './entities/utility.entity';
 import { OtherExpenseService } from './other-expense.service';
+import { OtherExpense } from './entities/other-expense.entity';
 
 @Module({
   providers: [
@@ -30,6 +31,7 @@ import { OtherExpenseService } from './other-expense.service';
       ExpenseReport,
       User,
       Rent,
+      OtherExpense,
     ]),
     UserModule,
   ],
