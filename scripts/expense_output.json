@@ -1,0 +1,1518 @@
+{
+    "reportId": null,
+    "utilities": [
+        {
+            "amount": 57.5,
+            "type": "Electricity"
+        },
+        {
+            "amount": 42.42,
+            "type": "Electricity"
+        },
+        {
+            "amount": 51.5,
+            "type": "Electricity"
+        },
+        {
+            "amount": 62.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 61.5,
+            "type": "Gas"
+        },
+        {
+            "amount": 35.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 32.5,
+            "type": "Internet"
+        },
+        {
+            "amount": 33.0,
+            "type": "Internet"
+        },
+        {
+            "amount": 27.945,
+            "type": "Internet"
+        },
+        {
+            "amount": 73.0,
+            "type": "Phone"
+        },
+        {
+            "amount": 46.5,
+            "type": "Electricity"
+        },
+        {
+            "amount": 45.0,
+            "type": "Electricity"
+        },
+        {
+            "amount": 47.5,
+            "type": "Electricity"
+        },
+        {
+            "amount": 53.5,
+            "type": "Gas"
+        },
+        {
+            "amount": 46.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 42.5,
+            "type": "Gas"
+        },
+        {
+            "amount": 32.5,
+            "type": "Internet"
+        },
+        {
+            "amount": 32.5,
+            "type": "Internet"
+        },
+        {
+            "amount": 27.945,
+            "type": "Internet"
+        },
+        {
+            "amount": 73.0,
+            "type": "Phone"
+        },
+        {
+            "amount": 56.0,
+            "type": "Electricity"
+        },
+        {
+            "amount": 39.5,
+            "type": "Electricity"
+        },
+        {
+            "amount": 55.13,
+            "type": "Electricity"
+        },
+        {
+            "amount": 48.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 47.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 45.75,
+            "type": "Gas"
+        },
+        {
+            "amount": 32.5,
+            "type": "Internet"
+        },
+        {
+            "amount": 32.665,
+            "type": "Internet"
+        },
+        {
+            "amount": 27.945,
+            "type": "Internet"
+        },
+        {
+            "amount": 73.0,
+            "type": "Phone"
+        },
+        {
+            "amount": 75.0,
+            "type": "Phone"
+        },
+        {
+            "amount": 53.0,
+            "type": "Electricity"
+        },
+        {
+            "amount": 50.5,
+            "type": "Electricity"
+        },
+        {
+            "amount": 51.115,
+            "type": "Electricity"
+        },
+        {
+            "amount": 48.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 35.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 37.205,
+            "type": "Gas"
+        },
+        {
+            "amount": 32.5,
+            "type": "Internet"
+        },
+        {
+            "amount": 32.5,
+            "type": "Internet"
+        },
+        {
+            "amount": 27.945,
+            "type": "Internet"
+        },
+        {
+            "amount": 73.0,
+            "type": "Phone"
+        },
+        {
+            "amount": 67.0,
+            "type": "Phone"
+        },
+        {
+            "amount": 64.0,
+            "type": "Electricity"
+        },
+        {
+            "amount": 60.375,
+            "type": "Electricity"
+        },
+        {
+            "amount": 56.0,
+            "type": "Electricity"
+        },
+        {
+            "amount": 37.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 34.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 31.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 37.5,
+            "type": "Internet"
+        },
+        {
+            "amount": 32.665,
+            "type": "Internet"
+        },
+        {
+            "amount": 27.925,
+            "type": "Internet"
+        },
+        {
+            "amount": 73.0,
+            "type": "Phone"
+        },
+        {
+            "amount": 67.0,
+            "type": "Phone"
+        },
+        {
+            "amount": 106.5,
+            "type": "Electricity"
+        },
+        {
+            "amount": 91.5,
+            "type": "Electricity"
+        },
+        {
+            "amount": 83.105,
+            "type": "Electricity"
+        },
+        {
+            "amount": 37.5,
+            "type": "Gas"
+        },
+        {
+            "amount": 36.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 29.5,
+            "type": "Gas"
+        },
+        {
+            "amount": 35.0,
+            "type": "Internet"
+        },
+        {
+            "amount": 32.5,
+            "type": "Internet"
+        },
+        {
+            "amount": 27.925,
+            "type": "Internet"
+        },
+        {
+            "amount": 73.0,
+            "type": "Phone"
+        },
+        {
+            "amount": 67.0,
+            "type": "Phone"
+        },
+        {
+            "amount": 92.0,
+            "type": "Electricity"
+        },
+        {
+            "amount": 101.0,
+            "type": "Electricity"
+        },
+        {
+            "amount": 78.5,
+            "type": "Electricity"
+        },
+        {
+            "amount": 35.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 34.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 30.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 35.0,
+            "type": "Internet"
+        },
+        {
+            "amount": 32.5,
+            "type": "Internet"
+        },
+        {
+            "amount": 32.97,
+            "type": "Internet"
+        },
+        {
+            "amount": 73.0,
+            "type": "Phone"
+        },
+        {
+            "amount": 67.0,
+            "type": "Phone"
+        },
+        {
+            "amount": 19.4,
+            "type": "Electricity"
+        },
+        {
+            "amount": 79.5,
+            "type": "Electricity"
+        },
+        {
+            "amount": 71.5,
+            "type": "Electricity"
+        },
+        {
+            "amount": 11.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 34.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 40.885,
+            "type": "Gas"
+        },
+        {
+            "amount": 0.0,
+            "type": "Internet"
+        },
+        {
+            "amount": 32.5,
+            "type": "Internet"
+        },
+        {
+            "amount": 33.0,
+            "type": "Internet"
+        },
+        {
+            "amount": 73.0,
+            "type": "Phone"
+        },
+        {
+            "amount": 199.0,
+            "type": "Phone"
+        },
+        {
+            "amount": 0.0,
+            "type": "Electricity"
+        },
+        {
+            "amount": 92.0,
+            "type": "Electricity"
+        },
+        {
+            "amount": 81.5,
+            "type": "Electricity"
+        },
+        {
+            "amount": 71.0,
+            "type": "Electricity"
+        },
+        {
+            "amount": 0.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 30.5,
+            "type": "Gas"
+        },
+        {
+            "amount": 29.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 26.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 0.0,
+            "type": "Internet"
+        },
+        {
+            "amount": 32.5,
+            "type": "Internet"
+        },
+        {
+            "amount": 33.0,
+            "type": "Internet"
+        },
+        {
+            "amount": 28.0,
+            "type": "Internet"
+        },
+        {
+            "amount": 73.0,
+            "type": "Phone"
+        },
+        {
+            "amount": 72.87,
+            "type": "Phone"
+        },
+        {
+            "amount": 0.0,
+            "type": "Electricity"
+        },
+        {
+            "amount": 55.0,
+            "type": "Electricity"
+        },
+        {
+            "amount": 40.0,
+            "type": "Electricity"
+        },
+        {
+            "amount": 52.75,
+            "type": "Electricity"
+        },
+        {
+            "amount": 0.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 35.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 45.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 27.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 0.0,
+            "type": "Internet"
+        },
+        {
+            "amount": 33.0,
+            "type": "Internet"
+        },
+        {
+            "amount": 32.5,
+            "type": "Internet"
+        },
+        {
+            "amount": 27.945,
+            "type": "Internet"
+        },
+        {
+            "amount": 70.0,
+            "type": "Phone"
+        },
+        {
+            "amount": 72.87,
+            "type": "Phone"
+        },
+        {
+            "amount": 91.0,
+            "type": "Water/Sewer/Trash"
+        },
+        {
+            "amount": 0.0,
+            "type": "Electricity"
+        },
+        {
+            "amount": 45.0,
+            "type": "Electricity"
+        },
+        {
+            "amount": 46.0,
+            "type": "Electricity"
+        },
+        {
+            "amount": 84.3,
+            "type": "Electricity"
+        },
+        {
+            "amount": 0.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 39.5,
+            "type": "Gas"
+        },
+        {
+            "amount": 42.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 55.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 0.0,
+            "type": "Internet"
+        },
+        {
+            "amount": 33.0,
+            "type": "Internet"
+        },
+        {
+            "amount": 15.165,
+            "type": "Internet"
+        },
+        {
+            "amount": 27.945,
+            "type": "Internet"
+        },
+        {
+            "amount": 75.0,
+            "type": "Phone"
+        },
+        {
+            "amount": 72.87,
+            "type": "Phone"
+        },
+        {
+            "amount": 43.5,
+            "type": "Electricity"
+        },
+        {
+            "amount": 48.0,
+            "type": "Electricity"
+        },
+        {
+            "amount": 50.275,
+            "type": "Electricity"
+        },
+        {
+            "amount": 52.5,
+            "type": "Gas"
+        },
+        {
+            "amount": 41.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 30.0,
+            "type": "Gas"
+        },
+        {
+            "amount": 32.5,
+            "type": "Internet"
+        },
+        {
+            "amount": 32.5,
+            "type": "Internet"
+        },
+        {
+            "amount": 27.945,
+            "type": "Internet"
+        },
+        {
+            "amount": 72.87,
+            "type": "Phone"
+        }
+    ],
+    "cardEndOfMonthStatement": [
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 1308.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Apple",
+            "accountType": "CREDIT",
+            "amount": 0.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 71.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 135.87,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 96.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 2403.19,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 979.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Other USAA",
+            "accountType": "CREDIT",
+            "amount": 270.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 5964.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Apple",
+            "accountType": "CREDIT",
+            "amount": 0.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 64.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 30.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 84.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 1130.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 955.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Other USAA",
+            "accountType": "CREDIT",
+            "amount": 0.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 1661.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 0.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Apple",
+            "accountType": "CREDIT",
+            "amount": 0.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 16.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 164.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 72.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 2238.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 910.32,
+            "isPayed": true
+        },
+        {
+            "bankName": "Other USAA",
+            "accountType": "CREDIT",
+            "amount": 43.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 1864.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 2963.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Apple",
+            "accountType": "CREDIT",
+            "amount": 0.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 85.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 41.64,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 9.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 656.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 1353.78,
+            "isPayed": true
+        },
+        {
+            "bankName": "Other USAA",
+            "accountType": "CREDIT",
+            "amount": 0.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 1870.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 1424.84,
+            "isPayed": true
+        },
+        {
+            "bankName": "Apple",
+            "accountType": "CREDIT",
+            "amount": 0.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Apple",
+            "accountType": "CREDIT",
+            "amount": 103.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 113.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 105.46,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 9.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 390.1,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 2212.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Other USAA",
+            "accountType": "CREDIT",
+            "amount": 0.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Other USAA",
+            "accountType": "CREDIT",
+            "amount": 103.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 2593.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 2003.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Apple",
+            "accountType": "CREDIT",
+            "amount": 76.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 44.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 292.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 8.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 139.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 1038.77,
+            "isPayed": true
+        },
+        {
+            "bankName": "Other USAA",
+            "accountType": "CREDIT",
+            "amount": 100.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Other USAA",
+            "accountType": "CREDIT",
+            "amount": 108.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 2587.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 1572.17,
+            "isPayed": true
+        },
+        {
+            "bankName": "Apple",
+            "accountType": "CREDIT",
+            "amount": 90.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Apple",
+            "accountType": "CREDIT",
+            "amount": 207.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 38.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 125.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 4.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 216.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 1760.39,
+            "isPayed": true
+        },
+        {
+            "bankName": "Other USAA",
+            "accountType": "CREDIT",
+            "amount": 275.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 2429.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 2238.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Apple",
+            "accountType": "CREDIT",
+            "amount": 0.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 23.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 320.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 4.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 186.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 1111.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Other USAA",
+            "accountType": "CREDIT",
+            "amount": 221.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Other USAA",
+            "accountType": "CREDIT",
+            "amount": 296.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 1174.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 2516.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Apple",
+            "accountType": "CREDIT",
+            "amount": 0.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Apple",
+            "accountType": "CREDIT",
+            "amount": 53.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 176.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 414.48,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 0.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 108.21,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 799.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 1364.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Other USAA",
+            "accountType": "CREDIT",
+            "amount": 109.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Other USAA",
+            "accountType": "CREDIT",
+            "amount": 109.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 3131.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 1563.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Apple",
+            "accountType": "CREDIT",
+            "amount": 0.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Apple",
+            "accountType": "CREDIT",
+            "amount": 0.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 431.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 819.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 0.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 96.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 991.61,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 851.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Other USAA",
+            "accountType": "CREDIT",
+            "amount": 8.5,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 1436.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 1357.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Apple",
+            "accountType": "CREDIT",
+            "amount": 0.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Apple",
+            "accountType": "CREDIT",
+            "amount": 50.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 2094.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 99.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 0.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 95.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 1405.13,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 975.55,
+            "isPayed": true
+        },
+        {
+            "bankName": "Other USAA",
+            "accountType": "CREDIT",
+            "amount": 1095.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Other USAA",
+            "accountType": "CREDIT",
+            "amount": 275.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "American Express",
+            "accountType": "CREDIT",
+            "amount": 2845.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Apple",
+            "accountType": "CREDIT",
+            "amount": 21.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Chase",
+            "accountType": "CREDIT",
+            "amount": 155.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 96.0,
+            "isPayed": true
+        },
+        {
+            "bankName": "Discover",
+            "accountType": "CREDIT",
+            "amount": 944.0,
+            "isPayed": true
+        }
+    ],
+    "rent": [
+        {
+            "amount": 1027.0,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 963.38,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1070.5,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1027.5,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 965.5,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1069.0,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1078.5,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 964.0,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1069.5,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1031.0,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 970.35,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1070.5,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1037.51,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 968.57,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1077.5,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1088.0,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 998.195,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1300.5,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1068.245,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1030.0,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 359.5,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 346.5,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1062.5,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1031.82,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 585.5,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1068.5,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 981.5,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 968.0,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 600.0,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1073.5,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 883.0,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 600.0,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1075.0,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1034.5,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 970.0,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 0.0,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1075.0,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 1030.0,
+            "rentor": "MAA Peachtree Hills"
+        },
+        {
+            "amount": 965.02,
+            "rentor": "MAA Peachtree Hills"
+        }
+    ],
+    "otherExpense": [
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        },
+        {
+            "datePayed": "2024-02-10T10:07:58.767Z",
+            "type": "Debt re-payment",
+            "amount": 500.0
+        }
+    ]
+}
