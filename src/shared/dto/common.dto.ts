@@ -6,9 +6,9 @@ export class MFHeader {
 }
 
 export class BulkOperationOutput {
-  @ApiProperty()
+  @ApiProperty({ isArray: true })
   successful: any[];
 
-  @ApiProperty()
+  @ApiProperty({ isArray: true })
   errors: any[];
 }

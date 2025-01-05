@@ -2,8 +2,6 @@ import {
   Entity,
   Column,
   OneToMany,
-  OneToOne,
-  Unique,
   CreateDateColumn,
   UpdateDateColumn,
   Index,
@@ -14,6 +12,7 @@ import { Rent } from './rent.entity';
 import { Utility } from './utility.entity';
 import { CardEndOfMonthStatement } from './card-statement.entity';
 import { OtherExpense } from './other-expense.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity()
 @Index(
@@ -23,36 +22,66 @@ import { OtherExpense } from './other-expense.entity';
 )
 export class ExpenseReport extends BaseMFEntity {
   @Column()
+  @ApiProperty({ enum: Month, description: 'Month of the expense report' })
   forMonth: Month;
 
   @Column()
+  @ApiProperty({ description: 'Year of the expense report' })
   forYear: string;
 
-  @OneToMany(() => Utility, (utilites) => utilites.expenseReport, {
+  @OneToMany(() => Utility, (utility) => utility.expenseReport, {
     onDelete: 'CASCADE',
+  })
+  @ApiProperty({
+    type: () => Utility,
+    isArray: true,
+    description: 'List of utilities associated with the expense report',
   })
   utilities: Utility[];
 
-  @OneToMany(() => Rent, (u) => u.expenseReport, {
+  @OneToMany(() => Rent, (rent) => rent.expenseReport, {
     onDelete: 'CASCADE',
   })
-  rent: Rent;
+  @ApiProperty({
+    type: () => Rent,
+    isArray: true,
+    description: 'List of rent records associated with the expense report',
+  })
+  rent: Rent[];
 
   @OneToMany(
     () => CardEndOfMonthStatement,
-    (CardEndOfMonthStatement) => CardEndOfMonthStatement.expenseReport,
+    (statement) => statement.expenseReport,
     {
       onDelete: 'CASCADE',
     },
   )
+  @ApiProperty({
+    type: () => CardEndOfMonthStatement,
+    isArray: true,
+    description: 'List of card end-of-month statements',
+  })
   cardEndOfMonthStatement: CardEndOfMonthStatement[];
 
   @OneToMany(() => OtherExpense, (otherExpense) => otherExpense.expenseReport)
+  @ApiProperty({
+    type: () => OtherExpense,
+    isArray: true,
+    description: 'List of other expenses associated with the report',
+  })
   otherExpense: OtherExpense[];
 
   @CreateDateColumn()
+  @ApiProperty({
+    type: Date,
+    description: 'Date when the expense report was created',
+  })
   createdAt: Date;
 
   @UpdateDateColumn()
+  @ApiProperty({
+    type: Date,
+    description: 'Date when the expense report was last updated',
+  })
   updatedAt: Date;
 }

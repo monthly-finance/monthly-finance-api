@@ -9,8 +9,12 @@ import {
   UseInterceptors,
   Param,
 } from '@nestjs/common';
-
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { MFContext } from 'src/shared/types/types';
 import { RequestContext } from 'src/auth/types/auth.type';
 import {
@@ -33,59 +37,88 @@ export class ExpensesController {
 
   @Get()
   @ApiOperation({ summary: 'Find All Expense Reports' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of expense reports retrieved successfully',
+    type: () => ExpenseReport,
+    isArray: true,
+  })
   async findAllExpenseReport(
     @MFContext() context: RequestContext,
   ): Promise<ExpenseReport[]> {
-    const res = await this.service.findAll(context.userId);
-    return res;
+    return this.service.findAll(context.userId);
   }
 
   @Post()
   @ApiOperation({ summary: 'Create Expense Report' })
+  @ApiResponse({
+    status: 201,
+    description: 'Expense report created successfully',
+    type: ExpenseReport,
+  })
   async createExpenseReport(
     @Body() createExpenseReportInput: CreateExpenseReportInput,
     @MFContext() context: RequestContext,
   ): Promise<ExpenseReport> {
-    return await this.service.create(context.userId, createExpenseReportInput);
+    return this.service.create(context.userId, createExpenseReportInput);
   }
 
   @Get(':forMonth/:forYear')
-  @ApiOperation({ summary: 'FindOne Expense Report' })
+  @ApiOperation({ summary: 'Find One Expense Report' })
+  @ApiResponse({
+    status: 200,
+    description: 'Expense report retrieved successfully',
+    type: ExpenseReport,
+  })
   async findOneExpenseReport(
     @MFContext() context: RequestContext,
     @Param() findOneExpenseReportInput: FindOneExpenseReportInput,
   ): Promise<ExpenseReport> {
-    const res = await this.service.findByMonthAndYear(
+    return this.service.findByMonthAndYear(
       context.userId,
       findOneExpenseReportInput,
     );
-    return res;
   }
 
   @Put()
   @ApiOperation({ summary: 'Update Expense Report' })
+  @ApiResponse({
+    status: 200,
+    description: 'Expense report updated successfully',
+    type: BulkOperationOutput,
+  })
   async updateExpenseReport(
     @Body() updateExpenseReportInput: UpdateExpenseReportInput,
     @MFContext() context: RequestContext,
   ): Promise<BulkOperationOutput> {
-    return await this.service.update(updateExpenseReportInput, context.userId);
+    return this.service.update(updateExpenseReportInput, context.userId);
   }
 
   @Delete()
   @ApiOperation({ summary: 'Delete Expense Report' })
+  @ApiResponse({
+    status: 200,
+    description: 'Expense report deleted successfully',
+    type: BulkOperationOutput,
+  })
   async deleteExpenseReport(
     @Body() deleteExpenseReportInput: DeleteExpenseReportInput,
     @MFContext() context: RequestContext,
   ): Promise<BulkOperationOutput> {
-    return await this.service.delete(deleteExpenseReportInput, context.userId);
+    return this.service.delete(deleteExpenseReportInput, context.userId);
   }
 
   @Post('insert')
-  @ApiOperation({ summary: 'Insert data into Expense Report' })
+  @ApiOperation({ summary: 'Insert Data into Expense Report' })
+  @ApiResponse({
+    status: 201,
+    description: 'Data inserted into expense report successfully',
+    type: BulkOperationOutput,
+  })
   async insertExpenseReport(
     @Body() insertExpenseReport: InsertExpenseReportInput,
     @MFContext() context: RequestContext,
   ): Promise<BulkOperationOutput> {
-    return await this.service.insert(insertExpenseReport, context.userId);
+    return this.service.insert(insertExpenseReport, context.userId);
   }
 }

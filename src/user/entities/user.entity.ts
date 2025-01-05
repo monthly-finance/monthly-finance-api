@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Exclude } from 'class-transformer';
 import {
   Entity,
@@ -11,9 +12,11 @@ import {
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('uuid')
+  @ApiProperty()
   id: string;
 
   @Column({ length: 50, unique: true })
+  @ApiProperty()
   username: string;
 
   @Column({ length: 100 })
@@ -21,14 +24,18 @@ export class User {
   password: string;
 
   @Column({ length: 100, unique: true })
+  @ApiProperty()
   email: string;
 
   @CreateDateColumn()
+  @ApiProperty()
   createdAt: Date;
 
   @UpdateDateColumn()
+  @ApiProperty()
   updatedAt: Date;
 
   @DeleteDateColumn()
+  @ApiProperty()
   deletedAt: Date;
 }

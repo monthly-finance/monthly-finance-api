@@ -9,7 +9,12 @@ import {
   UseInterceptors,
   Param,
 } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOperation,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { IncomeReportDto } from './dtos/income.common.dto';
 import {
   CreateIncomeReportInput,
@@ -32,15 +37,25 @@ export class IncomeReportController {
 
   @Get()
   @ApiOperation({ summary: 'Find All Income Reports' })
+  @ApiResponse({
+    status: 200,
+    description: 'List of income reports retrieved successfully',
+    type: () => IncomeReport,
+    isArray: true,
+  })
   async findAllIncomeReport(
     @MFContext('userId') userId: string,
-  ): Promise<IncomeReportDto[]> {
-    const res = await this.service.findAll(userId);
-    return res;
+  ): Promise<IncomeReport[]> {
+    return await this.service.findAll(userId);
   }
 
   @Post()
   @ApiOperation({ summary: 'Create Income Report' })
+  @ApiResponse({
+    status: 201,
+    description: 'Income report created successfully',
+    type: IncomeReport,
+  })
   async createIncomeReport(
     @MFContext('userId') userId: string,
     @Body() createIncomeReportInput: CreateIncomeReportInput,
@@ -49,7 +64,12 @@ export class IncomeReportController {
   }
 
   @Get(':forMonth/:forYear')
-  @ApiOperation({ summary: 'FindOne Income Report' })
+  @ApiOperation({ summary: 'Find One Income Report' })
+  @ApiResponse({
+    status: 200,
+    description: 'Income report retrieved successfully',
+    type: IncomeReport,
+  })
   async findOneIncomeReport(
     @MFContext('userId') userId: string,
     @Param() findOneIncomeReportInput: FindOneIncomeReportInput,
@@ -59,6 +79,11 @@ export class IncomeReportController {
 
   @Put()
   @ApiOperation({ summary: 'Update Income Report' })
+  @ApiResponse({
+    status: 200,
+    description: 'Income report updated successfully',
+    type: BulkOperationOutput,
+  })
   async updateIncomeReport(
     @Body() updateIncomeReportInput: UpdateIncomeReportInput,
     @MFContext('userId') userId: string,
@@ -68,6 +93,11 @@ export class IncomeReportController {
 
   @Delete()
   @ApiOperation({ summary: 'Delete Income Report' })
+  @ApiResponse({
+    status: 200,
+    description: 'Income report deleted successfully',
+    type: BulkOperationOutput,
+  })
   async deleteIncomeReport(
     @Body() deleteIncomeReportInput: DeleteIncomeReportInput,
     @MFContext('userId') userId: string,
@@ -76,7 +106,12 @@ export class IncomeReportController {
   }
 
   @Post('insert')
-  @ApiOperation({ summary: 'Insert data into income Report' })
+  @ApiOperation({ summary: 'Insert Data into Income Report' })
+  @ApiResponse({
+    status: 201,
+    description: 'Data inserted into income report successfully',
+    type: BulkOperationOutput,
+  })
   async insertExpenseReport(
     @Body() insertExpenseReport: InsertIncomeReportInput,
     @MFContext('userId') userId: string,
