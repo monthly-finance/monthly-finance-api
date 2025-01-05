@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get } from '@nestjs/common';
+import { Controller, Post, Body, Get, Put } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LoginAuthInputDto } from './dto/auth.input.dto';
 import { LoginAuthOutputDto } from './dto/auth.output.dto';
@@ -18,7 +18,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Public()
-  @Post('login')
+  @Put('login')
   @ApiOperation({ summary: 'Get Access token with username and password' })
   @ApiResponse({
     status: 200,
