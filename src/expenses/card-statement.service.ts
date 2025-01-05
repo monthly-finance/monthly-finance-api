@@ -27,8 +27,8 @@ export class CardStatementService {
   async addStatement(
     createStatement: CreateCardEndOfMonthStatementInput,
     userId: string,
+    reportId: number,
   ): Promise<CardEndOfMonthStatement> {
-    const { reportId, ...statement } = createStatement;
     const user = await this.userService.findOne(userId);
 
     if (!user) {
@@ -47,10 +47,10 @@ export class CardStatementService {
 
     const entity = this.statementRepo.create({
       expenseReport: report,
-      amount: statement.amount,
-      bankName: statement.bankName,
-      accountType: statement.accountType,
-      isPayed: statement.isPayed,
+      amount: createStatement.amount,
+      bankName: createStatement.bankName,
+      accountType: createStatement.accountType,
+      isPayed: createStatement.isPayed,
       user,
     });
 
@@ -112,9 +112,10 @@ export class CardStatementService {
   async bulkInsert(
     insertStatement: CreateCardEndOfMonthStatementInput[],
     userId: string,
+    reportId: number,
   ) {
     const insertPromises = insertStatement.map((statement) =>
-      this.addStatement(statement, userId),
+      this.addStatement(statement, userId, reportId),
     );
 
     await Promise.allSettled(insertPromises);

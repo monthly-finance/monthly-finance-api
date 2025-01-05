@@ -165,13 +165,20 @@ export class ExpenseReportService {
     const promiseList: Array<Promise<any>> = [];
 
     if (utilities)
-      promiseList.push(this.utilityservice.bulkInsert(utilities, userId));
+      promiseList.push(
+        this.utilityservice.bulkInsert(utilities, userId, reportId),
+      );
     if (cardEndOfMonthStatement)
       promiseList.push(
-        this.cardStatementService.bulkInsert(cardEndOfMonthStatement, userId),
+        this.cardStatementService.bulkInsert(
+          cardEndOfMonthStatement,
+          userId,
+          reportId,
+        ),
       );
 
-    if (rent) promiseList.push(this.rentService.bulkInsert(rent, userId));
+    if (rent)
+      promiseList.push(this.rentService.bulkInsert(rent, userId, reportId));
     if (otherExpense)
       promiseList.push(
         this.otherExpenseService.bulkInsert(otherExpense, userId, reportId),
