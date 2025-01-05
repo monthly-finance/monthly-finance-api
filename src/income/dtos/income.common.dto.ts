@@ -8,7 +8,7 @@ import { Month, OtherIncomeType } from 'src/shared/types/types';
 
 export class EmployeeBenefitDto {
   @ApiProperty({ example: '2024-02-10T10:07:58.767Z' })
-  datePayed: Date;
+  datePayed?: Date;
 
   @ApiProperty({ example: 20 })
   amount: number;
