@@ -8,10 +8,7 @@ import {
 } from './expense.common.dto';
 import { ApiProperty } from '@nestjs/swagger';
 
-export class CreateUtilityInput extends UtilityDto {
-  @ApiProperty()
-  reportId: number;
-}
+export class CreateUtilityInput extends UtilityDto {}
 export class UpdateUtilityInput extends UtilityDto {
   @ApiProperty()
   id: number;
@@ -21,10 +18,7 @@ export class DeleteUtilityInput {
   utilityId: number;
 }
 
-export class CreateCardEndOfMonthStatementInput extends CardEndOfMonthStatementDto {
-  @ApiProperty()
-  reportId: number;
-}
+export class CreateCardEndOfMonthStatementInput extends CardEndOfMonthStatementDto {}
 export class UpdateCardEndOfMonthStatementInput extends CardEndOfMonthStatementDto {
   @ApiProperty()
   id: number;
@@ -44,10 +38,7 @@ export class DeleteOtherExpenseInput {
   otherExpenseId: number;
 }
 
-export class CreateRentInput extends RentDto {
-  @ApiProperty()
-  reportId: number;
-}
+export class CreateRentInput extends RentDto {}
 export class UpdateRentInput extends RentDto {
   @ApiProperty()
   id: number;

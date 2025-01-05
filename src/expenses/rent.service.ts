@@ -23,9 +23,11 @@ export class RentService {
   ) {}
 
   //TODO: fix this. this should have reportId as 3rd argument
-  async addRent(createRent: CreateRentInput, userId: string): Promise<Rent> {
-    const { reportId, ...rent } = createRent;
-
+  async addRent(
+    createRent: CreateRentInput,
+    userId: string,
+    reportId: number,
+  ): Promise<Rent> {
     const user = await this.userService.findOne(userId);
 
     if (!user) {
@@ -44,8 +46,8 @@ export class RentService {
 
     const entity = this.rentRepo.create({
       expenseReport: report,
-      rentAmount: rent.amount,
-      rentor: rent.rentor,
+      rentAmount: createRent.amount,
+      rentor: createRent.rentor,
       user,
     });
 
@@ -95,9 +97,13 @@ export class RentService {
     await Promise.allSettled(updatePromises);
   }
 
-  async bulkInsert(insetOtherIncomes: CreateRentInput[], userId: string) {
-    const insertPromises = insetOtherIncomes.map((statement) =>
-      this.addRent(statement, userId),
+  async bulkInsert(
+    insertRent: CreateRentInput[],
+    userId: string,
+    reportId: number,
+  ) {
+    const insertPromises = insertRent.map((statement) =>
+      this.addRent(statement, userId, reportId),
     );
 
     await Promise.allSettled(insertPromises);

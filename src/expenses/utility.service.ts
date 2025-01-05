@@ -25,8 +25,8 @@ export class UtilityService {
   async addUtility(
     createUtility: CreateUtilityInput,
     userId: string,
+    reportId: number,
   ): Promise<Utility> {
-    const { reportId, ...utility } = createUtility;
     const user = await this.userService.findOne(userId);
 
     if (!user) {
@@ -46,8 +46,8 @@ export class UtilityService {
     const entity = this.utilityRepo.create({
       expenseReport: report,
       user,
-      amount: utility.amount,
-      type: utility.type,
+      amount: createUtility.amount,
+      type: createUtility.type,
     });
 
     return await this.utilityRepo.save(entity);
@@ -93,9 +93,13 @@ export class UtilityService {
     await Promise.allSettled(updatePromises);
   }
 
-  async bulkInsert(insertUtilities: CreateUtilityInput[], userId: string) {
+  async bulkInsert(
+    insertUtilities: CreateUtilityInput[],
+    userId: string,
+    reportId: number,
+  ) {
     const insertPromises = insertUtilities.map((statement) =>
-      this.addUtility(statement, userId),
+      this.addUtility(statement, userId, reportId),
     );
 
     await Promise.allSettled(insertPromises);
