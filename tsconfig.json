@@ -17,7 +17,5 @@
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
     "noFallthroughCasesInSwitch": false
-  },
-  "include": ["src/**/*", "scripts/**/*"], // Include the scripts directory
-  "exclude": ["node_modules"]
+  }
 }
