@@ -41,3 +41,4 @@ lerna-debug.log*
 monthly-finance-415201-1cb71e5d8320.json
 
 **/venv/
+scripts/*.csv
