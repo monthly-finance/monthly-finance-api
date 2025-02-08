@@ -11,10 +11,10 @@ export class OtherIncome extends BaseMFEntity {
   @ApiProperty({
     description: 'The date when the other income was received',
     example: '2025-01-05T12:29:43.000Z',
-    type: Date,
+    type: String,
   })
   @Column()
-  datePayed: Date;
+  datePayed: string;
 
   @ApiProperty({
     description: 'The type/category of the other income',
@@ -39,5 +39,5 @@ export class OtherIncome extends BaseMFEntity {
   user: User;
 
   @Exclude()
-  deletedAt?: Date;
+  deletedAt?: string;
 }

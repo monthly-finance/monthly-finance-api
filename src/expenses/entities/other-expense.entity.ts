@@ -10,9 +10,9 @@ export class OtherExpense extends BaseMFEntity {
   @ApiProperty({
     description: 'The date when the expense was paid',
     example: '2025-01-05T12:42:30.000Z',
-    type: Date,
+    type: String,
   })
-  datePayed: Date;
+  datePayed: string;
 
   @Column()
   @ApiProperty({

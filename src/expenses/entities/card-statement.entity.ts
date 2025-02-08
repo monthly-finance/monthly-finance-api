@@ -52,8 +52,8 @@ export class CardEndOfMonthStatement extends BaseMFEntity {
   @Exclude()
   @ApiProperty({
     description: 'Timestamp when the record was deleted, if applicable',
-    type: Date,
+    type: String,
     required: false,
   })
-  deletedAt?: Date;
+  deletedAt?: string;
 }

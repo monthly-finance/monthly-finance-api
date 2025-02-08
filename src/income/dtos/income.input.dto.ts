@@ -52,8 +52,8 @@ export class InsertIncomeReportInput {
   otherIncome: CreateOtherIncomeInput[];
 }
 export class UpdateIncomeReportInput extends IncomeReportDto {
-  @ApiProperty()
-  id: number;
+  // @ApiProperty()
+  // id: number;
 
   @ApiProperty({ type: [UpdateEmployeeBenefitInput] })
   employeeBenefit: UpdateEmployeeBenefitInput[];

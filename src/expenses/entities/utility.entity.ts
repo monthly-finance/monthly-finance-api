@@ -35,9 +35,9 @@ export class Utility extends BaseMFEntity {
 
   @Exclude()
   @ApiProperty({
-    type: Date,
+    type: String,
     description: 'The date when the utility expense was deleted',
     required: false,
   })
-  deletedAt?: Date;
+  deletedAt?: string;
 }

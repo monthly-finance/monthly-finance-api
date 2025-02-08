@@ -12,6 +12,7 @@ import {
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -46,7 +47,7 @@ export class ExpensesController {
   async findAllExpenseReport(
     @MFContext() context: RequestContext,
   ): Promise<ExpenseReport[]> {
-    return this.service.findAll(context.userId);
+    return await this.service.findAll(context.userId);
   }
 
   @Post()
@@ -60,7 +61,7 @@ export class ExpensesController {
     @Body() createExpenseReportInput: CreateExpenseReportInput,
     @MFContext() context: RequestContext,
   ): Promise<ExpenseReport> {
-    return this.service.create(context.userId, createExpenseReportInput);
+    return await this.service.create(context.userId, createExpenseReportInput);
   }
 
   @Get(':forMonth/:forYear')
@@ -74,24 +75,35 @@ export class ExpensesController {
     @MFContext() context: RequestContext,
     @Param() findOneExpenseReportInput: FindOneExpenseReportInput,
   ): Promise<ExpenseReport> {
-    return this.service.findByMonthAndYear(
+    return await this.service.findByMonthAndYear(
       context.userId,
       findOneExpenseReportInput,
     );
   }
 
-  @Put()
+  @Put(':reportId')
   @ApiOperation({ summary: 'Update Expense Report' })
   @ApiResponse({
     status: 200,
     description: 'Expense report updated successfully',
     type: BulkOperationOutput,
   })
+  @ApiParam({
+    name: 'reportId',
+    required: true,
+    type: Number,
+    description: 'The ID of the expense report to update',
+  })
   async updateExpenseReport(
     @Body() updateExpenseReportInput: UpdateExpenseReportInput,
     @MFContext() context: RequestContext,
+    @Param() params: { reportId: number },
   ): Promise<BulkOperationOutput> {
-    return this.service.update(updateExpenseReportInput, context.userId);
+    return await this.service.update(
+      updateExpenseReportInput,
+      context.userId,
+      params.reportId,
+    );
   }
 
   @Delete()
@@ -105,7 +117,7 @@ export class ExpensesController {
     @Body() deleteExpenseReportInput: DeleteExpenseReportInput,
     @MFContext() context: RequestContext,
   ): Promise<BulkOperationOutput> {
-    return this.service.delete(deleteExpenseReportInput, context.userId);
+    return await this.service.delete(deleteExpenseReportInput, context.userId);
   }
 
   @Post('insert')
@@ -119,6 +131,6 @@ export class ExpensesController {
     @Body() insertExpenseReport: InsertExpenseReportInput,
     @MFContext() context: RequestContext,
   ): Promise<BulkOperationOutput> {
-    return this.service.insert(insertExpenseReport, context.userId);
+    return await this.service.insert(insertExpenseReport, context.userId);
   }
 }

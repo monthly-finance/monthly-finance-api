@@ -66,9 +66,6 @@ export class InsertExpenseReportInput {
   otherExpense?: CreateOtherExpenseInput[];
 }
 export class UpdateExpenseReportInput extends ExpenseReportDto {
-  @ApiProperty()
-  id: number;
-
   @ApiProperty({ type: [UpdateUtilityInput] })
   utilities?: UpdateUtilityInput[];
 

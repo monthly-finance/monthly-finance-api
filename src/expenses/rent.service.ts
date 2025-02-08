@@ -46,7 +46,7 @@ export class RentService {
 
     const entity = this.rentRepo.create({
       expenseReport: report,
-      rentAmount: createRent.amount,
+      amount: createRent.amount,
       rentor: createRent.rentor,
       user,
     });
@@ -68,7 +68,7 @@ export class RentService {
 
     await this.rentRepo.update(
       { id, user: { id: userId } },
-      { rentAmount: rent.amount, rentor: rent.rentor },
+      { amount: rent.amount, rentor: rent.rentor },
     );
 
     return await this.rentRepo.findOneBy({ id });

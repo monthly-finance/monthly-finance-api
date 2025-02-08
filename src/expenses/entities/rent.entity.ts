@@ -12,7 +12,7 @@ export class Rent extends BaseMFEntity {
     description: 'The amount of rent paid',
     example: 1200.0,
   })
-  rentAmount: number;
+  amount: number;
 
   @Column()
   @ApiProperty({
@@ -34,7 +34,7 @@ export class Rent extends BaseMFEntity {
     description: 'The date when the rent record was deleted, if applicable',
     example: '2025-01-05T12:29:43.000Z',
     required: false,
-    type: Date,
+    type: String,
   })
-  deletedAt?: Date;
+  deletedAt?: string;
 }

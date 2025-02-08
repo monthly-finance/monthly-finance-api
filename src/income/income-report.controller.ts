@@ -12,6 +12,7 @@ import {
 import {
   ApiBearerAuth,
   ApiOperation,
+  ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -77,18 +78,29 @@ export class IncomeReportController {
     return await this.service.findOne(userId, findOneIncomeReportInput);
   }
 
-  @Put()
+  @Put(':reportId')
   @ApiOperation({ summary: 'Update Income Report' })
   @ApiResponse({
     status: 200,
     description: 'Income report updated successfully',
     type: BulkOperationOutput,
   })
+  @ApiParam({
+    name: 'reportId',
+    required: true,
+    type: Number,
+    description: 'The ID of the income report to update',
+  })
   async updateIncomeReport(
     @Body() updateIncomeReportInput: UpdateIncomeReportInput,
     @MFContext('userId') userId: string,
+    @Param() params: { reportId: number },
   ): Promise<BulkOperationOutput> {
-    return await this.service.update(userId, updateIncomeReportInput);
+    return await this.service.update(
+      userId,
+      params.reportId,
+      updateIncomeReportInput,
+    );
   }
 
   @Delete()
