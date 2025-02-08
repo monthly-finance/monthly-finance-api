@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
   Index,
 } from 'typeorm';
-import { EmployeeBenefit } from './employee-benefit/employee-benefit.entity';
+import { EmployeeBenefit } from './employee-benefit.entity';
 import { Paycheck } from './paycheck.entity';
 import { OtherIncome } from './other-income.entity';
 import { ApiProperty } from '@nestjs/swagger';
@@ -62,16 +62,16 @@ export class IncomeReport extends BaseMFEntity {
   @ApiProperty({
     description: 'Timestamp when the income report was created',
     example: '2025-01-05T12:29:43.000Z',
-    type: Date,
+    type: String,
   })
   @CreateDateColumn()
-  createdAt: Date;
+  createdAt: string;
 
   @ApiProperty({
     description: 'Timestamp when the income report was last updated',
     example: '2025-01-05T12:29:43.000Z',
-    type: Date,
+    type: String,
   })
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt: string;
 }

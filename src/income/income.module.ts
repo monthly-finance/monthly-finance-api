@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { EmployeeBenefit } from './entities/employee-benefit/employee-benefit.entity';
+import { EmployeeBenefit } from './entities/employee-benefit.entity';
 import { IncomeReport } from './entities/income-report.entity';
 import { OtherIncome } from './entities/other-income.entity';
 import { UserModule } from 'src/user/user.module';

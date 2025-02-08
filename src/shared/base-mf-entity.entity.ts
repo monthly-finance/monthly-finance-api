@@ -9,5 +9,5 @@ export class BaseMFEntity {
   user: User;
 
   @DeleteDateColumn({ select: false })
-  deletedAt?: Date;
+  deletedAt?: string;
 }

@@ -8,7 +8,7 @@ import { Month, OtherIncomeType } from 'src/shared/types/types';
 
 export class EmployeeBenefitDto {
   @ApiProperty({ example: '2024-02-10T10:07:58.767Z' })
-  datePayed?: Date;
+  datePayed?: string;
 
   @ApiProperty({ example: 20 })
   amount: number;
@@ -19,7 +19,7 @@ export class EmployeeBenefitDto {
 
 export class OtherIncomeDto {
   @ApiProperty({ example: '2024-02-10T10:07:58.767Z' })
-  datePayed: Date;
+  datePayed?: string;
 
   @ApiProperty({ enum: OtherIncomeType })
   type: OtherIncomeType;
@@ -30,7 +30,7 @@ export class OtherIncomeDto {
 
 export class PaycheckDto {
   @ApiProperty({ example: '2024-02-10T10:07:58.767Z' })
-  datePayed: Date;
+  datePayed?: string;
 
   @ApiProperty({ example: 1000 })
   amount: number;

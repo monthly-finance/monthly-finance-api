@@ -10,10 +10,10 @@ export class Paycheck extends BaseMFEntity {
   @ApiProperty({
     description: 'The date when the paycheck was issued',
     example: '2025-01-05T12:29:43.000Z',
-    type: Date,
+    type: String,
   })
-  @Column()
-  datePayed: Date;
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  datePayed?: string;
 
   @ApiProperty({
     description: 'The amount of the paycheck',
@@ -30,5 +30,5 @@ export class Paycheck extends BaseMFEntity {
   user: User;
 
   @Exclude()
-  deletedAt?: Date;
+  deletedAt?: string;
 }

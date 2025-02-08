@@ -1,5 +1,5 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
-import { IncomeReport } from '../income-report.entity';
+import { IncomeReport } from './income-report.entity';
 import { BaseMFEntity } from 'src/shared/base-mf-entity.entity';
 import { User } from 'src/user/entities/user.entity';
 import { Exclude } from 'class-transformer';
@@ -10,10 +10,10 @@ export class EmployeeBenefit extends BaseMFEntity {
   @ApiProperty({
     description: 'The date when the employee benefit was paid',
     example: '2025-01-05T12:29:43.000Z',
-    type: Date,
+    type: String,
   })
-  @Column()
-  datePayed: Date;
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  datePayed?: string;
 
   @ApiProperty({
     description: 'The amount of the employee benefit',
@@ -37,5 +37,5 @@ export class EmployeeBenefit extends BaseMFEntity {
   user: User;
 
   @Exclude()
-  deletedAt?: Date;
+  deletedAt?: string;
 }

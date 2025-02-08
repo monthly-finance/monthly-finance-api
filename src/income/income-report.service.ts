@@ -160,24 +160,25 @@ export class IncomeReportService {
 
   async update(
     userId: string,
+    reportId: number,
     updateIncomeReportInput: UpdateIncomeReportInput,
   ): Promise<BulkOperationOutput> {
-    const { id, employeeBenefit, otherIncome, paycheck, ...report } =
+    const { employeeBenefit, otherIncome, paycheck, ...report } =
       updateIncomeReportInput;
 
     const currentReport = await this.incomeReportRepo.findOneBy({
-      id,
+      id: reportId,
       user: { id: userId },
       deletedAt: IsNull(),
     });
 
     if (!currentReport)
-      throw new EntityNotFoundException(IncomeReport.name, id);
+      throw new EntityNotFoundException(IncomeReport.name, reportId);
 
     const promiseList: Array<Promise<any>> = [];
     promiseList.push(
       this.incomeReportRepo.update(
-        { id, user: { id: userId }, deletedAt: IsNull() },
+        { id: reportId, user: { id: userId }, deletedAt: IsNull() },
         report,
       ),
     );

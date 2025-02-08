@@ -29,13 +29,13 @@ export class User {
 
   @CreateDateColumn()
   @ApiProperty()
-  createdAt: Date;
+  createdAt: string;
 
   @UpdateDateColumn()
   @ApiProperty()
-  updatedAt: Date;
+  updatedAt: string;
 
   @DeleteDateColumn()
   @ApiProperty()
-  deletedAt: Date;
+  deletedAt: string;
 }

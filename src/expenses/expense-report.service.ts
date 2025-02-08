@@ -73,11 +73,13 @@ export class ExpenseReportService {
         cardEndOfMonthStatement: { deletedAt: IsNull() },
         utilities: { deletedAt: IsNull() },
         rent: { deletedAt: IsNull() },
+        otherExpense: { deletedAt: IsNull() },
       },
       relations: {
         cardEndOfMonthStatement: true,
         utilities: true,
         rent: true,
+        otherExpense: true,
       },
     });
   }
@@ -108,9 +110,9 @@ export class ExpenseReportService {
   async update(
     updateExpenseReport: UpdateExpenseReportInput,
     userId: string,
+    reportId: number,
   ): Promise<BulkOperationOutput> {
     const {
-      id,
       utilities,
       cardEndOfMonthStatement,
       rent,
@@ -118,18 +120,23 @@ export class ExpenseReportService {
       ...report
     } = updateExpenseReport;
     const currentReport = await this.expenseReportRepo.findOneBy({
-      id,
+      id: reportId,
       user: { id: userId },
       deletedAt: IsNull(),
     });
 
     if (!currentReport)
-      throw new EntityNotFoundException(ExpenseReport.name, id);
+      throw new EntityNotFoundException(ExpenseReport.name, reportId);
+
+    // TODO: handle if a report already exists with month and year. Probably need to do the saem with income
 
     const promiseList: Array<Promise<any>> = [];
 
     promiseList.push(
-      this.expenseReportRepo.update({ id, deletedAt: IsNull() }, report),
+      this.expenseReportRepo.update(
+        { id: reportId, deletedAt: IsNull() },
+        report,
+      ),
     );
     if (utilities)
       promiseList.push(this.utilityservice.bulkUpdate(utilities, userId));
@@ -184,6 +191,7 @@ export class ExpenseReportService {
         this.otherExpenseService.bulkInsert(otherExpense, userId, reportId),
       );
 
+    //TODO: fix response
     return evaluateSettledPromises(await Promise.allSettled(promiseList));
   }
 

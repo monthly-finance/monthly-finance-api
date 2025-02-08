@@ -47,7 +47,10 @@ export class PaycheckService {
     const entity = this.paycheckRepo.create({
       incomeReport: report,
       amount: createPaycheck.amount,
-      datePayed: createPaycheck.datePayed,
+      datePayed:
+        createPaycheck.datePayed === ''
+          ? new Date().toISOString()
+          : createPaycheck.datePayed,
       user,
     });
 

@@ -73,15 +73,15 @@ export class ExpenseReport extends BaseMFEntity {
 
   @CreateDateColumn()
   @ApiProperty({
-    type: Date,
+    type: String,
     description: 'Date when the expense report was created',
   })
-  createdAt: Date;
+  createdAt: string;
 
   @UpdateDateColumn()
   @ApiProperty({
-    type: Date,
+    type: String,
     description: 'Date when the expense report was last updated',
   })
-  updatedAt: Date;
+  updatedAt: string;
 }

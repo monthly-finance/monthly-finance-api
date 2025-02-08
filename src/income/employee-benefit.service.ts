@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { EmployeeBenefit } from './entities/employee-benefit/employee-benefit.entity';
+import { EmployeeBenefit } from './entities/employee-benefit.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ExpenseReport } from 'src/expenses/entities/expense-report.entity';
 import { EntityNotFoundException } from 'src/shared/types/types';
@@ -48,7 +48,10 @@ export class EmployeeBenefitService {
       incomeReport: report,
       type: createEmployeeBenefit.type,
       amount: createEmployeeBenefit.amount,
-      datePayed: createEmployeeBenefit.datePayed,
+      datePayed:
+        createEmployeeBenefit.datePayed === ''
+          ? new Date().toISOString()
+          : createEmployeeBenefit.datePayed,
       user,
     });
 
@@ -120,6 +123,7 @@ export class EmployeeBenefitService {
       this.addEmployeeBenefit(eb, userId, reportId),
     );
 
-    await Promise.allSettled(insertPromises);
+    const a = await Promise.allSettled(insertPromises);
+    return a;
   }
 }

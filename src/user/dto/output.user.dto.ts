@@ -19,13 +19,13 @@ export class UserOutputDto {
   email: string;
 
   @ApiProperty()
-  createdAt: Date;
+  createdAt: string;
 
   @ApiProperty()
-  updatedAt: Date;
+  updatedAt: string;
 
   @ApiProperty()
-  deletedAt: Date;
+  deletedAt: string;
 }
 
 export class CreateUserOutputDto extends UserOutputDto {}

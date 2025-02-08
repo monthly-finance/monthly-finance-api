@@ -25,7 +25,7 @@ export class RentDto {
 
 export class OtherExpenseDto {
   @ApiProperty({ example: '2024-02-10T10:07:58.767Z' })
-  datePayed: Date;
+  datePayed?: string;
 
   @ApiProperty({ example: 'debt re-payment' })
   type: string;
