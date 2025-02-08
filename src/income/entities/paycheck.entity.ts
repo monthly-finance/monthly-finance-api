@@ -12,8 +12,8 @@ export class Paycheck extends BaseMFEntity {
     example: '2025-01-05T12:29:43.000Z',
     type: String,
   })
-  @Column()
-  datePayed: string;
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  datePayed?: string;
 
   @ApiProperty({
     description: 'The amount of the paycheck',

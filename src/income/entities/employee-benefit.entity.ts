@@ -12,7 +12,7 @@ export class EmployeeBenefit extends BaseMFEntity {
     example: '2025-01-05T12:29:43.000Z',
     type: String,
   })
-  @Column({ default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   datePayed?: string;
 
   @ApiProperty({

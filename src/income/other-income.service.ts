@@ -47,7 +47,10 @@ export class OtherIncomeService {
     const entity = this.otherIncomeRepo.create({
       incomeReport: report,
       amount: createOtherIncome.amount,
-      datePayed: createOtherIncome.datePayed,
+      datePayed:
+        createOtherIncome.datePayed === ''
+          ? new Date().toISOString()
+          : createOtherIncome.datePayed,
       type: createOtherIncome.type,
       user,
     });

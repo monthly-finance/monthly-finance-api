@@ -48,7 +48,10 @@ export class EmployeeBenefitService {
       incomeReport: report,
       type: createEmployeeBenefit.type,
       amount: createEmployeeBenefit.amount,
-      datePayed: createEmployeeBenefit.datePayed,
+      datePayed:
+        createEmployeeBenefit.datePayed === ''
+          ? new Date().toISOString()
+          : createEmployeeBenefit.datePayed,
       user,
     });
 
